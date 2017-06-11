@@ -1,0 +1,19 @@
+{
+  "name": "basket-strategy",
+  "version": "0.0.0",
+  "description": "",
+  "main": "build/basket-strategy.js",
+  "scripts": {
+    "test": "nyc mocha --timeout=3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeremyfourna/basket-strategy.git"
+  },
+  "author": "Jeremy Fourna <jeremyfourna@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jeremyfourna/basket-strategy/issues"
+  },
+  "homepage": "https://github.com/jeremyfourna/basket-strategy#readme"
+}
