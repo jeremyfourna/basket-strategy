@@ -131,8 +131,69 @@ const courtConfig = {
 			centerY: 1.545,
 			radius: 0.225
 		}
+	},
+	bottomBasket: {
+		bigLine: {
+			x1: 6.6,
+			y1: 26.8,
+			x2: 8.4,
+			y2: 26.8
+		},
+		smallLine: {
+			x1: 7.5,
+			y1: 26.8,
+			x2: 7.5,
+			y2: 26.68
+		},
+		ring: {
+			centerX: 7.5,
+			centerY: 26.455,
+			radius: 0.225
+		}
+	},
+	top3Points: {
+		leftLine: {
+			x1: 0.9,
+			y1: 0,
+			x2: 0.9,
+			y2: 2.99
+		},
+		rightLine: {
+			x1: 14.1,
+			y1: 0,
+			x2: 14.1,
+			y2: 2.99
+		},
+		arc: {
+			innerRadius: 6.75,
+			outerRadius: 6.75,
+			startAngle: 1.785,
+			endAngle: 4.5
+		}
+	},
+	bottom3Points: {
+		leftLine: {
+			x1: 0.9,
+			y1: 28,
+			x2: 0.9,
+			y2: 25.01
+		},
+		rightLine: {
+			x1: 14.1,
+			y1: 28,
+			x2: 14.1,
+			y2: 25.01
+		},
+		arc: {
+			innerRadius: 6.75,
+			outerRadius: 6.75,
+			startAngle: 4.5,
+			endAngle: 1.785
+		}
 	}
 };
+
+const wishedZoom = 40;
 
 function courtConfigZoomed(zoomSize) {
 
@@ -193,6 +254,59 @@ function courtConfigZoomed(zoomSize) {
 					centerX: R.multiply(courtZoom),
 					centerY: R.multiply(courtZoom),
 					radius: R.multiply(courtZoom)
+				}
+			},
+			bottomBasket: {
+				bigLine: {
+					x1: R.multiply(courtZoom),
+					y1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				smallLine: {
+					x1: R.multiply(courtZoom),
+					y1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				ring: {
+					centerX: R.multiply(courtZoom),
+					centerY: R.multiply(courtZoom),
+					radius: R.multiply(courtZoom)
+				}
+			},
+			top3Points: {
+				leftLine: {
+					x1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				rightLine: {
+					x1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				arc: {
+					innerRadius: R.multiply(courtZoom),
+					outerRadius: R.multiply(courtZoom)
+				}
+			},
+			bottom3Points: {
+				leftLine: {
+					x1: R.multiply(courtZoom),
+					y1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				rightLine: {
+					x1: R.multiply(courtZoom),
+					y1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				arc: {
+					innerRadius: R.multiply(courtZoom),
+					outerRadius: R.multiply(courtZoom)
 				}
 			}
 		};
@@ -304,6 +418,77 @@ function generateCourt(courtConfig) {
 		R.path(['topBasket', 'ring', 'radius'], courtConfig),
 		svg
 	);
+	// Bottom basket
+	createLine(
+		R.path(['bottomBasket', 'bigLine', 'x1'], courtConfig),
+		R.path(['bottomBasket', 'bigLine', 'y1'], courtConfig),
+		R.path(['bottomBasket', 'bigLine', 'x2'], courtConfig),
+		R.path(['bottomBasket', 'bigLine', 'y2'], courtConfig),
+		svg
+	);
+	createLine(
+		R.path(['bottomBasket', 'smallLine', 'x1'], courtConfig),
+		R.path(['bottomBasket', 'smallLine', 'y1'], courtConfig),
+		R.path(['bottomBasket', 'smallLine', 'x2'], courtConfig),
+		R.path(['bottomBasket', 'smallLine', 'y2'], courtConfig),
+		svg
+	);
+	createCircle(
+		R.path(['bottomBasket', 'ring', 'centerX'], courtConfig),
+		R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
+		R.path(['bottomBasket', 'ring', 'radius'], courtConfig),
+		svg
+	);
+	// Top 3 points lines and arc
+	createLine(
+		R.path(['top3Points', 'leftLine', 'x1'], courtConfig),
+		R.path(['top3Points', 'leftLine', 'y1'], courtConfig),
+		R.path(['top3Points', 'leftLine', 'x2'], courtConfig),
+		R.path(['top3Points', 'leftLine', 'y2'], courtConfig),
+		svg
+	);
+	createLine(
+		R.path(['top3Points', 'rightLine', 'x1'], courtConfig),
+		R.path(['top3Points', 'rightLine', 'y1'], courtConfig),
+		R.path(['top3Points', 'rightLine', 'x2'], courtConfig),
+		R.path(['top3Points', 'rightLine', 'y2'], courtConfig),
+		svg
+	);
+	createArc(
+		R.path(['top3Points', 'arc', 'innerRadius'], courtConfig),
+		R.path(['top3Points', 'arc', 'outerRadius'], courtConfig),
+		R.path(['top3Points', 'arc', 'startAngle'], courtConfig),
+		R.path(['top3Points', 'arc', 'endAngle'], courtConfig),
+		R.divide(R.prop('width', courtConfig), 2),
+		R.path(['topBasket', 'ring', 'centerY'], courtConfig),
+		false,
+		svg
+	);
+	// Bottom 3 points lines and arc
+	createLine(
+		R.path(['bottom3Points', 'leftLine', 'x1'], courtConfig),
+		R.path(['bottom3Points', 'leftLine', 'y1'], courtConfig),
+		R.path(['bottom3Points', 'leftLine', 'x2'], courtConfig),
+		R.path(['bottom3Points', 'leftLine', 'y2'], courtConfig),
+		svg
+	);
+	createLine(
+		R.path(['bottom3Points', 'rightLine', 'x1'], courtConfig),
+		R.path(['bottom3Points', 'rightLine', 'y1'], courtConfig),
+		R.path(['bottom3Points', 'rightLine', 'x2'], courtConfig),
+		R.path(['bottom3Points', 'rightLine', 'y2'], courtConfig),
+		svg
+	);
+	createArc(
+		R.path(['bottom3Points', 'arc', 'innerRadius'], courtConfig),
+		R.path(['bottom3Points', 'arc', 'outerRadius'], courtConfig),
+		R.path(['bottom3Points', 'arc', 'startAngle'], courtConfig),
+		R.path(['bottom3Points', 'arc', 'endAngle'], courtConfig),
+		R.divide(R.prop('width', courtConfig), 2),
+		R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
+		true,
+		svg
+	);
 }
 
 function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context) {
@@ -335,9 +520,35 @@ function createLine(beginX, beginY, endX, endY, context) {
 		.style('stroke', 'black');
 }
 
-function clickOnSVG() {
-	console.log(d3.mouse(this));
+function clickOnSVG(context) {
+	const x = R.head(d3.mouse(this));
+	const y = R.last(d3.mouse(this));
+	const svg = d3.select('svg');
+
+	createCircle(x, y, R.multiply(wishedZoom, 0.5), svg);
+}
+
+function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) {
+	const arc = d3.arc()
+		.innerRadius(innerRad)
+		.outerRadius(outerRad)
+		.startAngle(startAng)
+		.endAngle(endAng);
+
+	if (R.equals(invert, true)) {
+		context.append('path')
+			.attr('d', arc)
+			.attr('transform', `translate(${x},${y}) rotate(180)`)
+			.style('fill', 'none')
+			.style('stroke', 'black');
+	} else {
+		context.append('path')
+			.attr('d', arc)
+			.attr('transform', `translate(${x},${y})`)
+			.style('fill', 'none')
+			.style('stroke', 'black');
+	}
 }
 
 
-generateCourt(courtConfigZoomed(40));
+generateCourt(courtConfigZoomed(wishedZoom));
