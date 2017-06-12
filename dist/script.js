@@ -70,8 +70,68 @@ const courtConfig = {
 		topX: 5.05,
 		topY: 22.2,
 		width: 4.9,
-		height: 5.8
+		height: 5.8,
+		separationLines: [{
+			topX: 4.95,
+			topY: 26.25,
+			height: 0.08,
+			width: 0.1,
+		}, {
+			topX: 4.95,
+			topY: 25.32,
+			height: 0.4,
+			width: 0.1,
+		}, {
+			topX: 4.95,
+			topY: 24.07,
+			height: 0.08,
+			width: 0.1,
+		}, {
+			topX: 4.95,
+			topY: 23.14,
+			height: 0.08,
+			width: 0.1,
+		}, {
+			topX: 9.95,
+			topY: 26.25,
+			height: 0.08,
+			width: 0.1,
+		}, {
+			topX: 9.95,
+			topY: 25.32,
+			height: 0.4,
+			width: 0.1,
+		}, {
+			topX: 9.95,
+			topY: 24.07,
+			height: 0.08,
+			width: 0.1,
+		}, {
+			topX: 9.95,
+			topY: 23.14,
+			height: 0.08,
+			width: 0.1,
+		}]
 	},
+	topBasket: {
+		bigLine: {
+			x1: 6.6,
+			y1: 1.2,
+			x2: 8.4,
+			y2: 1.2
+		},
+		smallLine: {
+			x1: 7.5,
+			y1: 1.2,
+			x2: 7.5,
+			y2: 1.32
+		},
+		ring: {
+			centerX: 7.5,
+			centerY: 1.545,
+			radius: 0.225
+		}
+	}
 };
 
 function courtConfigZoomed(zoomSize) {
@@ -115,6 +175,25 @@ function courtConfigZoomed(zoomSize) {
 				width: R.multiply(courtZoom),
 				height: R.multiply(courtZoom),
 				separationLines: R.map(R.evolve(separationLinesTransformations))
+			},
+			topBasket: {
+				bigLine: {
+					x1: R.multiply(courtZoom),
+					y1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				smallLine: {
+					x1: R.multiply(courtZoom),
+					y1: R.multiply(courtZoom),
+					x2: R.multiply(courtZoom),
+					y2: R.multiply(courtZoom)
+				},
+				ring: {
+					centerX: R.multiply(courtZoom),
+					centerY: R.multiply(courtZoom),
+					radius: R.multiply(courtZoom)
+				}
 			}
 		};
 	}
@@ -125,7 +204,9 @@ function courtConfigZoomed(zoomSize) {
 function generateCourt(courtConfig) {
 	console.log(courtConfig);
 	// Create the svg in the body
-	const svg = d3.select('body').append('svg');
+	const svg = d3.select('body')
+		.append('svg')
+		.on('click', clickOnSVG);
 	// Define width and height of the svg
 	svg.attr('width', R.prop('width', courtConfig));
 	svg.attr('height', R.prop('height', courtConfig));
@@ -192,6 +273,37 @@ function generateCourt(courtConfig) {
 		R.path(['bottomPaint', 'height'], courtConfig),
 		svg
 	);
+	// Separation lines for Bottom paint
+	R.map((cur) => {
+		createRectangle(
+			R.prop('topX', cur),
+			R.prop('topY', cur),
+			R.prop('width', cur),
+			R.prop('height', cur),
+			svg
+		);
+	}, R.path(['bottomPaint', 'separationLines'], courtConfig));
+	// Top basket
+	createLine(
+		R.path(['topBasket', 'bigLine', 'x1'], courtConfig),
+		R.path(['topBasket', 'bigLine', 'y1'], courtConfig),
+		R.path(['topBasket', 'bigLine', 'x2'], courtConfig),
+		R.path(['topBasket', 'bigLine', 'y2'], courtConfig),
+		svg
+	);
+	createLine(
+		R.path(['topBasket', 'smallLine', 'x1'], courtConfig),
+		R.path(['topBasket', 'smallLine', 'y1'], courtConfig),
+		R.path(['topBasket', 'smallLine', 'x2'], courtConfig),
+		R.path(['topBasket', 'smallLine', 'y2'], courtConfig),
+		svg
+	);
+	createCircle(
+		R.path(['topBasket', 'ring', 'centerX'], courtConfig),
+		R.path(['topBasket', 'ring', 'centerY'], courtConfig),
+		R.path(['topBasket', 'ring', 'radius'], courtConfig),
+		svg
+	);
 }
 
 function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context) {
@@ -211,6 +323,20 @@ function createCircle(centerX, centerY, radius, context) {
 		.attr('r', radius)
 		.style('fill', 'none')
 		.style('stroke', 'black');
+}
+
+function createLine(beginX, beginY, endX, endY, context) {
+	context.append('line')
+		.attr('x1', beginX)
+		.attr('y1', beginY)
+		.attr('x2', endX)
+		.attr('y2', endY)
+		.style('stroke-width', '1')
+		.style('stroke', 'black');
+}
+
+function clickOnSVG() {
+	console.log(d3.mouse(this));
 }
 
 
