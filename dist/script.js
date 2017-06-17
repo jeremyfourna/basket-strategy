@@ -26,24 +26,65 @@ generatePlayersPositions(playersPositionsZoomed, courtSVG);
 const ballPosition = addBallToGame('pg', playersPositionsZoomed);
 generateBallPosition(ballPosition, courtSVG);
 
-// Move players
-movePlayerFromTo(
-	R.prop('pg', playersPositionsZoomed),
-	R.prop('underRing', allPlayersPositionsZoomed),
-	'.pg'
-);
-movePlayerFromTo(
-	R.prop('fgLeft', playersPositionsZoomed),
-	R.prop('pg', allPlayersPositionsZoomed),
-	'.fgLeft'
-);
-moveBallFromTo(
-	ballPosition,
-	R.prop('fgRight', allPlayersPositionsZoomed),
-	'.ball'
-);
-movePlayerFromTo(
-	R.prop('cornerLeft', playersPositionsZoomed),
-	R.prop('fgLeft', allPlayersPositionsZoomed),
-	'.cornerLeft'
-);
+
+const strategyStart = [
+	[
+		'moveBallFromTo',
+		ballPosition,
+		R.prop('fgRight', allPlayersPositionsZoomed),
+		0,
+		'.ball'
+	],
+	[
+		'movePlayerFromTo',
+		R.prop('pg', playersPositionsZoomed),
+		R.prop('underRing', allPlayersPositionsZoomed),
+		0,
+		'.pg'
+	],
+	[
+		'movePlayerFromTo',
+		R.prop('fgLeft', playersPositionsZoomed),
+		R.prop('pg', allPlayersPositionsZoomed),
+		400,
+		'.fgLeft'
+	],
+	[
+		'movePlayerFromTo',
+		R.prop('cornerLeft', playersPositionsZoomed),
+		R.prop('fgLeft', allPlayersPositionsZoomed),
+		400,
+		'.cornerLeft'
+	],
+	[
+		'movePlayerFromTo',
+		R.prop('pg', playersPositionsZoomed),
+		R.prop('cornerLeft', playersPositionsZoomed),
+		2200,
+		'.pg'
+	],
+	[
+		'moveBallFromTo',
+		ballPosition,
+		R.prop('pg', allPlayersPositionsZoomed),
+		2700,
+		'.ball'
+	],
+	[
+		'movePlayerFromTo',
+		R.prop('fgRight', playersPositionsZoomed),
+		R.prop('underRing', allPlayersPositionsZoomed),
+		2700,
+		'.fgRight'
+	],
+	[
+		'movePlayerFromTo',
+		R.prop('cornerRight', playersPositionsZoomed),
+		R.prop('fgRight', playersPositionsZoomed),
+		3100,
+		'.cornerRight'
+	]
+];
+
+
+playMovements(strategyStart);

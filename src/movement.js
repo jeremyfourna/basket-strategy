@@ -1,4 +1,4 @@
-function moveFromTo(origin, destination, speed, elementClassName) {
+function moveFromTo(origin, destination, speed, waitingTime, elementClassName) {
 	const element = d3.select(elementClassName);
 	const translateX = R.subtract(
 		R.prop('x', destination),
@@ -9,14 +9,26 @@ function moveFromTo(origin, destination, speed, elementClassName) {
 		R.prop('y', origin)
 	);
 	element.transition()
+		.delay(waitingTime)
 		.duration(speed)
 		.attr('transform', `translate(${translateX},${translateY})`);
 }
 
-function movePlayerFromTo(origin, destination, elementClassName) {
-	moveFromTo(origin, destination, 2000, elementClassName);
+function movePlayerFromTo(origin, destination, waitingTime, elementClassName) {
+	moveFromTo(origin, destination, 2000, waitingTime, elementClassName);
 }
 
-function moveBallFromTo(origin, destination, elementClassName) {
-	moveFromTo(origin, destination, 500, elementClassName);
+function moveBallFromTo(origin, destination, waitingTime, elementClassName) {
+	moveFromTo(origin, destination, 500, waitingTime, elementClassName);
+}
+
+
+function playMovements(movementsList) {
+	mapIndexed((cur, index) => {
+		if (R.equals(R.head(cur), 'moveBallFromTo')) {
+			R.apply(moveBallFromTo, R.tail(cur));
+		} else {
+			R.apply(movePlayerFromTo, R.tail(cur));
+		}
+	}, movementsList);
 }

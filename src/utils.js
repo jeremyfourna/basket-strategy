@@ -1,3 +1,6 @@
+// regular map but with index to process actions
+const mapIndexed = R.addIndex(R.map);
+
 function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context) {
 	context.append('rect')
 		.attr('x', topLeftCornerX)
