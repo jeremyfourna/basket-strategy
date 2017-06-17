@@ -8,12 +8,13 @@ function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context)
 		.style('stroke', 'black');
 }
 
-function createCircle(centerX, centerY, radius, strokeColor, context) {
+function createCircle(centerX, centerY, radius, strokeColor, fillColor, className, context) {
 	context.append('circle')
 		.attr('cx', centerX)
 		.attr('cy', centerY)
 		.attr('r', radius)
-		.style('fill', 'none')
+		.attr('class', className)
+		.style('fill', fillColor)
 		.style('stroke', strokeColor);
 }
 
@@ -27,13 +28,13 @@ function createLine(beginX, beginY, endX, endY, context) {
 		.style('stroke', 'black');
 }
 
-function clickOnSVG(context) {
+function clickOnSVG() {
 	const x = R.head(d3.mouse(this));
 	const y = R.last(d3.mouse(this));
 	const svg = d3.select('svg');
 	console.log(x, y);
-
-	createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', svg);
+	// Impure because access wishedZoom outside the function
+	createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
 }
 
 function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) {

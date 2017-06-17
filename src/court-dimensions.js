@@ -193,8 +193,7 @@ const courtConfig = {
 	}
 };
 
-function courtConfigZoomed(zoomSize) {
-
+function courtConfigZoomed(zoomSize, courtConfiguration = courtConfig) {
 	function zoom(courtZoom) {
 		// props equal to 0 don't need a function to evolve
 		const separationLinesTransformations = {
@@ -310,7 +309,7 @@ function courtConfigZoomed(zoomSize) {
 		};
 	}
 
-	return R.evolve(zoom(zoomSize), courtConfig);
+	return R.evolve(zoom(zoomSize), courtConfiguration);
 }
 
 function generateCourt(courtConfig) {
@@ -343,6 +342,8 @@ function generateCourt(courtConfig) {
 		R.path(['centerRing', 'centerY'], courtConfig),
 		R.path(['centerRing', 'radius'], courtConfig),
 		'black',
+		'none',
+		'ringCenter',
 		svg
 	);
 	// Ring top
@@ -351,6 +352,8 @@ function generateCourt(courtConfig) {
 		R.path(['topRing', 'centerY'], courtConfig),
 		R.path(['topRing', 'radius'], courtConfig),
 		'black',
+		'none',
+		'ringTop',
 		svg
 	);
 	// Ring bottom
@@ -359,6 +362,8 @@ function generateCourt(courtConfig) {
 		R.path(['bottomRing', 'centerY'], courtConfig),
 		R.path(['bottomRing', 'radius'], courtConfig),
 		'black',
+		'none',
+		'ringBottom',
 		svg
 	);
 	// Top paint
@@ -417,6 +422,8 @@ function generateCourt(courtConfig) {
 		R.path(['topBasket', 'ring', 'centerY'], courtConfig),
 		R.path(['topBasket', 'ring', 'radius'], courtConfig),
 		'black',
+		'none',
+		'topBasket',
 		svg
 	);
 	// Bottom basket
@@ -439,6 +446,8 @@ function generateCourt(courtConfig) {
 		R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
 		R.path(['bottomBasket', 'ring', 'radius'], courtConfig),
 		'black',
+		'none',
+		'bottomBasket',
 		svg
 	);
 	// Top 3 points lines and arc
@@ -491,4 +500,6 @@ function generateCourt(courtConfig) {
 		true,
 		svg
 	);
+
+	return svg;
 }
