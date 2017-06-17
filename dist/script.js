@@ -10,23 +10,9 @@ const defaultPlayersPositions = [
 	'cornerLeft',
 	'cornerRight'
 ];
-
-// Select only the right positions via the defaultPlayersPositions array
-const selectPlayersPositions = R.pick(
-	defaultPlayersPositions,
-	playersPositions
-);
-// Transform the player position via the wishedZoom constant
-const playersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, selectPlayersPositions);
-// Transform all players position via the wishedZoom constant
-const allPlayersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom);
-// Add the selected players into the court
-generatePlayersPositions(playersPositionsZoomed, courtSVG);
-// Add the ball into the court
-const ballPosition = addBallToGame('pg', playersPositionsZoomed);
-generateBallPosition(ballPosition, courtSVG);
-
-
+// Define ball holder at the beginning of the play
+const ballHolder = 'pg';
+// List of moves
 const newStrategyStar = [
 	[{
 		origin: 'ball',
@@ -143,7 +129,5 @@ const newStrategyStar = [
 		destination: 'cornerRight'
 	}]
 ];
-
-const generatedStrategy = generateStategy(allPlayersPositionsZoomed, playersPositionsZoomed, ballPosition, newStrategyStar);
-
-playMovements(generatedStrategy);
+// Display the stategy
+strategyCreator(wishedZoom, courtSVG, defaultPlayersPositions, ballHolder, newStrategyStar);

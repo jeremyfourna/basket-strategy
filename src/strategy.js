@@ -38,3 +38,21 @@ function generateStategy(allPositions, selectedPlayers, ballPosition, listOfMove
 		return R.concat(prev, cur);
 	}, [], listOfMovesTransformed);
 }
+
+function strategyCreator(wishedZoom, courtSVG, players, ballHolder, listOfMoves) {
+	// Select only the right positions via the players array
+	const selectPlayersPositions = R.pick(players, playersPositions);
+	// Transform the player position via the wishedZoom constant
+	const playersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, selectPlayersPositions);
+	// Transform all players position via the wishedZoom constant
+	const allPlayersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom);
+	// Add the selected players into the court
+	generatePlayersPositions(playersPositionsZoomed, courtSVG);
+	// Add the ball into the court
+	const ballPosition = addBallToGame(ballHolder, playersPositionsZoomed);
+	generateBallPosition(ballPosition, courtSVG);
+
+	const generatedStrategy = generateStategy(allPlayersPositionsZoomed, playersPositionsZoomed, ballPosition, listOfMoves);
+
+	playMovements(generatedStrategy);
+}
