@@ -131,21 +131,21 @@ function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositi
 
 function generatePlayersPositions(playersPositions, context) {
 	const colorConditions = R.cond([
-		[R.equals('pg'), R.always('lightskyblue')],
-		[R.equals('fgLeft'), R.always('yellow')],
-		[R.equals('fgRight'), R.always('green')],
-		[R.equals('cornerLeft'), R.always('red')],
-		[R.equals('cornerRight'), R.always('violet')],
+		[R.equals(0), R.always('lightskyblue')],
+		[R.equals(1), R.always('yellow')],
+		[R.equals(2), R.always('green')],
+		[R.equals(3), R.always('red')],
+		[R.equals(4), R.always('violet')],
 	]);
 
-	R.map((cur) => {
+	mapIndexed((cur, index) => {
 		createCircle(
 			R.prop('x', cur),
 			R.prop('y', cur),
 			// Impure because access wishedZoom outside the function
 			R.multiply(wishedZoom, 0.5),
 			'red',
-			colorConditions(R.prop('className', cur)),
+			colorConditions(index),
 			R.prop('className', cur),
 			context
 		);
