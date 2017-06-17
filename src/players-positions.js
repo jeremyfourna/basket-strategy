@@ -129,7 +129,7 @@ function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositi
 	return R.evolve(zoom(zoomSize), playersPosConfig);
 }
 
-function generatePlayersPositions(playersPositions, context) {
+function generatePlayersPositions(wishedZoom, playersPositions, context) {
 	const colorConditions = R.cond([
 		[R.equals(0), R.always('lightskyblue')],
 		[R.equals(1), R.always('yellow')],

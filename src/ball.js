@@ -3,7 +3,7 @@ function addBallToGame(player, allPlayers) {
 	return R.assoc('className', 'ball', ballPosition);
 }
 
-function generateBallPosition(ballPosition, context) {
+function generateBallPosition(wishedZoom, ballPosition, context) {
 	createCircle(
 		R.prop('x', ballPosition),
 		R.prop('y', ballPosition),
