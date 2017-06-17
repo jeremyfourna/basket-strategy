@@ -16,13 +16,13 @@ const playersPositions = {
 		className: 'sgRight'
 	},
 	fgLeft: {
-		x: 1.7,
-		y: 5.31,
+		x: 2.15,
+		y: 5.8,
 		className: 'fgLeft'
 	},
 	fgRight: {
-		x: 13.3,
-		y: 5.31,
+		x: 12.85,
+		y: 5.8,
 		className: 'fgRight'
 	},
 	cornerLeft: {
@@ -130,6 +130,14 @@ function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositi
 }
 
 function generatePlayersPositions(playersPositions, context) {
+	const colorConditions = R.cond([
+		[R.equals('pg'), R.always('lightskyblue')],
+		[R.equals('fgLeft'), R.always('yellow')],
+		[R.equals('fgRight'), R.always('green')],
+		[R.equals('cornerLeft'), R.always('red')],
+		[R.equals('cornerRight'), R.always('violet')],
+	]);
+
 	R.map((cur) => {
 		createCircle(
 			R.prop('x', cur),
@@ -137,7 +145,7 @@ function generatePlayersPositions(playersPositions, context) {
 			// Impure because access wishedZoom outside the function
 			R.multiply(wishedZoom, 0.5),
 			'red',
-			'none',
+			colorConditions(R.prop('className', cur)),
 			R.prop('className', cur),
 			context
 		);

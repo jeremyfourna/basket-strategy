@@ -22,7 +22,6 @@ function moveBallFromTo(origin, destination, waitingTime, elementClassName) {
 	moveFromTo(origin, destination, 500, waitingTime, elementClassName);
 }
 
-
 function playMovements(movementsList) {
 	mapIndexed((cur, index) => {
 		if (R.equals(R.head(cur), 'moveBallFromTo')) {

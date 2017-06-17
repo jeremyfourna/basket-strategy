@@ -1,5 +1,5 @@
 // Define the size of the court and all elements inside
-const wishedZoom = 80;
+const wishedZoom = 40;
 // Generate the court
 const courtSVG = generateCourt(courtConfigZoomed(wishedZoom));
 // Players starting position
@@ -27,64 +27,123 @@ const ballPosition = addBallToGame('pg', playersPositionsZoomed);
 generateBallPosition(ballPosition, courtSVG);
 
 
-const strategyStart = [
-	[
-		'moveBallFromTo',
-		ballPosition,
-		R.prop('fgRight', allPlayersPositionsZoomed),
-		0,
-		'.ball'
-	],
-	[
-		'movePlayerFromTo',
-		R.prop('pg', playersPositionsZoomed),
-		R.prop('underRing', allPlayersPositionsZoomed),
-		0,
-		'.pg'
-	],
-	[
-		'movePlayerFromTo',
-		R.prop('fgLeft', playersPositionsZoomed),
-		R.prop('pg', allPlayersPositionsZoomed),
-		400,
-		'.fgLeft'
-	],
-	[
-		'movePlayerFromTo',
-		R.prop('cornerLeft', playersPositionsZoomed),
-		R.prop('fgLeft', allPlayersPositionsZoomed),
-		400,
-		'.cornerLeft'
-	],
-	[
-		'movePlayerFromTo',
-		R.prop('pg', playersPositionsZoomed),
-		R.prop('cornerLeft', playersPositionsZoomed),
-		2200,
-		'.pg'
-	],
-	[
-		'moveBallFromTo',
-		ballPosition,
-		R.prop('pg', allPlayersPositionsZoomed),
-		2700,
-		'.ball'
-	],
-	[
-		'movePlayerFromTo',
-		R.prop('fgRight', playersPositionsZoomed),
-		R.prop('underRing', allPlayersPositionsZoomed),
-		2700,
-		'.fgRight'
-	],
-	[
-		'movePlayerFromTo',
-		R.prop('cornerRight', playersPositionsZoomed),
-		R.prop('fgRight', playersPositionsZoomed),
-		3100,
-		'.cornerRight'
-	]
+const newStrategyStar = [
+	[{
+		origin: 'ball',
+		destination: 'fgLeft'
+	}, {
+		action: 'sprint',
+		origin: 'pg',
+		destination: 'underRing'
+	}],
+	[{
+		action: 'sprint',
+		origin: 'fgRight',
+		destination: 'pg'
+	}, {
+		action: 'regular',
+		origin: 'cornerRight',
+		destination: 'fgRight'
+	}, {
+		action: 'regular',
+		origin: 'pg',
+		destination: 'cornerRight'
+	}],
+	[{
+		origin: 'ball',
+		destination: 'pg'
+	}, {
+		action: 'sprint',
+		origin: 'fgLeft',
+		destination: 'underRing'
+	}],
+	[{
+		action: 'sprint',
+		origin: 'cornerLeft',
+		destination: 'fgLeft'
+	}, {
+		action: 'regular',
+		origin: 'fgLeft',
+		destination: 'cornerLeft'
+	}],
+	[{
+		origin: 'ball',
+		destination: 'fgRight'
+	}, {
+		action: 'sprint',
+		origin: 'fgRight',
+		destination: 'underRing'
+	}],
+	[{
+		action: 'sprint',
+		origin: 'cornerLeft',
+		destination: 'pg'
+	}, {
+		action: 'regular',
+		origin: 'fgLeft',
+		destination: 'fgLeft'
+	}, {
+		action: 'regular',
+		origin: 'fgRight',
+		destination: 'cornerLeft'
+	}],
+	[{
+		origin: 'ball',
+		destination: 'cornerRight'
+	}, {
+		action: 'sprint',
+		origin: 'cornerRight',
+		destination: 'underRing'
+	}],
+	[{
+		action: 'sprint',
+		origin: 'cornerLeft',
+		destination: 'fgRight'
+	}, {
+		action: 'regular',
+		origin: 'fgLeft',
+		destination: 'pg'
+	}, {
+		action: 'regular',
+		origin: 'fgRight',
+		destination: 'fgLeft'
+	}, {
+		action: 'regular',
+		origin: 'cornerRight',
+		destination: 'cornerLeft'
+	}],
+	[{
+		origin: 'ball',
+		destination: 'fgRight'
+	}, {
+		action: 'sprint',
+		origin: 'pg',
+		destination: 'underRing'
+	}],
+	[{
+		origin: 'sprint',
+		origin: 'pg',
+		destination: 'cornerRight'
+	}],
+	[{
+		origin: 'ball',
+		destination: 'pg'
+	}, {
+		action: 'sprint',
+		origin: 'cornerLeft',
+		destination: 'underRing'
+	}],
+	[{
+		origin: 'sprint',
+		origin: 'pg',
+		destination: 'fgRight'
+	}, {
+		action: 'regular',
+		origin: 'cornerLeft',
+		destination: 'cornerRight'
+	}]
 ];
 
+const generatedStrategy = generateStategy(allPlayersPositionsZoomed, playersPositionsZoomed, ballPosition, newStrategyStar);
 
-playMovements(strategyStart);
+playMovements(generatedStrategy);
