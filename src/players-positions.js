@@ -64,7 +64,47 @@ const playersPositions = {
 		x: 7.5,
 		y: 1.545,
 		className: 'underRing'
-	}
+	},
+	cLeftBottom: {
+		x: 4.95,
+		y: 2.25,
+		className: 'cLeftBottom'
+	},
+	cLeftTop: {
+		x: 4.95,
+		y: 3.51,
+		className: 'cLeftTop'
+	},
+	cRightBottom: {
+		x: 9.95,
+		y: 2.25,
+		className: 'cRightBottom'
+	},
+	cRightTop: {
+		x: 9.95,
+		y: 3.51,
+		className: 'cRightTop'
+	},
+	fgRightPickTop: {
+		x: 11.86,
+		y: 5.68,
+		className: 'cRightTop'
+	},
+	fgLeftPickTop: {
+		x: 3.14,
+		y: 5.68,
+		className: 'cRightTop'
+	},
+	fgRightAfterPickTop: {
+		x: 11.53,
+		y: 6.20,
+		className: 'cRightTop'
+	},
+	fgLeftAfterPickTop: {
+		x: 3.47,
+		y: 6.20,
+		className: 'cRightTop'
+	},
 };
 
 function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositions) {
@@ -122,7 +162,39 @@ function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositi
 			underRing: {
 				x: R.multiply(courtZoom),
 				y: R.multiply(courtZoom)
-			}
+			},
+			cLeftBottom: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			cLeftTop: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			cRightBottom: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			cRightTop: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			fgRightPickTop: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			fgLeftPickTop: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			fgRightAfterPickTop: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			fgLeftAfterPickTop: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
 		};
 	}
 

@@ -4,28 +4,44 @@ Move = {
 	origin : Position
 	destination : Position
 }
+The action property is only needed if you want to move a player with or without the ball
 */
 
 function generateStategy(allPositions, selectedPlayers, ballPosition, listOfMoves) {
 	const listOfMovesTransformed = mapIndexed((cur, index) => {
+		const waitingTime = R.ifElse(
+			R.equals('regular'),
+			R.always(R.add(R.multiply(2000, index), 400)),
+			R.always(R.multiply(2000, index))
+		);
 		return R.map(cur1 => {
-			if (R.equals(R.prop('origin', cur1), 'ball')) {
-				return [
-					'moveBallFromTo',
-					ballPosition,
-					R.prop(R.prop('destination', cur1), allPositions),
-					R.multiply(2000, index),
-					'.ball'
-				];
+			if (R.isNil(R.prop('action', cur1))) { // If action property is defined
+				if (R.equals(R.prop('origin', cur1), 'ball')) {
+					return [
+						'moveBallFromTo',
+						ballPosition,
+						R.prop(R.prop('destination', cur1), allPositions),
+						R.multiply(2000, index),
+						'.ball'
+					];
+				} else {
+					return [
+						'movePlayerFromTo',
+						R.prop(R.prop('origin', cur1), selectedPlayers),
+						R.prop(R.prop('destination', cur1), allPositions),
+						waitingTime('regular'),
+						`.${R.prop('origin', cur1)}`
+					];
+				}
 			} else {
-				const waitingTime = R.ifElse(
-					R.equals('regular'),
-					R.always(R.add(R.multiply(2000, index), 400)),
-					R.always(R.multiply(2000, index))
+				const isADrive = R.ifElse(
+					R.equals('ball'),
+					R.always(ballPosition),
+					R.always(R.prop(R.prop('origin', cur1), selectedPlayers))
 				);
 				return [
 					'movePlayerFromTo',
-					R.prop(R.prop('origin', cur1), selectedPlayers),
+					isADrive(R.prop('origin', cur1)),
 					R.prop(R.prop('destination', cur1), allPositions),
 					waitingTime(R.prop('action', cur1)),
 					`.${R.prop('origin', cur1)}`
@@ -41,7 +57,7 @@ function generateStategy(allPositions, selectedPlayers, ballPosition, listOfMove
 
 function strategyCreator(wishedZoom, players, ballHolder, listOfMoves) {
 	// Generate the court
-	const courtSVG = generateCourt(courtConfigZoomed(wishedZoom));
+	const courtSVG = generateCourt(courtConfigZoomed(wishedZoom), wishedZoom);
 	// Select only the right positions via the players array
 	const selectPlayersPositions = R.pick(players, playersPositions);
 	// Transform the player position via the wishedZoom constant

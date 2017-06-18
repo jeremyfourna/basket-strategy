@@ -130,4 +130,106 @@ function strategyNormalStar(wishedZoom) {
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
 
-strategyNormalStar(30);
+//strategyNormalStar(30);
+
+function strategyLowStar(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'fgLeft',
+		'fgRight',
+		'cLeft',
+		'cRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const strategyStar = [
+		[{
+			action: 'sprint',
+			origin: 'fgLeft',
+			destination: 'cLeftBottom'
+		}, {
+			action: 'sprint',
+			origin: 'fgRight',
+			destination: 'cRightBottom'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'fgLeft',
+			destination: 'cRightBottom'
+		}, {
+			action: 'sprint',
+			origin: 'fgRight',
+			destination: 'cLeftBottom'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'fgLeft',
+			destination: 'fgRight'
+		}, {
+			action: 'sprint',
+			origin: 'fgRight',
+			destination: 'fgLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'fgLeft'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'fgRightPickTop'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'fgLeft',
+			destination: 'pg'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'pg'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'fgRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'fgRight'
+		}, {
+			action: 'sprint',
+			origin: 'cRight',
+			destination: 'fgRightPickTop'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'ball',
+			destination: 'fgRightAfterPickTop'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'fgRightAfterPickTop'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'fgLeft',
+			destination: 'sgLeft'
+		}, {
+			action: 'regular',
+			origin: 'fgRight',
+			destination: 'cornerLeft'
+		}, {
+			action: 'sprint',
+			origin: 'ball',
+			destination: 'underRing'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
+
+strategyLowStar(30);

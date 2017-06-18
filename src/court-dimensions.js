@@ -312,7 +312,17 @@ function courtConfigZoomed(zoomSize, courtConfiguration = courtConfig) {
 	return R.evolve(zoom(zoomSize), courtConfiguration);
 }
 
-function generateCourt(courtConfig) {
+function generateCourt(courtConfig, wishedZoom) {
+	// wishedZoom is only passed to allow clickOnSVG to access it
+	// Function to do something when user click on the SVG
+	function clickOnSVG() {
+		const x = R.head(d3.mouse(this));
+		const y = R.last(d3.mouse(this));
+		const svg = d3.select('svg');
+		console.log(x, y);
+		// Impure because access wishedZoom outside the function
+		createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
+	}
 	// Create the svg in the body
 	const svg = d3.select('body')
 		.append('svg')

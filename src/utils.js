@@ -31,15 +31,6 @@ function createLine(beginX, beginY, endX, endY, context) {
 		.style('stroke', 'black');
 }
 
-function clickOnSVG() {
-	const x = R.head(d3.mouse(this));
-	const y = R.last(d3.mouse(this));
-	const svg = d3.select('svg');
-	console.log(x, y);
-	// Impure because access wishedZoom outside the function
-	createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
-}
-
 function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) {
 	const arc = d3.arc()
 		.innerRadius(innerRad)
