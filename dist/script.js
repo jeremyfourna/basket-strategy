@@ -2,8 +2,8 @@ function strategyNormalStar(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
-		'fgLeft',
-		'fgRight',
+		'sfLeft',
+		'sfRight',
 		'cornerLeft',
 		'cornerRight'
 	];
@@ -13,7 +13,7 @@ function strategyNormalStar(wishedZoom) {
 	const strategyStar = [
 		[{
 			origin: 'ball',
-			destination: 'fgLeft'
+			destination: 'sfLeft'
 		}, {
 			action: 'sprint',
 			origin: 'pg',
@@ -21,12 +21,12 @@ function strategyNormalStar(wishedZoom) {
 		}],
 		[{
 			action: 'sprint',
-			origin: 'fgRight',
+			origin: 'sfRight',
 			destination: 'pg'
 		}, {
 			action: 'regular',
 			origin: 'cornerRight',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}, {
 			action: 'regular',
 			origin: 'pg',
@@ -37,24 +37,24 @@ function strategyNormalStar(wishedZoom) {
 			destination: 'pg'
 		}, {
 			action: 'sprint',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'underRing'
 		}],
 		[{
 			action: 'sprint',
 			origin: 'cornerLeft',
-			destination: 'fgLeft'
+			destination: 'sfLeft'
 		}, {
 			action: 'regular',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'cornerLeft'
 		}],
 		[{
 			origin: 'ball',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}, {
 			action: 'sprint',
-			origin: 'fgRight',
+			origin: 'sfRight',
 			destination: 'underRing'
 		}],
 		[{
@@ -63,11 +63,11 @@ function strategyNormalStar(wishedZoom) {
 			destination: 'pg'
 		}, {
 			action: 'regular',
-			origin: 'fgLeft',
-			destination: 'fgLeft'
+			origin: 'sfLeft',
+			destination: 'sfLeft'
 		}, {
 			action: 'regular',
-			origin: 'fgRight',
+			origin: 'sfRight',
 			destination: 'cornerLeft'
 		}],
 		[{
@@ -81,15 +81,15 @@ function strategyNormalStar(wishedZoom) {
 		[{
 			action: 'sprint',
 			origin: 'cornerLeft',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}, {
 			action: 'regular',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'pg'
 		}, {
 			action: 'regular',
-			origin: 'fgRight',
-			destination: 'fgLeft'
+			origin: 'sfRight',
+			destination: 'sfLeft'
 		}, {
 			action: 'regular',
 			origin: 'cornerRight',
@@ -97,7 +97,7 @@ function strategyNormalStar(wishedZoom) {
 		}],
 		[{
 			origin: 'ball',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}, {
 			action: 'sprint',
 			origin: 'pg',
@@ -119,7 +119,7 @@ function strategyNormalStar(wishedZoom) {
 		[{
 			origin: 'sprint',
 			origin: 'pg',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}, {
 			action: 'regular',
 			origin: 'cornerLeft',
@@ -134,8 +134,8 @@ function strategyLowStar(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
-		'fgLeft',
-		'fgRight',
+		'sfLeft',
+		'sfRight',
 		'cLeft',
 		'cRight'
 	];
@@ -145,42 +145,42 @@ function strategyLowStar(wishedZoom) {
 	const strategyStar = [
 		[{
 			action: 'sprint',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'cLeftBottom'
 		}, {
 			action: 'sprint',
-			origin: 'fgRight',
+			origin: 'sfRight',
 			destination: 'cRightBottom'
 		}],
 		[{
 			action: 'sprint',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'cRightBottom'
 		}, {
 			action: 'sprint',
-			origin: 'fgRight',
+			origin: 'sfRight',
 			destination: 'cLeftBottom'
 		}],
 		[{
 			action: 'sprint',
-			origin: 'fgLeft',
-			destination: 'fgRight'
+			origin: 'sfLeft',
+			destination: 'sfRight'
 		}, {
 			action: 'sprint',
-			origin: 'fgRight',
-			destination: 'fgLeft'
+			origin: 'sfRight',
+			destination: 'sfLeft'
 		}],
 		[{
 			origin: 'ball',
-			destination: 'fgLeft'
+			destination: 'sfLeft'
 		}, {
 			action: 'sprint',
 			origin: 'pg',
-			destination: 'fgRightPickTop'
+			destination: 'sfRightPickTop'
 		}],
 		[{
 			action: 'sprint',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'pg'
 		}],
 		[{
@@ -189,32 +189,32 @@ function strategyLowStar(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'pg',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}],
 		[{
 			origin: 'ball',
-			destination: 'fgRight'
+			destination: 'sfRight'
 		}, {
 			action: 'sprint',
 			origin: 'cRight',
-			destination: 'fgRightPickTop'
+			destination: 'sfRightPickTop'
 		}],
 		[{
 			action: 'sprint',
 			origin: 'ball',
-			destination: 'fgRightAfterPickTop'
+			destination: 'sfRightAfterPickTop'
 		}, {
 			action: 'sprint',
 			origin: 'pg',
-			destination: 'fgRightAfterPickTop'
+			destination: 'sfRightAfterPickTop'
 		}],
 		[{
 			action: 'sprint',
-			origin: 'fgLeft',
+			origin: 'sfLeft',
 			destination: 'sgLeft'
 		}, {
 			action: 'regular',
-			origin: 'fgRight',
+			origin: 'sfRight',
 			destination: 'cornerLeft'
 		}, {
 			action: 'sprint',
@@ -233,14 +233,14 @@ function strategyLowStar(wishedZoom) {
 function strategyTouchDowmLeft(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
-		'touchBottomLeft',
+		'touchTopLeft',
 		'pfLeft',
 		'cRightBottom',
 		'cLeftBottom',
 		'pfRight'
 	];
 	// Define ball holder at the beginning of the play
-	const ballHolder = 'touchBottomLeft';
+	const ballHolder = 'touchTopLeft';
 	// List of moves
 	const strategyStar = [
 		[{
@@ -281,14 +281,14 @@ function strategyTouchDowmLeft(wishedZoom) {
 function strategyTouchDowmRight(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
-		'touchBottomRight',
+		'touchTopRight',
 		'pfLeft',
 		'cRightBottom',
 		'cLeftBottom',
 		'pfRight'
 	];
 	// Define ball holder at the beginning of the play
-	const ballHolder = 'touchBottomRight';
+	const ballHolder = 'touchTopRight';
 	// List of moves
 	const strategyStar = [
 		[{
@@ -327,7 +327,53 @@ function strategyTouchDowmRight(wishedZoom) {
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
 
+function strategyTouchBoxLeft(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'touchTopLeft',
+		'pfLeft',
+		'cRightBottom',
+		'cLeftBottom',
+		'pfRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'touchTopLeft';
+	// List of moves
+	const strategyStar = [
+		[{
+			action: 'sprint',
+			origin: 'cLeftBottom',
+			destination: 'underRing'
+		}, {
+			action: 'sprint',
+			origin: 'pfLeft',
+			destination: 'pfRightPickLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cRightBottom',
+			destination: 'cornerLeft'
+		}, {
+			action: 'sprint',
+			origin: 'pfRight',
+			destination: 'sfLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cLeftBottom',
+			destination: 'underRingLeft'
+		}, {
+			action: 'sprint',
+			origin: 'pfLeft',
+			destination: 'underRingRight'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
+
 //strategyNormalStar(40);
 //strategyLowStar(23);
 //strategyTouchDowmLeft(60);
 //strategyTouchDowmRight(60);
+strategyTouchBoxLeft(100);

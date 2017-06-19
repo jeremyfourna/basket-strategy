@@ -85,6 +85,16 @@ const playersPositions = {
 		y: 4.8,
 		className: 'pfLeftPickBottom'
 	},
+	pfRightPickLeft: {
+		x: 9.16,
+		y: 5.2,
+		className: 'pfRightPickLeft'
+	},
+	pfLeftPickRight: {
+		x: 5.84,
+		y: 5.2,
+		className: 'pfLeftPickRight'
+	},
 	pickRightOnPfLeftPickBottom: {
 		x: 5.68,
 		y: 3.97,
@@ -111,15 +121,25 @@ const playersPositions = {
 		y: 2.25,
 		className: 'cLeftBottom'
 	},
-	cLeftTop: {
-		x: 4.95,
-		y: 3.51,
-		className: 'cLeftTop'
-	},
 	cRightBottom: {
 		x: 9.95,
 		y: 2.25,
 		className: 'cRightBottom'
+	},
+	cLeftBottomPickRight: {
+		x: 5.84,
+		y: 1.63,
+		className: 'cLeftBottomPickRight'
+	},
+	cRightBottomPickLeft: {
+		x: 9.16,
+		y: 1.63,
+		className: 'cRightBottomPickLeft'
+	},
+	cLeftTop: {
+		x: 4.95,
+		y: 3.51,
+		className: 'cLeftTop'
 	},
 	cRightTop: {
 		x: 9.95,
