@@ -115,6 +115,16 @@ const playersPositions = {
 		y: 3.97,
 		className: 'pickLeftOnPfRightPickBottom'
 	},
+	pfLeftPickBottomRight: {
+		x: 5.74,
+		y: 5.06,
+		className: 'pfLeftPickBottomLeft'
+	},
+	pfRightPickBottomLeft: {
+		x: 9.26,
+		y: 5.06,
+		className: 'pfRightPickBottomLeft'
+	},
 	// Positions regarding space around C left and right
 	cLeft: {
 		x: 4.95,
@@ -173,15 +183,15 @@ const playersPositions = {
 		className: 'underRingRight'
 	},
 	// Positions regarding space around outOfBound top
-	touchTopLeft: {
+	touchBottomLeft: {
 		x: 4.5,
 		y: 0,
-		className: 'touchTopLeft'
+		className: 'touchBottomLeft'
 	},
-	touchTopRight: {
+	touchBottomRight: {
 		x: 10.5,
 		y: 0,
-		className: 'touchTopRight'
+		className: 'touchBottomRight'
 	},
 	// Other positions
 	farAwayLeft: {

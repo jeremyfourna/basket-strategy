@@ -52,3 +52,9 @@ function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) 
 			.style('stroke', 'black');
 	}
 }
+
+function cleanSVG() {
+	const parent = document.getElementsByTagName("body");
+	const child = document.getElementsByTagName("svg");
+	parent[0].removeChild(child[0]);
+}
