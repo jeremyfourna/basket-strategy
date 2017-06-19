@@ -1,10 +1,12 @@
 // Basket-Ball players positions for FIBA
 const playersPositions = {
+	// Positions regarding space around PG
 	pg: {
 		x: 7.5,
 		y: 8.325,
 		className: 'pg'
 	},
+	// Positions regarding space around SG left and right
 	sgLeft: {
 		x: 5.05,
 		y: 7.84,
@@ -15,16 +17,38 @@ const playersPositions = {
 		y: 7.84,
 		className: 'sgRight'
 	},
-	fgLeft: {
+	// Positions regarding space around SF left and right
+	sfLeft: {
 		x: 2.15,
 		y: 5.8,
-		className: 'fgLeft'
+		className: 'sfLeft'
 	},
-	fgRight: {
+	sfRight: {
 		x: 12.85,
 		y: 5.8,
-		className: 'fgRight'
+		className: 'sfRight'
 	},
+	sfRightPickTop: {
+		x: 11.86,
+		y: 5.68,
+		className: 'sfRightPickTop'
+	},
+	sfLeftPickTop: {
+		x: 3.14,
+		y: 5.68,
+		className: 'sfLeftPickTop'
+	},
+	sfRightAfterPickTop: {
+		x: 11.53,
+		y: 6.20,
+		className: 'sfRightAfterPickTop'
+	},
+	sfLeftAfterPickTop: {
+		x: 3.47,
+		y: 6.20,
+		className: 'sfLeftAfterPickTop'
+	},
+	// Positions regarding space around corner left and right
 	cornerLeft: {
 		x: 0.9,
 		y: 1.545,
@@ -35,11 +59,7 @@ const playersPositions = {
 		y: 1.545,
 		className: 'cornerRight'
 	},
-	pfCenter: {
-		x: 7.5,
-		y: 5.8,
-		className: 'pfCenter'
-	},
+	// Positions regarding space around PF left and right
 	pfLeft: {
 		x: 5.05,
 		y: 5.8,
@@ -50,70 +70,10 @@ const playersPositions = {
 		y: 5.8,
 		className: 'pfRight'
 	},
-	cLeft: {
-		x: 4.95,
-		y: 2.88,
-		className: 'cLeft'
-	},
-	cRight: {
-		x: 9.95,
-		y: 2.88,
-		className: 'cRight'
-	},
-	underRing: {
+	pfCenter: {
 		x: 7.5,
-		y: 1.545,
-		className: 'underRing'
-	},
-	cLeftBottom: {
-		x: 4.95,
-		y: 2.25,
-		className: 'cLeftBottom'
-	},
-	cLeftTop: {
-		x: 4.95,
-		y: 3.51,
-		className: 'cLeftTop'
-	},
-	cRightBottom: {
-		x: 9.95,
-		y: 2.25,
-		className: 'cRightBottom'
-	},
-	cRightTop: {
-		x: 9.95,
-		y: 3.51,
-		className: 'cRightTop'
-	},
-	fgRightPickTop: {
-		x: 11.86,
-		y: 5.68,
-		className: 'fgRightPickTop'
-	},
-	fgLeftPickTop: {
-		x: 3.14,
-		y: 5.68,
-		className: 'fgLeftPickTop'
-	},
-	fgRightAfterPickTop: {
-		x: 11.53,
-		y: 6.20,
-		className: 'fgRightAfterPickTop'
-	},
-	fgLeftAfterPickTop: {
-		x: 3.47,
-		y: 6.20,
-		className: 'fgLeftAfterPickTop'
-	},
-	touchBottomLeft: {
-		x: 4.5,
-		y: 0,
-		className: 'touchBottomLeft'
-	},
-	touchBottomRight: {
-		x: 10.5,
-		y: 0,
-		className: 'touchBottomRight'
+		y: 5.8,
+		className: 'pfCenter'
 	},
 	pfRightPickBottom: {
 		x: 9.95,
@@ -135,15 +95,42 @@ const playersPositions = {
 		y: 3.97,
 		className: 'pickLeftOnPfRightPickBottom'
 	},
-	farAwayLeft: {
-		x: 2.8,
-		y: 10,
-		className: 'farAwayLeft'
+	// Positions regarding space around C left and right
+	cLeft: {
+		x: 4.95,
+		y: 2.88,
+		className: 'cLeft'
 	},
-	farAwayRight: {
-		x: 12.2,
-		y: 10,
-		className: 'farAwayRight'
+	cRight: {
+		x: 9.95,
+		y: 2.88,
+		className: 'cRight'
+	},
+	cLeftBottom: {
+		x: 4.95,
+		y: 2.25,
+		className: 'cLeftBottom'
+	},
+	cLeftTop: {
+		x: 4.95,
+		y: 3.51,
+		className: 'cLeftTop'
+	},
+	cRightBottom: {
+		x: 9.95,
+		y: 2.25,
+		className: 'cRightBottom'
+	},
+	cRightTop: {
+		x: 9.95,
+		y: 3.51,
+		className: 'cRightTop'
+	},
+	// Positions regarding space around ring top
+	underRing: {
+		x: 7.5,
+		y: 1.545,
+		className: 'underRing'
 	},
 	underRingLeft: {
 		x: 6.88,
@@ -155,140 +142,42 @@ const playersPositions = {
 		y: 2.16,
 		className: 'underRingRight'
 	},
+	// Positions regarding space around outOfBound top
+	touchTopLeft: {
+		x: 4.5,
+		y: 0,
+		className: 'touchTopLeft'
+	},
+	touchTopRight: {
+		x: 10.5,
+		y: 0,
+		className: 'touchTopRight'
+	},
+	// Other positions
+	farAwayLeft: {
+		x: 2.8,
+		y: 10,
+		className: 'farAwayLeft'
+	},
+	farAwayRight: {
+		x: 12.2,
+		y: 10,
+		className: 'farAwayRight'
+	},
 };
 
 function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositions) {
 
-	function zoom(courtZoom) {
-		return {
-			pg: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			sgLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			sgRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			fgLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			fgRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cornerLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cornerRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pfCenter: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pfLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pfRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			underRing: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cLeftBottom: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cLeftTop: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cRightBottom: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			cRightTop: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			fgRightPickTop: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			fgLeftPickTop: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			fgRightAfterPickTop: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			fgLeftAfterPickTop: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			touchBottomLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			touchBottomRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pfRightPickBottom: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pfLeftPickBottom: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pickRightOnPfLeftPickBottom: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			pickLeftOnPfRightPickBottom: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			farAwayLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			farAwayRight: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			underRingLeft: {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			},
-			underRingRight: {
+	function zoom(courtZoom, playersPosConfig) {
+		return R.map(cur => {
+			return {
 				x: R.multiply(courtZoom),
 				y: R.multiply(courtZoom)
 			}
-		};
+		}, playersPosConfig);
 	}
 
-	return R.evolve(zoom(zoomSize), playersPosConfig);
+	return R.evolve(zoom(zoomSize, playersPosConfig), playersPosConfig);
 }
 
 function generatePlayersPositions(wishedZoom, playersPositions, context) {
