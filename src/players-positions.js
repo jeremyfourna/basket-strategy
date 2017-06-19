@@ -88,22 +88,72 @@ const playersPositions = {
 	fgRightPickTop: {
 		x: 11.86,
 		y: 5.68,
-		className: 'cRightTop'
+		className: 'fgRightPickTop'
 	},
 	fgLeftPickTop: {
 		x: 3.14,
 		y: 5.68,
-		className: 'cRightTop'
+		className: 'fgLeftPickTop'
 	},
 	fgRightAfterPickTop: {
 		x: 11.53,
 		y: 6.20,
-		className: 'cRightTop'
+		className: 'fgRightAfterPickTop'
 	},
 	fgLeftAfterPickTop: {
 		x: 3.47,
 		y: 6.20,
-		className: 'cRightTop'
+		className: 'fgLeftAfterPickTop'
+	},
+	touchBottomLeft: {
+		x: 4.5,
+		y: 0,
+		className: 'touchBottomLeft'
+	},
+	touchBottomRight: {
+		x: 10.5,
+		y: 0,
+		className: 'touchBottomRight'
+	},
+	pfRightPickBottom: {
+		x: 9.95,
+		y: 4.8,
+		className: 'pfRightPickBottom'
+	},
+	pfLeftPickBottom: {
+		x: 5.05,
+		y: 4.8,
+		className: 'pfLeftPickBottom'
+	},
+	pickRightOnPfLeftPickBottom: {
+		x: 5.68,
+		y: 3.97,
+		className: 'pickRightOnPfLeftPickBottom'
+	},
+	pickLeftOnPfRightPickBottom: {
+		x: 9.32,
+		y: 3.97,
+		className: 'pickLeftOnPfRightPickBottom'
+	},
+	farAwayLeft: {
+		x: 2.8,
+		y: 10,
+		className: 'farAwayLeft'
+	},
+	farAwayRight: {
+		x: 12.2,
+		y: 10,
+		className: 'farAwayRight'
+	},
+	underRingLeft: {
+		x: 6.88,
+		y: 2.16,
+		className: 'underRingLeft'
+	},
+	underRingRight: {
+		x: 8.12,
+		y: 2.16,
+		className: 'underRingRight'
 	},
 };
 
@@ -195,6 +245,46 @@ function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositi
 				x: R.multiply(courtZoom),
 				y: R.multiply(courtZoom)
 			},
+			touchBottomLeft: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			touchBottomRight: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			pfRightPickBottom: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			pfLeftPickBottom: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			pickRightOnPfLeftPickBottom: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			pickLeftOnPfRightPickBottom: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			farAwayLeft: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			farAwayRight: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			underRingLeft: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			},
+			underRingRight: {
+				x: R.multiply(courtZoom),
+				y: R.multiply(courtZoom)
+			}
 		};
 	}
 
@@ -216,7 +306,7 @@ function generatePlayersPositions(wishedZoom, playersPositions, context) {
 			R.prop('y', cur),
 			// Impure because access wishedZoom outside the function
 			R.multiply(wishedZoom, 0.5),
-			'red',
+			'black',
 			colorConditions(index),
 			R.prop('className', cur),
 			context
