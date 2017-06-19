@@ -59,6 +59,16 @@ const playersPositions = {
 		y: 1.545,
 		className: 'cornerRight'
 	},
+	cornerLeftPickTop: {
+		x: 1.74,
+		y: 2.08,
+		className: 'cornerLeft'
+	},
+	cornerRightPickTop: {
+		x: 13.26,
+		y: 2.08,
+		className: 'cornerRight'
+	},
 	// Positions regarding space around PF left and right
 	pfLeft: {
 		x: 5.05,

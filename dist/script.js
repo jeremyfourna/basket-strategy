@@ -366,14 +366,135 @@ function strategyTouchBoxLeft(wishedZoom) {
 			action: 'sprint',
 			origin: 'pfLeft',
 			destination: 'underRingRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingRight'
 		}]
 	];
 	// Display the stategy
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
 
-//strategyNormalStar(40);
-//strategyLowStar(23);
+function strategyTriangle1(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'sgRight',
+		'sfLeft',
+		'sfRight',
+		'cLeft'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const strategyStar = [
+		[{
+			origin: 'ball',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'underRing'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'cornerLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'pfRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'pg'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cornerLeftPickTop'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'pfRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'sfRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'sgLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sgLeft'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
+
+function strategyTriangle2(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'sfLeft',
+		'sfRight',
+		'cRight',
+		'cornerRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const strategyStar = [
+		[{
+			origin: 'ball',
+			destination: 'sfRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeft'
+		}, {
+			action: 'regular',
+			origin: 'pg',
+			destination: 'sgLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'pfCenter'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'pfCenter'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'underRingLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'cornerRightPickTop'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingLeft'
+		}, {
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'sfRight'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
+
+//strategyNormalStar(100);
+//strategyLowStar(60);
 //strategyTouchDowmLeft(60);
 //strategyTouchDowmRight(60);
-strategyTouchBoxLeft(100);
+//strategyTouchBoxLeft(60);
+//strategyTriangle1(100);
+strategyTriangle2(100);
