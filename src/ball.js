@@ -9,7 +9,7 @@ function generateBallPosition(wishedZoom, ballPosition, context) {
 		R.prop('y', ballPosition),
 		// Impure because access wishedZoom outside the function
 		R.multiply(wishedZoom, 0.25),
-		'red',
+		'black',
 		'orange',
 		R.prop('className', ballPosition),
 		context
