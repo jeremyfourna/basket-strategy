@@ -19,33 +19,33 @@ const playersPositions = {
 	},
 	// Positions regarding space around SF left and right
 	sfLeft: {
-		x: 2.15,
-		y: 5.8,
+		x: 1.80,
+		y: 5.17,
 		className: 'sfLeft'
 	},
 	sfRight: {
-		x: 12.85,
-		y: 5.8,
+		x: 13.2,
+		y: 5.17,
 		className: 'sfRight'
 	},
 	sfRightPickTop: {
-		x: 11.86,
-		y: 5.68,
+		x: 12.21,
+		y: 5.11,
 		className: 'sfRightPickTop'
 	},
 	sfLeftPickTop: {
-		x: 3.14,
-		y: 5.68,
+		x: 2.79,
+		y: 5.11,
 		className: 'sfLeftPickTop'
 	},
 	sfRightAfterPickTop: {
 		x: 11.53,
-		y: 6.20,
+		y: 5.8,
 		className: 'sfRightAfterPickTop'
 	},
 	sfLeftAfterPickTop: {
 		x: 3.47,
-		y: 6.20,
+		y: 5.8,
 		className: 'sfLeftAfterPickTop'
 	},
 	// Positions regarding space around corner left and right
@@ -227,6 +227,7 @@ function generatePlayersPositions(wishedZoom, playersPositions, context) {
 		[R.equals(2), R.always('green')],
 		[R.equals(3), R.always('red')],
 		[R.equals(4), R.always('violet')],
+		[R.T, R.always('black')]
 	]);
 
 	mapIndexed((cur, index) => {

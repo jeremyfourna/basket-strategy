@@ -627,6 +627,23 @@ function strategyTriangle3(wishedZoom) {
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
 
+function strategyTriangleOffense(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'sgLeft',
+		'sgRight',
+		'sfLeft',
+		'sfRight',
+		'cLeft',
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'sgLeft';
+	// List of moves
+	const strategyStar = [];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
+
 
 //strategyNormalStar(100);
 //strategyLowStar(60);
@@ -635,7 +652,8 @@ function strategyTriangle3(wishedZoom) {
 //strategyTouchBoxLeft(60);
 //strategyTriangle1(100);
 //strategyTriangle2(100);
-strategyTriangleOffense1(100);
+//strategyTriangle3(100);
+strategyTriangleOffense(100);
 //https://www.sbnation.com/nba/2011/4/5/2090041/lakers-triangle-offense
 //https://www.nytimes.com/2015/06/28/sports/basketball/phil-jackson-knicks-triangle-offense-nba.html?_r=0
 
