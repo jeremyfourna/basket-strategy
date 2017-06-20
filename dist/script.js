@@ -635,6 +635,118 @@ function strategyTriangle3(wishedZoom) {
 //strategyTouchBoxLeft(60);
 //strategyTriangle1(100);
 //strategyTriangle2(100);
-strategyTriangle3(100);
+strategyTriangleOffense1(100);
 //https://www.sbnation.com/nba/2011/4/5/2090041/lakers-triangle-offense
 //https://www.nytimes.com/2015/06/28/sports/basketball/phil-jackson-knicks-triangle-offense-nba.html?_r=0
+
+function strategyTriangleOffense1(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'sgLeft',
+		'sgRight',
+		'sfLeft',
+		'sfRight',
+		'cRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'sgRight';
+	// List of moves
+	const strategyStar = [
+		[{
+			origin: 'ball',
+			destination: 'sgLeft'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'cRightBottom'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sfLeft'
+		}, {
+			action: 'regular',
+			origin: 'sgRight',
+			destination: 'pfRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'cornerLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'pfRightPickBottom'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'sgRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'underRingLeft'
+		}, {
+			action: 'regular',
+			origin: 'cRight',
+			destination: 'pfCenter'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sgRight'
+		}],
+		[{
+			action: 'regular',
+			origin: 'ball',
+			destination: 'sfRight'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'sfRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cRight',
+			destination: 'cornerRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'cLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'cLeftBottom'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'pfLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'sgLeft'
+		}, {
+			action: 'regular',
+			origin: 'sgRight',
+			destination: 'pfCenter'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'underRingRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'sgLeft',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cRight'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
