@@ -750,3 +750,5 @@ function strategyTriangleOffense1(wishedZoom) {
 	// Display the stategy
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
+
+// http://www.fip.it/public/41/3533/Tex%20Winter%20-%20Attacco%20Triangolo%20-%20prima%20parte.pdf
