@@ -627,36 +627,6 @@ function strategyTriangle3(wishedZoom) {
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
 
-function strategyTriangleOffense(wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'cLeft',
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgLeft';
-	// List of moves
-	const strategyStar = [];
-	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
-}
-
-
-//strategyNormalStar(100);
-//strategyLowStar(60);
-//strategyTouchDowmLeft(60);
-//strategyTouchDowmRight(60);
-//strategyTouchBoxLeft(60);
-//strategyTriangle1(100);
-//strategyTriangle2(100);
-//strategyTriangle3(100);
-strategyTriangleOffense(100);
-//https://www.sbnation.com/nba/2011/4/5/2090041/lakers-triangle-offense
-//https://www.nytimes.com/2015/06/28/sports/basketball/phil-jackson-knicks-triangle-offense-nba.html?_r=0
-
 function strategyTriangleOffense1(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
@@ -769,4 +739,34 @@ function strategyTriangleOffense1(wishedZoom) {
 	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
 }
 
-// http://www.fip.it/public/41/3533/Tex%20Winter%20-%20Attacco%20Triangolo%20-%20prima%20parte.pdf
+function strategyTriangleOffense(wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'sgRight',
+		'sgRightPickLeft',
+		'sgRightPickRight',
+		'sgRightPickTop',
+		'sgRightPickBottom',
+		'sgRightPickTopLeft',
+		'sgRightPickTopRight',
+		'sgRightPickBottomLeft',
+		'sgRightPickBottomRight',
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'sgRight';
+	// List of moves
+	const strategyStar = [];
+	// Display the stategy
+	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, strategyStar);
+}
+
+
+//strategyNormalStar(100);
+//strategyLowStar(60);
+//strategyTouchDowmLeft(60);
+//strategyTouchDowmRight(60);
+//strategyTouchBoxLeft(60);
+//strategyTriangle1(100);
+//strategyTriangle2(100);
+//strategyTriangle3(100);
+strategyTriangleOffense(100);
