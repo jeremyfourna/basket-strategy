@@ -56,5 +56,7 @@ function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) 
 function cleanSVG() {
 	const parent = document.getElementsByTagName("body");
 	const child = document.getElementsByTagName("svg");
-	parent[0].removeChild(child[0]);
+	if (R.gt(R.length(child), 0)) {
+		parent[0].removeChild(child[0]);
+	}
 }

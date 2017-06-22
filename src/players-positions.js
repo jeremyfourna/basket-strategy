@@ -558,10 +558,30 @@ function cPositions() {
 			y: 1.88,
 			className: 'cRightBottom'
 		},
+		cRightPickBottomLeft: {
+			x: 9.24,
+			y: 2.18,
+			className: 'cRightPickBottomLeft'
+		},
+		cRightPickBottomRight: {
+			x: 10.66,
+			y: 2.18,
+			className: 'cRightPickBottomRight'
+		},
 		cRightPickTop: {
 			x: 9.95,
 			y: 3.88,
 			className: 'cRightPickTop'
+		},
+		cRightPickTopLeft: {
+			x: 9.24,
+			y: 3.58,
+			className: 'cRightPickTopLeft'
+		},
+		cRightPickTopRight: {
+			x: 10.66,
+			y: 3.58,
+			className: 'cRightPickTopRight'
 		},
 		cRightPickLeft: {
 			x: 8.95,
@@ -584,16 +604,26 @@ function underRingPositions() {
 			y: 1.545,
 			className: 'underRing'
 		},
-		underRingLeft: {
-			x: 6.88,
-			y: 2.16,
-			className: 'underRingLeft'
+		underRingBottom: {
+			x: 7.5,
+			y: 2.545,
+			className: 'underRingBottom'
 		},
-		underRingRight: {
-			x: 8.12,
-			y: 2.16,
-			className: 'underRingRight'
-		}
+		underRingTop: {
+			x: 7.5,
+			y: 0.545,
+			className: 'underRingTop'
+		},
+		underRingTopLeft: {
+			x: 6.79,
+			y: 2.245,
+			className: 'underRingTopLeft'
+		},
+		underRingTopRight: {
+			x: 8.21,
+			y: 2.245,
+			className: 'underRingTopRight'
+		},
 	};
 }
 
