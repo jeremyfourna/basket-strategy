@@ -258,7 +258,7 @@ function strategyTouchDowmLeft(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'cRightBottom',
-			destination: 'pickRightOnPfLeftPickBottom'
+			destination: 'pfRightAfterPickBottomLeft'
 		}],
 		[{
 			action: 'sprint',
@@ -302,7 +302,7 @@ function strategyTouchDowmRight(wishedZoom) {
 		[{
 			action: 'sprint',
 			origin: 'cLeftBottom',
-			destination: 'pickLeftOnPfRightPickBottom'
+			destination: 'pfLeftAfterPickBottomRight'
 		}, {
 			action: 'sprint',
 			origin: 'cRightBottom',
@@ -742,18 +742,18 @@ function strategyTriangleOffense1(wishedZoom) {
 function strategyTriangleOffense(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
-		'sgRight',
-		'sgRightPickLeft',
-		'sgRightPickRight',
-		'sgRightPickTop',
-		'sgRightPickBottom',
-		'sgRightPickTopLeft',
-		'sgRightPickTopRight',
-		'sgRightPickBottomLeft',
-		'sgRightPickBottomRight',
+		'cRight',
+		'cRightPickLeft',
+		'cRightPickRight',
+		'cRightPickTop',
+		'cRightPickBottom',
+		'cRightPickTopLeft',
+		'cRightPickTopRight',
+		'cRightPickBottomLeft',
+		'cRightPickBottomRight',
 	];
 	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgRight';
+	const ballHolder = 'cRight';
 	// List of moves
 	const strategyStar = [];
 	// Display the stategy
@@ -761,12 +761,4 @@ function strategyTriangleOffense(wishedZoom) {
 }
 
 
-//strategyNormalStar(100);
-//strategyLowStar(60);
-//strategyTouchDowmLeft(60);
-//strategyTouchDowmRight(60);
-//strategyTouchBoxLeft(60);
-//strategyTriangle1(100);
-//strategyTriangle2(100);
-//strategyTriangle3(100);
-strategyTriangleOffense(100);
+strategyTriangleOffense(60);

@@ -149,36 +149,109 @@ function sgPositions() {
 
 function sfPositions() {
 	return {
-		// Positions regarding space around SF left and right
+		// Positions regarding space around SF left
 		sfLeft: {
 			x: 1.80,
 			y: 5.17,
 			className: 'sfLeft'
 		},
+		sfLeftPickBottom: {
+			x: 1.80,
+			y: 4.17,
+			className: 'sfLeftPickBottom'
+		},
+		sfLeftPickBottomLeft: {
+			x: 1.09,
+			y: 4.47,
+			className: 'sfLeftPickBottomLeft'
+		},
+		sfLeftPickBottomRight: {
+			x: 2.51,
+			y: 4.47,
+			className: 'sfLeftPickBottomRight'
+		},
+		sfLeftPickTop: {
+			x: 1.80,
+			y: 6.17,
+			className: 'sfLeftPickTop'
+		},
+		sfLeftPickTopLeft: {
+			x: 1.09,
+			y: 5.87,
+			className: 'sfLeftPickTopLeft'
+		},
+		sfLeftPickTopRight: {
+			x: 2.51,
+			y: 5.87,
+			className: 'sfLeftPickTopRight'
+		},
+		sfLeftPickLeft: {
+			x: 2.80,
+			y: 5.17,
+			className: 'sfLeftPickLeft'
+		},
+		sfLeftPickRight: {
+			x: 0.80,
+			y: 5.17,
+			className: 'sfLeftPickRight'
+		},
+		// Player movement after pick
+		sfLeftAfterPickTop: {
+			x: 3.47,
+			y: 5.8,
+			className: 'sfLeftAfterPickTop'
+		},
+		// Positions regarding space around SF right
 		sfRight: {
 			x: 13.2,
 			y: 5.17,
 			className: 'sfRight'
 		},
+		sfRightPickBottom: {
+			x: 13.2,
+			y: 4.17,
+			className: 'sfRightPickBottom'
+		},
+		sfRightPickBottomLeft: {
+			x: 12.49,
+			y: 4.47,
+			className: 'sfRightPickBottomLeft'
+		},
+		sfRightPickBottomRight: {
+			x: 13.91,
+			y: 4.47,
+			className: 'sfRightPickBottomRight'
+		},
 		sfRightPickTop: {
-			x: 12.21,
-			y: 5.11,
+			x: 13.2,
+			y: 6.17,
 			className: 'sfRightPickTop'
 		},
-		sfLeftPickTop: {
-			x: 2.79,
-			y: 5.11,
-			className: 'sfLeftPickTop'
+		sfRightPickTopLeft: {
+			x: 12.49,
+			y: 5.87,
+			className: 'sfRightPickTopLeft'
 		},
+		sfRightPickTopRight: {
+			x: 13.91,
+			y: 5.87,
+			className: 'sfRightPickTopRight'
+		},
+		sfRightPickRight: {
+			x: 14.2,
+			y: 5.17,
+			className: 'sfRightPickRight'
+		},
+		sfRightPickLeft: {
+			x: 12.2,
+			y: 5.17,
+			className: 'sfRightPickLeft'
+		},
+		// Player movement after pick
 		sfRightAfterPickTop: {
 			x: 11.53,
 			y: 5.8,
 			className: 'sfRightAfterPickTop'
-		},
-		sfLeftAfterPickTop: {
-			x: 3.47,
-			y: 5.8,
-			className: 'sfLeftAfterPickTop'
 		}
 	};
 }
@@ -192,9 +265,29 @@ function cornerPositions() {
 			className: 'cornerLeft'
 		},
 		cornerLeftPickTop: {
-			x: 1.74,
-			y: 2.08,
-			className: 'cornerLeft'
+			x: 0.9,
+			y: 2.545,
+			className: 'cornerLeftPickTop'
+		},
+		cornerLeftPickTopRight: {
+			x: 1.61,
+			y: 2.245,
+			className: 'cornerLeftPickTopRight'
+		},
+		cornerLeftPickBottom: {
+			x: 0.9,
+			y: 0.545,
+			className: 'cornerLeftPickBottom'
+		},
+		cornerLeftPickBottomRight: {
+			x: 1.61,
+			y: 0.845,
+			className: 'cornerLeftPickBottomRight'
+		},
+		cornerLeftPickRight: {
+			x: 1.9,
+			y: 1.545,
+			className: 'cornerLeftPickRight'
 		},
 		// Positions regarding space around corner right
 		cornerRight: {
@@ -203,116 +296,283 @@ function cornerPositions() {
 			className: 'cornerRight'
 		},
 		cornerRightPickTop: {
-			x: 13.26,
-			y: 2.08,
-			className: 'cornerRight'
-		}
+			x: 14.1,
+			y: 2.545,
+			className: 'cornerRightPickTop'
+		},
+		cornerRightPickTopLeft: {
+			x: 13.39,
+			y: 2.245,
+			className: 'cornerRightPickTopLeft'
+		},
+		cornerRightPickBottom: {
+			x: 14.1,
+			y: 0.545,
+			className: 'cornerRightPickBottom'
+		},
+		cornerRightPickBottomLeft: {
+			x: 13.39,
+			y: 0.845,
+			className: 'cornerRightPickBottomLeft'
+		},
+		cornerRightPickLeft: {
+			x: 13.1,
+			y: 1.545,
+			className: 'cornerRightPickLeft'
+		},
 	};
 }
 
 function pfPositions() {
 	return {
-		// Positions regarding space around PF left and right
+		// Positions regarding space around PF left
 		pfLeft: {
 			x: 5.05,
 			y: 5.8,
 			className: 'pfLeft'
-		},
-		pfRight: {
-			x: 9.95,
-			y: 5.8,
-			className: 'pfRight'
-		},
-		pfCenter: {
-			x: 7.5,
-			y: 5.8,
-			className: 'pfCenter'
-		},
-		pfRightPickBottom: {
-			x: 9.95,
-			y: 4.8,
-			className: 'pfRightPickBottom'
 		},
 		pfLeftPickBottom: {
 			x: 5.05,
 			y: 4.8,
 			className: 'pfLeftPickBottom'
 		},
-		pfRightPickLeft: {
-			x: 9.16,
-			y: 5.2,
-			className: 'pfRightPickLeft'
-		},
-		pfLeftPickRight: {
-			x: 5.84,
-			y: 5.2,
-			className: 'pfLeftPickRight'
-		},
-		pickRightOnPfLeftPickBottom: {
-			x: 5.68,
-			y: 3.97,
-			className: 'pickRightOnPfLeftPickBottom'
-		},
-		pickLeftOnPfRightPickBottom: {
-			x: 9.32,
-			y: 3.97,
-			className: 'pickLeftOnPfRightPickBottom'
-		},
 		pfLeftPickBottomRight: {
-			x: 5.74,
-			y: 5.06,
+			x: 5.76,
+			y: 5.1,
+			className: 'pfLeftPickBottomRight'
+		},
+		pfLeftPickBottomLeft: {
+			x: 4.34,
+			y: 5.1,
 			className: 'pfLeftPickBottomLeft'
 		},
+		pfLeftPickTop: {
+			x: 5.05,
+			y: 6.8,
+			className: 'pfLeftPickTop'
+		},
+		pfLeftPickTopRight: {
+			x: 5.76,
+			y: 6.5,
+			className: 'pfLeftPickTopRight'
+		},
+		pfLeftPickTopLeft: {
+			x: 4.34,
+			y: 6.5,
+			className: 'pfLeftPickTopLeft'
+		},
+		pfLeftPickRight: {
+			x: 6.05,
+			y: 5.8,
+			className: 'pfLeftPickRight'
+		},
+		pfLeftPickLeft: {
+			x: 4.05,
+			y: 5.8,
+			className: 'pfLeftPickLeft'
+		},
+		// Player movement after pick
+		pfLeftAfterPickBottomRight: {
+			x: 9.32,
+			y: 3.97,
+			className: 'pfLeftAfterPickBottomRight'
+		},
+		// Positions regarding space around PF right
+		pfRight: {
+			x: 9.95,
+			y: 5.8,
+			className: 'pfRight'
+		},
+		pfRightPickBottom: {
+			x: 9.95,
+			y: 4.8,
+			className: 'pfRightPickBottom'
+		},
 		pfRightPickBottomLeft: {
-			x: 9.26,
-			y: 5.06,
+			x: 9.24,
+			y: 5.1,
 			className: 'pfRightPickBottomLeft'
-		}
+		},
+		pfRightPickBottomRight: {
+			x: 10.66,
+			y: 5.1,
+			className: 'pfRightPickBottomRight'
+		},
+		pfRightPickTop: {
+			x: 9.95,
+			y: 6.8,
+			className: 'pfRightPickTop'
+		},
+		pfRightPickTopLeft: {
+			x: 9.24,
+			y: 6.5,
+			className: 'pfRightPickTopLeft'
+		},
+		pfRightPickTopRight: {
+			x: 10.66,
+			y: 6.5,
+			className: 'pfRightPickTopRight'
+		},
+		pfRightPickLeft: {
+			x: 8.95,
+			y: 5.8,
+			className: 'pfRightPickLeft'
+		},
+		pfRightPickRight: {
+			x: 10.95,
+			y: 5.8,
+			className: 'pfRightPickRight'
+		},
+		// Player movement after pick
+		pfRightAfterPickBottomLeft: {
+			x: 5.68,
+			y: 3.97,
+			className: 'pfRightAfterPickBottomLeft'
+		},
+		// Positions regarding space around PF center
+		pfCenter: {
+			x: 7.5,
+			y: 5.8,
+			className: 'pfCenter'
+		},
+		pfCenterPickBottom: {
+			x: 7.5,
+			y: 6.8,
+			className: 'pfCenterPickBottom'
+		},
+		pfCenterPickBottomLeft: {
+			x: 6.79,
+			y: 5.1,
+			className: 'pfCenterPickBottomLeft'
+		},
+		pfCenterPickBottomRight: {
+			x: 8.21,
+			y: 5.1,
+			className: 'pfCenterPickBottomRight'
+		},
+		pfCenterPickTop: {
+			x: 7.5,
+			y: 4.8,
+			className: 'pfCenterPickTop'
+		},
+		pfCenterPickTopLeft: {
+			x: 6.79,
+			y: 6.5,
+			className: 'pfCenterPickTopLeft'
+		},
+		pfCenterPickTopRight: {
+			x: 8.21,
+			y: 6.5,
+			className: 'pfCenterPickTopRight'
+		},
+		pfCenterPickLeft: {
+			x: 6.5,
+			y: 5.8,
+			className: 'pfCenterPickLeft'
+		},
+		pfCenterPickRight: {
+			x: 8.5,
+			y: 5.8,
+			className: 'pfCenterPickRight'
+		},
 	};
 }
 
 function cPositions() {
-	return { // Positions regarding space around C left and right
+	return {
+		// Positions regarding space around C left
 		cLeft: {
 			x: 4.95,
 			y: 2.88,
 			className: 'cLeft'
 		},
-		cRight: {
-			x: 9.95,
-			y: 2.88,
-			className: 'cRight'
+		cLeftPickBottom: {
+			x: 4.95,
+			y: 1.88,
+			className: 'cLeftPickBottom'
 		},
+		cLeftPickBottomLeft: {
+			x: 4.24,
+			y: 2.18,
+			className: 'cLeftPickBottomLeft'
+		},
+		cLeftPickBottomRight: {
+			x: 5.66,
+			y: 2.18,
+			className: 'cLeftPickBottomRight'
+		},
+		cLeftPickTop: {
+			x: 4.95,
+			y: 3.88,
+			className: 'cLeftPickTop'
+		},
+		cLeftPickTopLeft: {
+			x: 4.24,
+			y: 3.68,
+			className: 'cLeftPickTopLeft'
+		},
+		cLeftPickTopRight: {
+			x: 5.66,
+			y: 3.68,
+			className: 'cLeftPickTopRight'
+		},
+		cLeftPickLeft: {
+			x: 3.95,
+			y: 2.88,
+			className: 'cLeftPickLeft'
+		},
+		cLeftPickRight: {
+			x: 5.95,
+			y: 2.88,
+			className: 'cLeftPickRight'
+		},
+		// Positions regarding space around C bottom
 		cLeftBottom: {
 			x: 4.95,
 			y: 2.25,
 			className: 'cLeftBottom'
-		},
-		cRightBottom: {
-			x: 9.95,
-			y: 2.25,
-			className: 'cRightBottom'
 		},
 		cLeftBottomPickRight: {
 			x: 5.84,
 			y: 1.63,
 			className: 'cLeftBottomPickRight'
 		},
+		cRightBottom: {
+			x: 9.95,
+			y: 2.25,
+			className: 'cRightBottom'
+		},
 		cRightBottomPickLeft: {
 			x: 9.16,
 			y: 1.63,
 			className: 'cRightBottomPickLeft'
 		},
-		cLeftTop: {
-			x: 4.95,
-			y: 3.51,
-			className: 'cLeftTop'
-		},
-		cRightTop: {
+		// Positions regarding space around C left
+		cRight: {
 			x: 9.95,
-			y: 3.51,
-			className: 'cRightTop'
-		}
+			y: 2.88,
+			className: 'cRight'
+		},
+		cRightPickBottom: {
+			x: 9.95,
+			y: 1.88,
+			className: 'cRightBottom'
+		},
+		cRightPickTop: {
+			x: 9.95,
+			y: 3.88,
+			className: 'cRightPickTop'
+		},
+		cRightPickLeft: {
+			x: 8.95,
+			y: 2.88,
+			className: 'cRightLeft'
+		},
+		cRightPickRight: {
+			x: 10.95,
+			y: 2.88,
+			className: 'cRightPickRight'
+		},
 	};
 }
 
