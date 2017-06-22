@@ -196,10 +196,10 @@ function sfPositions() {
 			className: 'sfLeftPickRight'
 		},
 		// Player movement after pick
-		sfLeftAfterPickTop: {
+		sfLeftAfterPickBottomLeft: {
 			x: 3.47,
 			y: 5.8,
-			className: 'sfLeftAfterPickTop'
+			className: 'sfLeftAfterPickBottomLeft'
 		},
 		// Positions regarding space around SF right
 		sfRight: {
@@ -248,10 +248,10 @@ function sfPositions() {
 			className: 'sfRightPickLeft'
 		},
 		// Player movement after pick
-		sfRightAfterPickTop: {
+		sfRightAfterPickBottomLeft: {
 			x: 11.53,
 			y: 5.8,
-			className: 'sfRightAfterPickTop'
+			className: 'sfRightAfterPickBottomLeft'
 		}
 	};
 }

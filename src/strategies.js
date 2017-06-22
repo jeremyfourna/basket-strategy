@@ -176,7 +176,7 @@ function strategyLowStar(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'pg',
-			destination: 'sfRightPickTop'
+			destination: 'sfRightPickLeft'
 		}, {
 			action: 'sprint',
 			origin: 'cRight',
@@ -201,16 +201,16 @@ function strategyLowStar(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'cRight',
-			destination: 'sfRightPickTop'
+			destination: 'sfRightPickLeft'
 		}],
 		[{
 			action: 'sprint',
 			origin: 'ball',
-			destination: 'sfRightAfterPickTop'
+			destination: 'sfRightAfterPickBottomLeft'
 		}, {
 			action: 'sprint',
 			origin: 'pg',
-			destination: 'sfRightAfterPickTop'
+			destination: 'sfRightAfterPickBottomLeft'
 		}],
 		[{
 			action: 'sprint',
@@ -340,8 +340,8 @@ function strategyTouchBoxLeft(wishedZoom) {
 	const defaultPlayersPositions = [
 		'touchBottomLeft',
 		'pfLeft',
-		'cRightBottom',
-		'cLeftBottom',
+		'cRight',
+		'cLeft',
 		'pfRight'
 	];
 	// Define ball holder at the beginning of the play
@@ -350,16 +350,16 @@ function strategyTouchBoxLeft(wishedZoom) {
 	const listOfMoves = [
 		[{
 			action: 'sprint',
-			origin: 'cLeftBottom',
-			destination: 'underRing'
+			origin: 'cLeft',
+			destination: 'underRingTopRight'
 		}, {
 			action: 'sprint',
 			origin: 'pfLeft',
-			destination: 'pfRightPickLeft'
+			destination: 'pfRightPickBottomLeft'
 		}],
 		[{
 			action: 'sprint',
-			origin: 'cRightBottom',
+			origin: 'cRight',
 			destination: 'cornerLeft'
 		}, {
 			action: 'sprint',
@@ -368,7 +368,7 @@ function strategyTouchBoxLeft(wishedZoom) {
 		}],
 		[{
 			action: 'sprint',
-			origin: 'cLeftBottom',
+			origin: 'cLeft',
 			destination: 'underRingTopLeft'
 		}, {
 			action: 'sprint',
@@ -420,7 +420,7 @@ function strategyTriangle1(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'sfLeft',
-			destination: 'cornerLeftPickTop'
+			destination: 'cornerLeftPickTopRight'
 		}],
 		[{
 			origin: 'ball',
@@ -484,7 +484,7 @@ function strategyTriangle2(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'sfRight',
-			destination: 'cornerRightPickTop'
+			destination: 'cornerRightPickTopLeft'
 		}],
 		[{
 			origin: 'ball',
@@ -569,11 +569,11 @@ function strategyTriangle3(wishedZoom) {
 		}, {
 			action: 'sprint',
 			origin: 'sfRight',
-			destination: 'cornerRightPickTop'
+			destination: 'cornerRightPickTopLeft'
 		}, {
 			action: 'regular',
 			origin: 'pg',
-			destination: 'sfRightPickTop'
+			destination: 'sfRightPickLeft'
 		}],
 		[{
 			action: 'sprint',
