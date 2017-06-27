@@ -1,3 +1,9 @@
+const R = require('ramda');
+const createCircle = require('./utils.js').createCircle;
+
+exports.addBallToGame = addBallToGame;
+exports.generateBallPosition = generateBallPosition;
+
 function addBallToGame(player, allPlayers) {
 	const ballPosition = R.prop(player, R.pick([player], allPlayers));
 	return R.assoc('className', 'ball', ballPosition);

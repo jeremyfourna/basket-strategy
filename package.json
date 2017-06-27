@@ -1,0 +1,37 @@
+{
+	"name": "basket-strategy",
+	"version": "0.1.0",
+	"description": "Create your own plays for you basket-ball team",
+	"main": "dist/bundle.js",
+	"scripts": {
+		"test": "nyc mocha --timeout=3000",
+		"build": "watchify src/basket-strategy.js -o dist/bundle.js",
+		"build-once": "browserify src/basket-strategy.js -o dist/bundle.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jeremyfourna/basket-strategy.git"
+	},
+	"author": "Jeremy Fourna <jeremyfourna@gmail.com>",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/jeremyfourna/basket-strategy/issues"
+	},
+	"homepage": "https://github.com/jeremyfourna/basket-strategy#readme",
+	"dependencies": {
+		"d3-selection": "^1.1.0",
+		"d3-shape": "^1.2.0",
+		"d3-transition": "^1.1.0",
+		"firebase": "^4.1.3",
+		"jquery": "^3.2.1",
+		"ramda": "^0.24.1"
+	},
+	"devDependencies": {
+		"browserify": "^14.4.0",
+		"chai": "^4.0.2",
+		"firebase-tools": "^3.9.1",
+		"mocha": "^3.4.2",
+		"nyc": "^11.0.2",
+		"watchify": "^3.9.0"
+	}
+}

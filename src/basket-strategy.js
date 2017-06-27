@@ -1,3 +1,8 @@
+const R = require('ramda');
+const $ = require("jquery");
+const cleanSVG = require("./utils.js").cleanSVG;
+const strategySelector = require("./strategies.js").strategySelector;
+
 const valueForSelectLens = R.lensPath(['target', 'value']);
 
 $('#runConfiguration').on('click', function(event) {
