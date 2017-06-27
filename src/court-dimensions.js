@@ -1,3 +1,13 @@
+const R = require('ramda');
+var d3 = Object.assign({}, require("d3-selection"));
+const createRectangle = require('./utils.js').createRectangle;
+const createCircle = require('./utils.js').createCircle;
+const createLine = require('./utils.js').createLine;
+const createArc = require('./utils.js').createArc;
+
+exports.courtConfigZoomed = courtConfigZoomed;
+exports.generateCourt = generateCourt;
+
 // Basket-Ball court dimensions for FIBA
 const courtConfig = {
 	topX: 0,

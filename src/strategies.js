@@ -1,3 +1,8 @@
+const R = require('ramda');
+const strategyCreator = require('./strategy-factory.js').strategyCreator;
+
+exports.strategySelector = strategySelector;
+
 function strategyNormalStar(wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [

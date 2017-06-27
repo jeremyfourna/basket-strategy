@@ -1,3 +1,11 @@
+const R = require('ramda');
+const mapIndexed = require('./utils.js').mapIndexed;
+const createCircle = require('./utils.js').createCircle;
+
+exports.playersPositions = playersPositions;
+exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
+exports.generatePlayersPositions = generatePlayersPositions;
+
 // Picks in diagonal x = 0.71 and y = 0.7
 function pgPositions() {
 	// Positions regarding space around PG
@@ -660,21 +668,23 @@ function farAwayPositions() {
 }
 
 // Basket-Ball players positions for FIBA
-const playersPositions = R.reduce((prev, cur) => {
-	return R.mergeDeepLeft(prev, cur);
-}, {}, [
-	pgPositions(),
-	sgPositions(),
-	sfPositions(),
-	cornerPositions(),
-	pfPositions(),
-	cPositions(),
-	underRingPositions(),
-	touchPositions(),
-	farAwayPositions()
-]);
+function playersPositions() {
+	return R.reduce((prev, cur) => {
+		return R.mergeDeepLeft(prev, cur);
+	}, {}, [
+		pgPositions(),
+		sgPositions(),
+		sfPositions(),
+		cornerPositions(),
+		pfPositions(),
+		cPositions(),
+		underRingPositions(),
+		touchPositions(),
+		farAwayPositions()
+	]);
+}
 
-function playersPositionsConfigZoomed(zoomSize, playersPosConfig = playersPositions) {
+function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
 
 	function zoom(courtZoom, playersPosConfig) {
 		return R.map(cur => {

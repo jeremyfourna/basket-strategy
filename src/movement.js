@@ -1,3 +1,9 @@
+const R = require('ramda');
+var d3 = Object.assign({}, require("d3-selection"), require("d3-transition"));
+const mapIndexed = require('./utils.js').mapIndexed;
+
+exports.playMovements = playMovements;
+
 function moveFromTo(origin, destination, speed, waitingTime, elementClassName) {
 	const element = d3.select(elementClassName);
 	const translateX = R.subtract(

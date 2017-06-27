@@ -1,3 +1,16 @@
+const R = require('ramda');
+const mapIndexed = require('./utils.js').mapIndexed;
+const courtConfigZoomed = require('./court-dimensions.js').courtConfigZoomed;
+const generateCourt = require('./court-dimensions.js').generateCourt;
+const playersPositions = require('./players-positions.js').playersPositions;
+const playersPositionsConfigZoomed = require('./players-positions.js').playersPositionsConfigZoomed;
+const generatePlayersPositions = require('./players-positions.js').generatePlayersPositions;
+const addBallToGame = require('./ball.js').addBallToGame;
+const generateBallPosition = require('./ball.js').generateBallPosition;
+const playMovements = require('./movement.js').playMovements;
+
+exports.strategyCreator = strategyCreator;
+
 /*
 Move = {
 	action: regular || sprint
@@ -59,11 +72,11 @@ function strategyCreator(wishedZoom, players, ballHolder, listOfMoves) {
 	// Generate the court
 	const courtSVG = generateCourt(courtConfigZoomed(wishedZoom), wishedZoom);
 	// Select only the right positions via the players array
-	const selectPlayersPositions = R.pick(players, playersPositions);
+	const selectPlayersPositions = R.pick(players, playersPositions());
 	// Transform the player position via the wishedZoom constant
 	const playersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, selectPlayersPositions);
 	// Transform all players position via the wishedZoom constant
-	const allPlayersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom);
+	const allPlayersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, playersPositions());
 	// Add the selected players into the court
 	generatePlayersPositions(wishedZoom, playersPositionsZoomed, courtSVG);
 	// Add the ball into the court
