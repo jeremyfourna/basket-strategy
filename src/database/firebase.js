@@ -14,8 +14,11 @@ const config = require('./config.js').config;
 // And export the function via
 // exports.config = config;
 
+exports.startFirebase = startFirebase;
 
 function startFirebase() {
 	// Initialize Firebase
 	return firebase.initializeApp(config());
 }
+// Use this function like this
+// const db = startFirebase();
