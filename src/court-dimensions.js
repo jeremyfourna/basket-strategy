@@ -1,5 +1,5 @@
 const R = require('ramda');
-var d3 = Object.assign({}, require("d3-selection"));
+const d3 = Object.assign({}, require("d3-selection"));
 const createRectangle = require('./utils.js').createRectangle;
 const createCircle = require('./utils.js').createCircle;
 const createLine = require('./utils.js').createLine;
@@ -322,7 +322,7 @@ function courtConfigZoomed(zoomSize, courtConfiguration = courtConfig) {
 	return R.evolve(zoom(zoomSize), courtConfiguration);
 }
 
-function generateCourt(courtConfig, wishedZoom) {
+function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
 	// wishedZoom is only passed to allow clickOnSVG to access it
 	// Function to do something when user click on the SVG
 	function clickOnSVG() {
@@ -334,7 +334,7 @@ function generateCourt(courtConfig, wishedZoom) {
 		createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
 	}
 	// Create the svg in the body
-	const svg = d3.select('body')
+	const svg = d3.select(domElementToRenderSVG)
 		.append('svg')
 		.on('click', clickOnSVG);
 	// Define width and height of the svg

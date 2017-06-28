@@ -3,7 +3,7 @@ const strategyCreator = require('./strategy-factory.js').strategyCreator;
 
 exports.strategySelector = strategySelector;
 
-function strategyNormalStar(wishedZoom) {
+function strategyNormalStar(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
@@ -132,10 +132,10 @@ function strategyNormalStar(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyLowStar(wishedZoom) {
+function strategyLowStar(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
@@ -240,10 +240,10 @@ function strategyLowStar(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTouchDowmLeft(wishedZoom) {
+function strategyTouchDowmLeft(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'touchBottomLeft',
@@ -288,10 +288,10 @@ function strategyTouchDowmLeft(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTouchDowmRight(wishedZoom) {
+function strategyTouchDowmRight(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'touchBottomRight',
@@ -337,10 +337,10 @@ function strategyTouchDowmRight(wishedZoom) {
 
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTouchBoxLeft(wishedZoom) {
+function strategyTouchBoxLeft(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'touchBottomLeft',
@@ -386,10 +386,10 @@ function strategyTouchBoxLeft(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTriangle1(wishedZoom) {
+function strategyTriangle1(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
@@ -446,10 +446,10 @@ function strategyTriangle1(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTriangle2(wishedZoom) {
+function strategyTriangle2(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
@@ -501,10 +501,10 @@ function strategyTriangle2(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTriangle3(wishedZoom) {
+function strategyTriangle3(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'pg',
@@ -629,10 +629,10 @@ function strategyTriangle3(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTriangle5(wishedZoom) {
+function strategyTriangle5(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'sgLeft',
@@ -741,10 +741,10 @@ function strategyTriangle5(wishedZoom) {
 		}]
 	];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategyTriangle4(wishedZoom) {
+function strategyTriangle4(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'sgLeft',
@@ -758,10 +758,10 @@ function strategyTriangle4(wishedZoom) {
 	// List of moves
 	const listOfMoves = [];
 	// Display the stategy
-	strategyCreator(wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategySelector(wishedZoom, strategyName) {
+function strategySelector(domElement, wishedZoom, strategyName) {
 	// Evaluate the strategyName to launch function
 	const condition = R.cond([
 		[R.equals('strategyNormalStar'), R.always(strategyNormalStar)],
@@ -776,5 +776,5 @@ function strategySelector(wishedZoom, strategyName) {
 		[R.equals('strategyTriangle5'), R.always(strategyTriangle5)],
 	]);
 
-	return condition(strategyName)(wishedZoom);
+	return condition(strategyName)(domElement, wishedZoom);
 }

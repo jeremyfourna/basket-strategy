@@ -68,9 +68,9 @@ function generateStategy(allPositions, selectedPlayers, ballPosition, listOfMove
 	}, [], listOfMovesTransformed);
 }
 
-function strategyCreator(wishedZoom, players, ballHolder, listOfMoves) {
+function strategyCreator(domElement, wishedZoom, players, ballHolder, listOfMoves) {
 	// Generate the court
-	const courtSVG = generateCourt(courtConfigZoomed(wishedZoom), wishedZoom);
+	const courtSVG = generateCourt(domElement, courtConfigZoomed(wishedZoom), wishedZoom);
 	// Select only the right positions via the players array
 	const selectPlayersPositions = R.pick(players, playersPositions());
 	// Transform the player position via the wishedZoom constant

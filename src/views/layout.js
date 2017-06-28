@@ -1,5 +1,3 @@
-const addEventListener = require('./utils.js').addEventListener;
-const removeEventListener = require('./utils.js').removeEventListener;
 const clean = require('./utils.js').clean;
 const render = require('./utils.js').render;
 
@@ -14,9 +12,6 @@ function templateMenuTabs() {
 						<li class="nav-item">
 							<a class="nav-link" data-toggle="tab" href="#creation-lab" role="tab">Creation lab</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#account" role="tab">My account</a>
-						</li>
 					</ul>`;
 }
 
@@ -24,19 +19,12 @@ function templatePanes() {
 	return `<div id="menu-panes" class="tab-content">
 						<div class="tab-pane active" id="view-strategies" role="tabpanel"></div>
 						<div class="tab-pane" id="creation-lab" role="tabpanel"></div>
-						<div class="tab-pane" id="account" role="tabpanel"></div>
 					</div>`;
 }
 
-function clickOnMenu(event) {
-	console.log(event);
-}
-
-function renderLayout() {
+function renderLayout(db, domElementToRenderTemplate) {
 	clean('#menu-panes');
 	clean('#menu');
-	//removeEventListener('click', '.nav-link');
-	//addEventListener('click', '.nav-link', clickOnMenu);
-	render('body', templateMenuTabs);
-	render('body', templatePanes);
+	render(domElementToRenderTemplate, templateMenuTabs);
+	render(domElementToRenderTemplate, templatePanes);
 }

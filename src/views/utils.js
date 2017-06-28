@@ -21,7 +21,7 @@ function removeEventListener(eventType, domElement) {
 }
 
 function clean(domElement) {
-	return $(domElement).html("");
+	return $(domElement).html('');
 }
 
 function hide(domElement) {

@@ -5,28 +5,14 @@ const strategySelector = require("./strategies.js").strategySelector;
 const startFirebase = require("./database/firebase.js").startFirebase;
 const initLogging = require("./views/logging.js").initLogging;
 const renderLayout = require("./views/layout.js").renderLayout;
+const renderCreateStrategy = require("./views/create-strategy.js").renderCreateStrategy;
+const renderStrategySelection = require("./views/display-strategy.js").renderStrategySelection;
 
-const valueForSelectLens = R.lensPath(['target', 'value']);
-
-$('#runConfiguration').on('click', function(event) {
-	const functionToLaunch = $('#offensivePlaySelector').val();
-	const sizeToDisplay = $('#offensivePlaySize').val();
-
-	if (
-		R.and(
-			R.equals(R.isNil(functionToLaunch), false),
-			R.equals(R.isNil(sizeToDisplay), false)
-		)
-	) {
-		// Clean the body
-		cleanSVG();
-		// Run the strategy
-		strategySelector(sizeToDisplay, functionToLaunch);
-	}
-});
 
 const db = startFirebase();
 
 
-renderLayout();
+renderLayout(db, 'body');
 initLogging(db, '#creation-lab');
+renderStrategySelection(db, '#view-strategies');
+renderCreateStrategy(db, '#creation-lab')

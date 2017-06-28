@@ -1,5 +1,5 @@
 const R = require('ramda');
-var d3 = Object.assign({}, require("d3-shape"));
+const d3 = Object.assign({}, require("d3-shape"));
 const $ = require("jquery");
 
 

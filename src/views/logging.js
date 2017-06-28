@@ -9,44 +9,6 @@ const show = require('./utils.js').show;
 
 exports.initLogging = initLogging;
 
-function validateLogging(event) {
-	const email = $('#email-address').val();
-	const password = $('#password').val();
-
-	const notDefined = R.equals('');
-
-	if (R.any(notDefined, [email, password])) {
-		console.log(email, password);
-	} else {
-		connectToAccount(email, password);
-	}
-}
-
-function createAccount(db, email, password) {
-	return db.auth()
-		.createUserWithEmailAndPassword(email, password)
-		.catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			console.log(errorCode, errorMessage);
-		});
-}
-
-function connectToAccount(db, email, password) {
-	return db.auth()
-		.signInWithEmailAndPassword(email, password)
-		.catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			console.log(errorCode, errorMessage);
-
-			if (error) {
-				return createAccount(db, email, password);
-			}
-		});
-}
 
 function templateLogging() {
 	return `<div id="logging-component">
@@ -66,10 +28,64 @@ function templateLogging() {
 
 
 function initLogging(db, domElementToRenderTemplate) {
-	removeEventListener('click', '#logging');
-	addEventListener('click', '#logging', validateLogging);
+	function validateLogging(event) {
+		const email = $('#email-address').val();
+		const password = $('#password').val();
 
+		const notDefined = R.equals('');
+
+		if (R.any(notDefined, [email, password])) {
+			console.log(email, password);
+		} else {
+			connectToAccount(db, email, password);
+		}
+	}
+
+	function createAccount(db, email, password) {
+		return db.auth()
+			.createUserWithEmailAndPassword(email, password)
+			.catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				console.log(errorCode, errorMessage);
+			});
+	}
+
+	function connectToAccount(db, email, password) {
+		return db.auth()
+			.signInWithEmailAndPassword(email, password)
+			.catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				console.log(errorCode, errorMessage);
+
+				if (error) {
+					return createAccount(db, email, password);
+				}
+			});
+	}
+
+	function loggingState(db, loggingElement) {
+		const user = R.prop('currentUser', db.auth());
+
+		console.log(user);
+
+		if (R.equals(R.isNil(user), false)) {
+			// User is signed in.
+			hide(loggingElement);
+			show('#create-strategy');
+		} else {
+			// No user is signed in.
+			show(loggingElement);
+			hide('#create-strategy');
+		}
+	}
+	removeEventListener('click', '#logging');
 	clean('#logging-component');
+
+	addEventListener('click', '#logging', validateLogging);
 	render(domElementToRenderTemplate, templateLogging);
 	loggingState(db, '#logging-component');
 
@@ -77,21 +93,4 @@ function initLogging(db, domElementToRenderTemplate) {
 		.onAuthStateChanged(function(user) {
 			loggingState(db, '#logging-component');
 		});
-
-
-
-}
-
-function loggingState(db, loggingElement) {
-	const user = R.prop('currentUser', db.auth());
-
-	if (R.equals(R.isNil(user), false)) {
-		// User is signed in.
-		hide(loggingElement);
-		//$('#create-strategy').show();
-	} else {
-		// No user is signed in.
-		show(loggingElement);
-		//$('#create-strategy').hide();
-	}
 }

@@ -1,5 +1,5 @@
 const R = require('ramda');
-var d3 = Object.assign({}, require("d3-selection"), require("d3-transition"));
+const d3 = Object.assign({}, require("d3-selection"), require("d3-transition"));
 const mapIndexed = require('./utils.js').mapIndexed;
 
 exports.playMovements = playMovements;
