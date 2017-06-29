@@ -76,10 +76,12 @@ function initLogging(db, domElementToRenderTemplate) {
 			// User is signed in.
 			hide(loggingElement);
 			show('#create-strategy');
+			show('#strategy-creation-panes');
 		} else {
 			// No user is signed in.
 			show(loggingElement);
 			hide('#create-strategy');
+			hide('#strategy-creation-panes');
 		}
 	}
 	removeEventListener('click', '#logging');
