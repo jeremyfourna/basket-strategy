@@ -29,9 +29,16 @@ function templateMenuTabs() {
 }
 
 function templatePanes() {
+	const list = [{
+		id: 'offense',
+		label: "Select the offense players' starting position for your play"
+	}, {
+		id: 'defense',
+		label: "Select the defense players' starting position for your play"
+	}];
 	return `<div id="strategy-creation-panes" class="tab-content">
 						<div class="tab-pane active" id="select-players" role="tabpanel">
-							${templateSelectOffenseDefensePlayers()}
+							${templateSelectPlayers(list)}
 						</div>
 						<div class="tab-pane" id="select-ball-holder" role="tabpanel"></div>
 						<div class="tab-pane" id="define-movements" role="tabpanel"></div>
@@ -39,18 +46,21 @@ function templatePanes() {
 					</div>`;
 }
 
-function templateSelectOffenseDefensePlayers() {
-	return `<div class="row">
-						<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-							${templateSelectPlayers('offense')}
-						</div>
-						<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-							${templateSelectPlayers('defense')}
-						</div>
-				</div>`;
+function templateSelectPlayers(listOfElements) {
+	return R.concat(
+		R.reduce((prev, cur) => {
+			const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+																${templateSelectAndSeeSelection(R.prop('id', cur), R.prop('label', cur))}
+															</div>`;
+
+			return R.concat(prev, selectTemplate);
+
+		}, '<div class="row">', listOfElements),
+		'</div>'
+	);
 }
 
-function templateSelectPlayers(idForSelect) {
+function templateSelectAndSeeSelection(idForSelect, labelText) {
 	function appendSelectedOption(event) {
 		const selectValueLens = R.lensPath(['target', 'value']);
 		const value = R.view(selectValueLens, event);
@@ -91,14 +101,26 @@ function templateSelectPlayers(idForSelect) {
 
 	return `<form>
 						<div class="form-group">
-							<label for="#select-${idForSelect}-players">Select the ${idForSelect} players' starting position for your play</label>
-							<select id="select-${idForSelect}-players" class="custom-select mb-2 mr-sm-2 mb-sm-0">
-								${initSelectForPlayers(playersPositions())}
-							</select>
+							<label for="#select-${idForSelect}-players">${labelText}</label>
+							${componentSelect(
+								`select-${idForSelect}-players`,
+								initSelectForPlayers(playersPositions())
+							)}
 						</div>
 					</form>
 					<ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
 }
+
+function componentSelect(id, options) {
+	return `<select id="${id}" class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100">
+						${options}
+					</select>`;
+}
+
+
+
+
+
 
 function renderCreateStrategy(db, domElementToRenderTemplate) {
 	clean('#create-strategy');
