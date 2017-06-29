@@ -12,12 +12,7 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
 		const value = R.view(selectValueLens, event);
 		const label = $(`#select-${idForSelect}-players option:selected`).text();
 
-		const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">
-							${label}
-							<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</li>`;
+		const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
 
 		$(`#selected-${idForSelect}-players`).append(listItem);
 	}
