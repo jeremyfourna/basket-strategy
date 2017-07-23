@@ -19,16 +19,16 @@ function templateStrategySelection(listOfStrategy) {
 				<form class="form-inline">
 				<select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select an offensive play</option>
+					<optgroup label="Triple Post Offense">
+						<option value="strategySidelineTriangleOption1">Sideline Triangle Option 1</option>
+						<option value="strategySidelineTriangleOption2">Sideline Triangle Option 2</option>
+						<option value="strategySidelineTriangleOption3">Sideline Triangle Option 3</option>
+					</optgroup>
 					<option value="strategyNormalStar">Star formation normal</option>
 					<option value="strategyLowStar">Star formation low</option>
 					<option value="strategyTouchDowmLeft">Play from touch down on the left</option>
 					<option value="strategyTouchDowmRight">Play from touch down on the right</option>
 					<option value="strategyTouchBoxLeft">Box for touch down on the left</option>
-					<option value="strategyTriangle1">Triangle offense n°1</option>
-					<option value="strategyTriangle2">Triangle offense n°2</option>
-					<option value="strategyTriangle3">Triangle offense n°3</option>
-					<option value="strategyTriangle4">Triangle offense n°4</option>
-					<option value="strategyTriangle5">Triangle offense n°5</option>
 				</select>
 				<select id="offensivePlaySize" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select a display size</option>
