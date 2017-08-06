@@ -20,9 +20,10 @@ function templateStrategySelection(listOfStrategy) {
 				<select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select an offensive play</option>
 					<optgroup label="Triple Post Offense">
-						<option value="strategySidelineTriangleOption1">Sideline Triangle Option 1</option>
-						<option value="strategySidelineTriangleOption2">Sideline Triangle Option 2</option>
-						<option value="strategySidelineTriangleOption3">Sideline Triangle Option 3</option>
+						<option value="strategyStrongSideOffenseOption1">Strong Side Offense Option 1</option>
+						<option value="strategyStrongSideOffenseOption2">Strong Side Offense Option 2</option>
+						<option value="strategyStrongSideOffenseOption3">Strong Side Offense Option 3</option>
+						<option value="strategyStrongSideOffenseOption4">Strong Side Offense Option 4</option>
 					</optgroup>
 					<option value="strategyNormalStar">Star formation normal</option>
 					<option value="strategyLowStar">Star formation low</option>

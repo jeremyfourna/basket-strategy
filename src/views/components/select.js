@@ -21,20 +21,6 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
 		$(R.prop('currentTarget', event)).parent('li').remove();
 	}
 
-	function initSelectForPlayers(playersList) {
-		const options = R.join(
-			'',
-			R.values(R.map((cur) => {
-				return `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`;
-			}, playersList))
-		);
-
-		return R.concat(
-			'<option selected="selected" disabled="disabled">Select a player\'s position</option>',
-			options
-		);
-	}
-
 	removeEventListener('change', `#select-${idForSelect}-players`);
 	removeEventListener('click', `.remove-${idForSelect}-player`);
 	addEventListener('change', `#select-${idForSelect}-players`, appendSelectedOption);
@@ -57,4 +43,18 @@ function regularSelect(id, options) {
 	return `<select id="${id}" class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100">
 				${options}
 			</select>`;
+}
+
+function initSelectForPlayers(playersList) {
+	const options = R.join(
+		'',
+		R.values(R.map((cur) => {
+			return `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`;
+		}, playersList))
+	);
+
+	return R.concat(
+		'<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+		options
+	);
 }

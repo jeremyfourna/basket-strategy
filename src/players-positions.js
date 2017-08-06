@@ -188,31 +188,31 @@ function sfPositions() {
 		sfLeft: {
 			x: 1.80,
 			y: 5.17,
-			def: 'Babar',
+			def: 'SF left - Natural position',
 			className: 'sfLeft'
 		},
 		sfLeftPickBottom: {
 			x: 1.80,
 			y: 4.17,
-			def: 'Babar',
+			def: 'SF left - Position a little bit down the free throw line',
 			className: 'sfLeftPickBottom'
 		},
 		sfLeftPickBottomLeft: {
 			x: 1.09,
 			y: 4.47,
-			def: 'Babar',
+			def: 'SF left - Position a little bit closer to the side line',
 			className: 'sfLeftPickBottomLeft'
 		},
 		sfLeftPickBottomRight: {
 			x: 2.51,
 			y: 4.47,
-			def: 'Babar',
+			def: 'SF left - Pick on the left side',
 			className: 'sfLeftPickBottomRight'
 		},
 		sfLeftPickTop: {
 			x: 1.80,
 			y: 6.17,
-			def: 'Babar',
+			def: 'SF left - Position a little bit up the free throw line',
 			className: 'sfLeftPickTop'
 		},
 		sfLeftPickTopLeft: {

@@ -389,7 +389,7 @@ function strategyTouchBoxLeft(domElement, wishedZoom) {
 	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategySidelineTriangleOption1(domElement, wishedZoom) {
+function strategyStrongSideOffenseOption1(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'sgLeft',
@@ -401,68 +401,71 @@ function strategySidelineTriangleOption1(domElement, wishedZoom) {
 	// Define ball holder at the beginning of the play
 	const ballHolder = 'sgRight';
 	// List of moves
-	const listOfMoves = [[
-		{
+	const listOfMoves = [
+		[{
 			origin: 'ball',
 			destination: 'sfRight'
 		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'sfRightPickRight'
-		},{
+		}, {
 			action: 'regular',
 			origin: 'sgLeft',
 			destination: 'pg'
-		},{
+		}, {
 			action: 'regular',
 			origin: 'sfLeft',
 			destination: 'cLeftPickTopLeft'
-		}
-	],[
-		{
+		}],
+		[{
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'cornerRight'
-		}
-	],[
-		{
+		}],
+		[{
 			origin: 'ball',
 			destination: 'cRight'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sfRight',
 			destination: 'sfRightPickLeft'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'cornerRightPickLeft'
-		}
-	],[
-		{
+		}],
+		[{
 			action: 'sprint',
 			origin: 'sfRight',
 			destination: 'cRightPickBottom'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'pfRight'
-		}
-	],[
-		{
+		}, {
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'sgLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickBottomLeft'
+		}],
+		[{
 			origin: 'ball',
 			destination: 'cRightPickBottom'
-		}
-	],[
-		{
+		}],
+		[{
 			origin: 'ball',
 			destination: 'underRing'
-		}
-	]];
+		}]
+	];
 	// Display the stategy
 	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategySidelineTriangleOption2(domElement, wishedZoom) {
+function strategyStrongSideOffenseOption2(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'sgLeft',
@@ -474,68 +477,71 @@ function strategySidelineTriangleOption2(domElement, wishedZoom) {
 	// Define ball holder at the beginning of the play
 	const ballHolder = 'sgRight';
 	// List of moves
-	const listOfMoves = [[
-		{
+	const listOfMoves = [
+		[{
 			origin: 'ball',
 			destination: 'sfRight'
 		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'sfRightPickRight'
-		},{
+		}, {
 			action: 'regular',
 			origin: 'sgLeft',
 			destination: 'pg'
-		},{
+		}, {
 			action: 'regular',
 			origin: 'sfLeft',
 			destination: 'cLeftPickTopLeft'
-		}
-	],[
-		{
+		}],
+		[{
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'cornerRight'
-		}
-	],[
-		{
+		}],
+		[{
 			origin: 'ball',
 			destination: 'cRight'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sfRight',
 			destination: 'sfRightPickLeft'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'cornerRightPickLeft'
-		}
-	],[
-		{
+		}],
+		[{
 			action: 'sprint',
 			origin: 'sfRight',
 			destination: 'cRightPickBottom'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'pfRight'
-		}
-	],[
-		{
+		}, {
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'sgLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickBottomLeft'
+		}],
+		[{
 			origin: 'ball',
 			destination: 'pfRight'
-		}
-	],[
-		{
+		}],
+		[{
 			origin: 'ball',
 			destination: 'underRing'
-		}
-	]];
+		}]
+	];
 	// Display the stategy
 	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
-function strategySidelineTriangleOption3(domElement, wishedZoom) {
+function strategyStrongSideOffenseOption3(domElement, wishedZoom) {
 	// Players starting position
 	const defaultPlayersPositions = [
 		'sgLeft',
@@ -547,67 +553,109 @@ function strategySidelineTriangleOption3(domElement, wishedZoom) {
 	// Define ball holder at the beginning of the play
 	const ballHolder = 'sgRight';
 	// List of moves
-	const listOfMoves = [[
-		{
+	const listOfMoves = [
+		[{
 			origin: 'ball',
 			destination: 'sfRight'
 		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'sfRightPickRight'
-		},{
+		}, {
 			action: 'regular',
 			origin: 'sgLeft',
 			destination: 'pg'
-		},{
+		}, {
 			action: 'regular',
 			origin: 'sfLeft',
 			destination: 'cLeftPickTopLeft'
-		}
-	],[
-		{
+		}],
+		[{
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'cornerRight'
-		}
-	],[
-		{
+		}],
+		[{
 			origin: 'ball',
 			destination: 'cornerRight'
-		}],[
-		{
+		}],
+		[{
 			origin: 'ball',
 			destination: 'cRight'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sfRight',
 			destination: 'sfRightPickLeft'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sgRight',
 			destination: 'cornerRightPickLeft'
-		}
-	],[
-		{
-			action: 'sprint',
+		}],
+		[{
+			action: 'regular',
 			origin: 'sfRight',
 			destination: 'cRightPickBottom'
-		},{
+		}, {
 			action: 'sprint',
 			origin: 'sgRight',
-			destination: 'pfRight'
-		}
-	],[
-		{
+			destination: 'cRightPickTop'
+		}, {
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'sgLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickBottomLeft'
+		}],
+		[{
 			origin: 'ball',
-			destination: 'pfRight'
-		}
-	],[
-		{
+			destination: 'cRightPickTop'
+		}],
+		[{
 			origin: 'ball',
 			destination: 'underRing'
-		}
-	]];
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
+function strategyStrongSideOffenseOption4(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'sgLeft',
+		'sgRight',
+		'sfLeft',
+		'sfRight',
+		'cRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'sgRight';
+	// List of moves
+	const listOfMoves = [
+		[{
+			origin: 'ball',
+			destination: 'sfRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'sfRightPickRight'
+		}, {
+			action: 'regular',
+			origin: 'sgLeft',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cLeftPickTopLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'cornerRight'
+		}]
+	];
 	// Display the stategy
 	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
@@ -615,9 +663,10 @@ function strategySidelineTriangleOption3(domElement, wishedZoom) {
 function strategySelector(domElement, wishedZoom, strategyName) {
 	// Evaluate the strategyName to launch function
 	const condition = R.cond([
-		[R.equals('strategySidelineTriangleOption1'), R.always(strategySidelineTriangleOption1)],
-		[R.equals('strategySidelineTriangleOption2'), R.always(strategySidelineTriangleOption2)],
-		[R.equals('strategySidelineTriangleOption3'), R.always(strategySidelineTriangleOption3)],
+		[R.equals('strategyStrongSideOffenseOption1'), R.always(strategyStrongSideOffenseOption1)],
+		[R.equals('strategyStrongSideOffenseOption2'), R.always(strategyStrongSideOffenseOption2)],
+		[R.equals('strategyStrongSideOffenseOption3'), R.always(strategyStrongSideOffenseOption3)],
+		[R.equals('strategyStrongSideOffenseOption4'), R.always(strategyStrongSideOffenseOption4)],
 		[R.equals('strategyNormalStar'), R.always(strategyNormalStar)],
 		[R.equals('strategyLowStar'), R.always(strategyLowStar)],
 		[R.equals('strategyTouchDowmLeft'), R.always(strategyTouchDowmLeft)],
