@@ -21,7 +21,6 @@
 	},
 	"homepage": "https://github.com/jeremyfourna/basket-strategy#readme",
 	"dependencies": {
-		"bootstrap": "^4.0.0-beta",
 		"d3-selection": "^1.1.0",
 		"d3-shape": "^1.2.0",
 		"d3-transition": "^1.1.0",
