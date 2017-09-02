@@ -52893,23 +52893,23 @@ function sfPositions() {
 			className: 'sfLeftPickTopRight'
 		},
 		sfLeftPickLeft: {
-			x: 2.80,
+			x: 0.80,
 			y: 5.17,
 			def: 'Babar',
 			className: 'sfLeftPickLeft'
 		},
 		sfLeftPickRight: {
-			x: 0.80,
+			x: 2.80,
 			y: 5.17,
 			def: 'Babar',
 			className: 'sfLeftPickRight'
 		},
 		// Player movement after pick
-		sfLeftAfterPickBottomLeft: {
-			x: 3.47,
-			y: 5.8,
+		sfLeftAfterPickBottomRight: {
+			x: 2.51,
+			y: 3.47,
 			def: 'Babar',
-			className: 'sfLeftAfterPickBottomLeft'
+			className: 'sfLeftAfterPickBottomRight'
 		},
 		// Positions regarding space around SF right
 		sfRight: {
@@ -52968,8 +52968,8 @@ function sfPositions() {
 		},
 		// Player movement after pick
 		sfRightAfterPickBottomLeft: {
-			x: 11.53,
-			y: 5.8,
+			x: 12.49,
+			y: 3.47,
 			def: 'Babar',
 			className: 'sfRightAfterPickBottomLeft'
 		}
@@ -53190,7 +53190,7 @@ function pfPositions() {
 		},
 		pfCenterPickBottom: {
 			x: 7.5,
-			y: 6.8,
+			y: 4.8,
 			def: 'Babar',
 			className: 'pfCenterPickBottom'
 		},
@@ -53208,7 +53208,7 @@ function pfPositions() {
 		},
 		pfCenterPickTop: {
 			x: 7.5,
-			y: 4.8,
+			y: 6.8,
 			def: 'Babar',
 			className: 'pfCenterPickTop'
 		},
@@ -53332,7 +53332,7 @@ function cPositions() {
 			x: 9.95,
 			y: 1.88,
 			def: 'Babar',
-			className: 'cRightBottom'
+			className: 'cRightPickBottom'
 		},
 		cRightPickBottomLeft: {
 			x: 9.24,
@@ -53390,13 +53390,13 @@ function underRingPositions() {
 		},
 		underRingBottom: {
 			x: 7.5,
-			y: 2.545,
+			y: 0.545,
 			def: 'Babar',
 			className: 'underRingBottom'
 		},
 		underRingTop: {
 			x: 7.5,
-			y: 0.545,
+			y: 2.545,
 			def: 'Babar',
 			className: 'underRingTop'
 		},
@@ -54168,9 +54168,472 @@ function strategyStrongSideOffenseOption4(domElement, wishedZoom) {
 	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
+function issKreuzbergFlexOption1(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'sfLeft',
+		'sfRight',
+		'cornerLeft',
+		'cornerRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const listOfMoves = [
+		[{
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cornerLeftPickTopRight'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'cornerRightPickTopLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerLeft',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'sfRight'
+		}, {
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cLeftPickRight'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'cRightPickLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cornerRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'cornerLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'cornerRightPickTopLeft'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'cRightPickRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'cornerRight',
+			destination: 'cRightPickTop'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'underRingTopLeft'
+		}, {
+			action: 'regular',
+			origin: 'pg',
+			destination: 'pfCenterPickBottom'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingTopLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
+function issKreuzbergFlexOption2(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'sfLeft',
+		'sfRight',
+		'cornerLeft',
+		'cornerRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const listOfMoves = [
+		[{
+			action: 'regular',
+			origin: 'cornerLeft',
+			destination: 'sfLeftPickBottomRight'
+		}, {
+			action: 'regular',
+			origin: 'cornerRight',
+			destination: 'sfRightPickBottomLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'sfLeftAfterPickBottomRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'sfRightAfterPickBottomLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'cRightPickLeft'
+		}, {
+			action: 'regular',
+			origin: 'cornerLeft',
+			destination: 'sfLeft'
+		}, {
+			action: 'regular',
+			origin: 'cornerRight',
+			destination: 'sfRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cornerRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'cornerLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'cornerRightPickTopLeft'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'cRightPickRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'cornerRight',
+			destination: 'cRightPickTop'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'underRingTopLeft'
+		}, {
+			action: 'regular',
+			origin: 'pg',
+			destination: 'pfCenterPickBottom'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingTopLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
+function issKreuzbergFlexOption3(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'sfLeft',
+		'sfRight',
+		'cornerLeft',
+		'cornerRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const listOfMoves = [
+		[{
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cornerLeftPickTopRight'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'cornerRightPickTopLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerLeft',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'sfRight'
+		}, {
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cLeftPickRight'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'cRightPickLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cornerRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'cornerLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'cornerRightPickTopLeft'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'underRingTopLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'cornerRight',
+			destination: 'cRightPickBottom'
+		}, {
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'cRightPickRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'cornerRight',
+			destination: 'underRingTopLeft'
+		}, {
+			action: 'regular',
+			origin: 'pg',
+			destination: 'pfCenterPickBottom'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingTopLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
+function issKreuzberg212Option1(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'sgLeft',
+		'sgRight',
+		'sfLeft',
+		'sfRight',
+		'pfCenter'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'sgLeft';
+	// List of moves
+	const listOfMoves = [
+		[{
+			origin: 'ball',
+			destination: 'pfCenter'
+		}, {
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'pfCenterPickRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'pfCenterPickLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'cRightPickLeft'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'cLeftPickRight'
+		}, {
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'sgLeft'
+		}, {
+			action: 'regular',
+			origin: 'sfRight',
+			destination: 'sgRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'sfRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'sfLeft'
+		}, {
+			origin: 'ball',
+			destination: 'sgRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'cLeftPickLeft'
+		}, {
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cLeftPickTop'
+		}, {
+			action: 'regular',
+			origin: 'pfCenter',
+			destination: 'cLeftPickRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgRight',
+			destination: 'pfLeftPickTop'
+		}, {
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickBottomRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'underRingTopRight'
+		}, {
+			action: 'regular',
+			origin: 'pfCenter',
+			destination: 'pfCenterPickBottom'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingTopRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
+function issKreuzberg212Option2(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'sgLeft',
+		'sgRight',
+		'sfLeft',
+		'sfRight',
+		'pfCenter'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'sgLeft';
+	// List of moves
+	const listOfMoves = [
+		[{
+			origin: 'ball',
+			destination: 'sgRight'
+		}, {
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'pfCenterPickRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'cRightPickLeft'
+		}, {
+			action: 'regular',
+			origin: 'pfCenter',
+			destination: 'cLeftPickTopRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickTop'
+		}, {
+			action: 'regular',
+			origin: 'sgLeft',
+			destination: 'cLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sgLeft',
+			destination: 'pfLeftPickTop'
+		}, {
+			action: 'regular',
+			origin: 'sfLeft',
+			destination: 'cLeftPickRight'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'underRingTopRight'
+		}, {
+			action: 'regular',
+			origin: 'pfCenter',
+			destination: 'pfCenter'
+		}, {
+			action: 'regular',
+			origin: 'sgLeft',
+			destination: 'sgLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRingTopRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
 function strategySelector(domElement, wishedZoom, strategyName) {
 	// Evaluate the strategyName to launch function
 	const condition = R.cond([
+		[R.equals('issKreuzbergFlexOption1'), R.always(issKreuzbergFlexOption1)],
+		[R.equals('issKreuzbergFlexOption2'), R.always(issKreuzbergFlexOption2)],
+		[R.equals('issKreuzbergFlexOption3'), R.always(issKreuzbergFlexOption3)],
+		[R.equals('issKreuzberg212Option1'), R.always(issKreuzberg212Option1)],
+		[R.equals('issKreuzberg212Option2'), R.always(issKreuzberg212Option2)],
 		[R.equals('strategyStrongSideOffenseOption1'), R.always(strategyStrongSideOffenseOption1)],
 		[R.equals('strategyStrongSideOffenseOption2'), R.always(strategyStrongSideOffenseOption2)],
 		[R.equals('strategyStrongSideOffenseOption3'), R.always(strategyStrongSideOffenseOption3)],
@@ -54688,6 +55151,15 @@ function templateStrategySelection(listOfStrategy) {
 				<form class="form-inline">
 				<select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select an offensive play</option>
+					<optgroup label="ISS Kreuzberg - Flex">
+						<option value="issKreuzbergFlexOption1">Option 1</option>
+						<option value="issKreuzbergFlexOption2">Option 2</option>
+						<option value="issKreuzbergFlexOption3">Option 3</option>
+					</optgroup>
+					<optgroup label="ISS Kreuzberg - 2 1 2">
+						<option value="issKreuzberg212Option1">Option 1</option>
+						<option value="issKreuzberg212Option2">Option 2</option>
+					</optgroup>
 					<optgroup label="Triple Post Offense">
 						<option value="strategyStrongSideOffenseOption1">Strong Side Offense Option 1</option>
 						<option value="strategyStrongSideOffenseOption2">Strong Side Offense Option 2</option>

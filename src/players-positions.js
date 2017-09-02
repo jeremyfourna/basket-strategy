@@ -228,23 +228,23 @@ function sfPositions() {
 			className: 'sfLeftPickTopRight'
 		},
 		sfLeftPickLeft: {
-			x: 2.80,
+			x: 0.80,
 			y: 5.17,
 			def: 'Babar',
 			className: 'sfLeftPickLeft'
 		},
 		sfLeftPickRight: {
-			x: 0.80,
+			x: 2.80,
 			y: 5.17,
 			def: 'Babar',
 			className: 'sfLeftPickRight'
 		},
 		// Player movement after pick
-		sfLeftAfterPickBottomLeft: {
-			x: 3.47,
-			y: 5.8,
+		sfLeftAfterPickBottomRight: {
+			x: 2.51,
+			y: 3.47,
 			def: 'Babar',
-			className: 'sfLeftAfterPickBottomLeft'
+			className: 'sfLeftAfterPickBottomRight'
 		},
 		// Positions regarding space around SF right
 		sfRight: {
@@ -303,8 +303,8 @@ function sfPositions() {
 		},
 		// Player movement after pick
 		sfRightAfterPickBottomLeft: {
-			x: 11.53,
-			y: 5.8,
+			x: 12.49,
+			y: 3.47,
 			def: 'Babar',
 			className: 'sfRightAfterPickBottomLeft'
 		}
@@ -525,7 +525,7 @@ function pfPositions() {
 		},
 		pfCenterPickBottom: {
 			x: 7.5,
-			y: 6.8,
+			y: 4.8,
 			def: 'Babar',
 			className: 'pfCenterPickBottom'
 		},
@@ -543,7 +543,7 @@ function pfPositions() {
 		},
 		pfCenterPickTop: {
 			x: 7.5,
-			y: 4.8,
+			y: 6.8,
 			def: 'Babar',
 			className: 'pfCenterPickTop'
 		},
@@ -667,7 +667,7 @@ function cPositions() {
 			x: 9.95,
 			y: 1.88,
 			def: 'Babar',
-			className: 'cRightBottom'
+			className: 'cRightPickBottom'
 		},
 		cRightPickBottomLeft: {
 			x: 9.24,
@@ -725,13 +725,13 @@ function underRingPositions() {
 		},
 		underRingBottom: {
 			x: 7.5,
-			y: 2.545,
+			y: 0.545,
 			def: 'Babar',
 			className: 'underRingBottom'
 		},
 		underRingTop: {
 			x: 7.5,
-			y: 0.545,
+			y: 2.545,
 			def: 'Babar',
 			className: 'underRingTop'
 		},

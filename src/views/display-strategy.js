@@ -19,6 +19,15 @@ function templateStrategySelection(listOfStrategy) {
 				<form class="form-inline">
 				<select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select an offensive play</option>
+					<optgroup label="ISS Kreuzberg - Flex">
+						<option value="issKreuzbergFlexOption1">Option 1</option>
+						<option value="issKreuzbergFlexOption2">Option 2</option>
+						<option value="issKreuzbergFlexOption3">Option 3</option>
+					</optgroup>
+					<optgroup label="ISS Kreuzberg - 2 1 2">
+						<option value="issKreuzberg212Option1">Option 1</option>
+						<option value="issKreuzberg212Option2">Option 2</option>
+					</optgroup>
 					<optgroup label="Triple Post Offense">
 						<option value="strategyStrongSideOffenseOption1">Strong Side Offense Option 1</option>
 						<option value="strategyStrongSideOffenseOption2">Strong Side Offense Option 2</option>
