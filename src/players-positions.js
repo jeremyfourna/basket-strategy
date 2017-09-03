@@ -178,6 +178,12 @@ function sgPositions() {
 			y: 7.84,
 			def: 'SG right - Position a little bit on the right',
 			className: 'sgRightPickRight'
+		},
+		// Player movement after pick
+		sgRightAfterPickBottomLeft: {
+			x: 8.24,
+			y: 7.14,
+			className: 'sgRightAfterPickBottomLeft'
 		}
 	};
 }

@@ -27,6 +27,7 @@ function templateStrategySelection(listOfStrategy) {
 					<optgroup label="ISS Kreuzberg - 2 1 2">
 						<option value="issKreuzberg212Option1">Option 1</option>
 						<option value="issKreuzberg212Option2">Option 2</option>
+						<option value="issKreuzberg212Option3">Option 3</option>
 					</optgroup>
 					<optgroup label="Triple Post Offense">
 						<option value="strategyStrongSideOffenseOption1">Strong Side Offense Option 1</option>
