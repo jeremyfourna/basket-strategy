@@ -54744,6 +54744,109 @@ function issKreuzberg212Option3(domElement, wishedZoom) {
 	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
+function issKreuzberg122Option1(domElement, wishedZoom) {
+	// Players starting position
+	const defaultPlayersPositions = [
+		'pg',
+		'sfLeft',
+		'sfRight',
+		'cLeft',
+		'cRight'
+	];
+	// Define ball holder at the beginning of the play
+	const ballHolder = 'pg';
+	// List of moves
+	const listOfMoves = [
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'cLeftPickBottom'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'cRightPickBottom'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'sfRight'
+		}, {
+			action: 'sprint',
+			origin: 'sfRight',
+			destination: 'sfLeft'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sfLeft'
+		}, {
+			action: 'sprint',
+			origin: 'cRight',
+			destination: 'pfCenterPickLeft'
+		}, {
+			action: 'regular',
+			origin: 'pg',
+			destination: 'sfRightPickLeft'
+		}, {
+			action: 'regular',
+			origin: 'cLeft',
+			destination: 'cLeftPickBottom'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'sfLeft',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'pg',
+			destination: 'sfRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'pg'
+		}, {
+			action: 'regular',
+			origin: 'cRight',
+			destination: 'pfCenterPickRight'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'sfRight'
+		}, {
+			action: 'sprint',
+			origin: 'cRight',
+			destination: 'sfRightPickLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'sfRightPickTopLeft'
+		}, {
+			action: 'sprint',
+			origin: 'ball',
+			destination: 'sfRightPickTopLeft'
+		}],
+		[{
+			action: 'sprint',
+			origin: 'pg',
+			destination: 'pfCenterPickBottom'
+		}, {
+			action: 'sprint',
+			origin: 'cRight',
+			destination: 'cRightPickBottom'
+		}, {
+			action: 'sprint',
+			origin: 'ball',
+			destination: 'pfCenterPickBottom'
+		}],
+		[{
+			origin: 'ball',
+			destination: 'underRing'
+		}]
+	];
+	// Display the stategy
+	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+}
+
 function strategySelector(domElement, wishedZoom, strategyName) {
 	// Evaluate the strategyName to launch function
 	const condition = R.cond([
@@ -54753,6 +54856,7 @@ function strategySelector(domElement, wishedZoom, strategyName) {
 		[R.equals('issKreuzberg212Option1'), R.always(issKreuzberg212Option1)],
 		[R.equals('issKreuzberg212Option2'), R.always(issKreuzberg212Option2)],
 		[R.equals('issKreuzberg212Option3'), R.always(issKreuzberg212Option3)],
+		[R.equals('issKreuzberg122Option1'), R.always(issKreuzberg122Option1)],
 		[R.equals('strategyStrongSideOffenseOption1'), R.always(strategyStrongSideOffenseOption1)],
 		[R.equals('strategyStrongSideOffenseOption2'), R.always(strategyStrongSideOffenseOption2)],
 		[R.equals('strategyStrongSideOffenseOption3'), R.always(strategyStrongSideOffenseOption3)],
@@ -55275,16 +55379,18 @@ function templateStrategySelection(listOfStrategy) {
 						<option value="issKreuzbergFlexOption2">Option 2</option>
 						<option value="issKreuzbergFlexOption3">Option 3</option>
 					</optgroup>
+					<optgroup label="ISS Kreuzberg - 1 2 2">
+						<option value="issKreuzberg122Option1">Option 1</option>
+					</optgroup>
 					<optgroup label="ISS Kreuzberg - 2 1 2">
 						<option value="issKreuzberg212Option1">Option 1</option>
 						<option value="issKreuzberg212Option2">Option 2</option>
 						<option value="issKreuzberg212Option3">Option 3</option>
 					</optgroup>
-					<optgroup label="Triple Post Offense">
-						<option value="strategyStrongSideOffenseOption1">Strong Side Offense Option 1</option>
-						<option value="strategyStrongSideOffenseOption2">Strong Side Offense Option 2</option>
-						<option value="strategyStrongSideOffenseOption3">Strong Side Offense Option 3</option>
-						<option value="strategyStrongSideOffenseOption4">Strong Side Offense Option 4</option>
+					<optgroup label="ISS Kreuzberg - 2 3">
+						<option value="strategyStrongSideOffenseOption1">Option 1</option>
+						<option value="strategyStrongSideOffenseOption2">Option 2</option>
+						<option value="strategyStrongSideOffenseOption3">Option 3</option>
 					</optgroup>
 					<option value="strategyNormalStar">Star formation normal</option>
 					<option value="strategyLowStar">Star formation low</option>
@@ -55295,7 +55401,7 @@ function templateStrategySelection(listOfStrategy) {
 				<select id="offensivePlaySize" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select a display size</option>
 					<option value="10">10</option>
-					<option value="20">20</option>
+					<option value="20">20 - Best mobile view</option>
 					<option value="30">30</option>
 					<option value="40">40</option>
 					<option value="50">50</option>
@@ -55364,7 +55470,6 @@ function renderLayout(db, domElementToRenderTemplate) {
 	render(domElementToRenderTemplate, templateMenuTabs);
 	render(domElementToRenderTemplate, templatePanes);
 }
-
 },{"./utils.js":494}],493:[function(require,module,exports){
 const R = require('ramda');
 const $ = require("jquery");
