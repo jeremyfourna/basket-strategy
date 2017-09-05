@@ -1,4 +1,4 @@
-const firebase = require("firebase");
+const firebase = require('firebase');
 const config = require('./config.js').config;
 // Create a file named config.js
 // In this file create a function named config that return an object
@@ -17,8 +17,8 @@ const config = require('./config.js').config;
 exports.startFirebase = startFirebase;
 
 function startFirebase() {
-	// Initialize Firebase
-	return firebase.initializeApp(config());
+  // Initialize Firebase
+  return firebase.initializeApp(config());
 }
 // Use this function like this
 // const db = startFirebase();

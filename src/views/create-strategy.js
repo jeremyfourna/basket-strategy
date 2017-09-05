@@ -1,5 +1,5 @@
 const R = require('ramda');
-const $ = require("jquery");
+const $ = require('jquery');
 const clean = require('./utils.js').clean;
 const render = require('./utils.js').render;
 const addEventListener = require('./utils.js').addEventListener;
@@ -11,7 +11,7 @@ const regularSelect = require('./components/select.js').regularSelect;
 exports.renderCreateStrategy = renderCreateStrategy;
 
 function templateMenuTabs() {
-	return `<div id="create-strategy">
+  return `<div id="create-strategy">
 				<ul id="strategy-creation-menu" class="nav nav-tabs" role="tablist">
 					<li class="nav-item">
 						<a class="nav-link active" data-toggle="tab" href="#select-players" role="tab">Select players</a>
@@ -30,7 +30,7 @@ function templateMenuTabs() {
 }
 
 function templatePanes(list) {
-	return `<div id="strategy-creation-panes" class="tab-content">
+  return `<div id="strategy-creation-panes" class="tab-content">
 				<div class="tab-pane active" id="select-players" role="tabpanel">
 					${templateSelectPlayers(list)}
 				</div>
@@ -45,193 +45,186 @@ function templatePanes(list) {
 }
 
 function templateSelectPlayers(listOfElements) {
-	return R.concat(
-		R.reduce((prev, cur) => {
-			const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+  return R.concat(
+    R.reduce((prev, cur) => {
+      const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 										${selectAndSeeSelection(
-											R.prop('id', cur),
-											R.prop('label', cur),
-											playersPositions()
-										)}
+    R.prop('id', cur),
+    R.prop('label', cur),
+    playersPositions()
+  )}
 									</div>`;
 
-			return R.concat(prev, selectTemplate);
-
-		}, '<div class="row">', listOfElements),
-		'</div>'
-	);
+      return R.concat(prev, selectTemplate);
+    }, '<div class="row">', listOfElements),
+    '</div>'
+  );
 }
 
 
 function initSelectForPlayers(playersList) {
-	const options = R.join(
-		'',
-		R.values(R.map((cur) => {
-			return `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`;
-		}, playersList))
-	);
+  const options = R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, playersList))
+  );
 
-	return R.concat(
-		'<option selected="selected" disabled="disabled">Select a player\'s position</option>',
-		options
-	);
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+    options
+  );
 }
 
 function templateSelect(idForSelect, labelText) {
-	return `<form>
+  return `<form>
 				<div class="form-group">
 					<label for="${idForSelect}">${labelText}</label>
 					${regularSelect(
-						idForSelect,
-						initSelectForPlayers(playersPositions())
-					)}
+    idForSelect,
+    initSelectForPlayers(playersPositions())
+  )}
 				</div>
 			</form>`;
 }
 
 function templateDrive() {
-	const speedTypes = [{
-		value: 'sprint',
-		label: 'Fast'
-	}, {
-		value: 'regular',
-		label: 'Normal'
-	}];
-	return `<div class="form-group" data-action="drive">
+  const speedTypes = [{
+    value: 'sprint',
+    label: 'Fast'
+  }, {
+    value: 'regular',
+    label: 'Normal'
+  }];
+  return `<div class="form-group" data-action="drive">
 				<label for="#origin-drive">Where does the player start ?</label>
 				${regularSelect(
-					'origin-drive',
-					initSelectForPlayers(playersPositions())
-				)}
+    'origin-drive',
+    initSelectForPlayers(playersPositions())
+  )}
 			</div>
 			<div class="form-group" data-action="drive">
 				<label for="#destination-drive">Where does the player stop ?</label>
 				${regularSelect(
-					'destination-drive',
-					initSelectForPlayers(playersPositions())
-				)}
+    'destination-drive',
+    initSelectForPlayers(playersPositions())
+  )}
 			</div>
 			<div class="form-group" data-action="drive">
 				<label for="#speed-drive">What is the speed of the player ?</label>
 				${regularSelect(
-					'speed-drive',
-					mapActionTypes('Select the speed of the player', speedTypes)
-				)}
+    'speed-drive',
+    mapActionTypes('Select the speed of the player', speedTypes)
+  )}
 			</div>`;
 }
 
 function templatePass() {
-	return `<div class="form-group" data-action="pass">
+  return `<div class="form-group" data-action="pass">
 				<label for="#origin-drive">Where does the ball go ?</label>
 				${regularSelect(
-					'destination-pass',
-					initSelectForPlayers(playersPositions())
-				)}
+    'destination-pass',
+    initSelectForPlayers(playersPositions())
+  )}
 			</div>`;
 }
 
 function templateMovement() {
-	const speedTypes = [{
-		value: 'sprint',
-		label: 'Fast'
-	}, {
-		value: 'regular',
-		label: 'Normal'
-	}];
+  const speedTypes = [{
+    value: 'sprint',
+    label: 'Fast'
+  }, {
+    value: 'regular',
+    label: 'Normal'
+  }];
 
-	return `<div class="form-group" data-action="move">
+  return `<div class="form-group" data-action="move">
 				<label for="#origin-movement">Which player will move ?</label>
 				${regularSelect(
-					'origin-movement',
-					initSelectForPlayers(getSelectedPlayers('selected-offense-players', 'selected-defense-players'))
-				)}
+    'origin-movement',
+    initSelectForPlayers(getSelectedPlayers('selected-offense-players', 'selected-defense-players'))
+  )}
 			</div>
 			<div class="form-group" data-action="move">
 				<label for="#destination-movement">To which position the player will go ?</label>
 				${regularSelect(
-					'destination-movement',
-					initSelectForPlayers(playersPositions())
-				)}
+    'destination-movement',
+    initSelectForPlayers(playersPositions())
+  )}
 			</div>
 			<div class="form-group" data-action="move">
 				<label for="#speed-movement">What is the speed of the player ?</label>
 				${regularSelect(
-					'speed-movement',
-					mapActionTypes('Select the speed of the player', speedTypes)
-				)}
+    'speed-movement',
+    mapActionTypes('Select the speed of the player', speedTypes)
+  )}
 			</div>`;
 }
 
 function mapActionTypes(defaultLabel, listOfTypes) {
-	const options = R.join(
-		'',
-		R.values(R.map((cur) => {
-			return `<option value="${R.prop('value', cur)}" data-label="${R.prop('label', cur)}">${R.prop('label', cur)}</option>`;
-		}, listOfTypes))
-	);
+  const options = R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('value', cur)}" data-label="${R.prop('label', cur)}">${R.prop('label', cur)}</option>`, listOfTypes))
+  );
 
-	return R.concat(
-		`<option selected="selected" disabled="disabled">${defaultLabel}</option>`,
-		options
-	);
+  return R.concat(
+    `<option selected="selected" disabled="disabled">${defaultLabel}</option>`,
+    options
+  );
 }
 
 function getSelectedPlayers(domIdForOffenseSelectedPlayersList, domIdForDefenseSelectedPlayersList) {
-	function getListOfSelectedPlayers(domElement) {
-		return $(`#${domElement} li`).map(function(index, element) {
-			return {
-				className: $(element).attr('data-player-position'),
-				// We remove the x at the end of the text
-				def: R.init($(element).text())
-			};
-		}).get();
-	}
+  function getListOfSelectedPlayers(domElement) {
+    return $(`#${domElement} li`).map((index, element) => ({
+      className: $(element).attr('data-player-position'),
+      // We remove the x at the end of the text
+      def: R.init($(element).text())
+    })).get();
+  }
 
-	const offenseList = getListOfSelectedPlayers(domIdForOffenseSelectedPlayersList);
-	const defenseList = getListOfSelectedPlayers(domIdForDefenseSelectedPlayersList);
+  const offenseList = getListOfSelectedPlayers(domIdForOffenseSelectedPlayersList);
+  const defenseList = getListOfSelectedPlayers(domIdForDefenseSelectedPlayersList);
 
-	return R.concat(offenseList, defenseList);
+  return R.concat(offenseList, defenseList);
 }
 
 function templateMoves() {
-	function changeOnSelect(event) {
-		const selectValueLens = R.lensPath(['target', 'value']);
-		const value = R.view(selectValueLens, event);
+  function changeOnSelect(event) {
+    const selectValueLens = R.lensPath(['target', 'value']);
+    const value = R.view(selectValueLens, event);
 
-		clean('#move-options');
-		console.log(value);
+    clean('#move-options');
+    console.log(value);
 
-		const cond = R.cond([
-			[R.equals('drive'), R.always(templateDrive)],
-			[R.equals('pass'), R.always(templatePass)],
-			[R.equals('move'), R.always(templateMovement)]
-		]);
+    const cond = R.cond([
+      [R.equals('drive'), R.always(templateDrive)],
+      [R.equals('pass'), R.always(templatePass)],
+      [R.equals('move'), R.always(templateMovement)]
+    ]);
 
-		render('#move-options', cond(value));
-	}
+    render('#move-options', cond(value));
+  }
 
 
-	const actionTypes = [{
-		value: 'drive',
-		label: 'Player dribble with the ball'
-	}, {
-		value: 'pass',
-		label: 'The ball move between players'
-	}, {
-		value: 'move',
-		label: 'The player move to another position'
-	}];
+  const actionTypes = [{
+    value: 'drive',
+    label: 'Player dribble with the ball'
+  }, {
+    value: 'pass',
+    label: 'The ball move between players'
+  }, {
+    value: 'move',
+    label: 'The player move to another position'
+  }];
 
-	removeEventListener('change', '#action-type');
-	addEventListener('change', '#action-type', changeOnSelect);
+  removeEventListener('change', '#action-type');
+  addEventListener('change', '#action-type', changeOnSelect);
 
-	return `<form>
+  return `<form>
 				<div class="form-group">
 					<label for="#action-type">What action will be done ?</label>
 					${regularSelect(
-						'action-type',
-						mapActionTypes('Select an action to perform', actionTypes)
-					)}
+    'action-type',
+    mapActionTypes('Select an action to perform', actionTypes)
+  )}
 				</div>
 			</form>
 			<form id="move-options">
@@ -241,16 +234,16 @@ function templateMoves() {
 
 
 function renderCreateStrategy(db, domElementToRenderTemplate) {
-	const list = [{
-		id: 'offense',
-		label: "Select the offense players' starting position for your play"
-	}, {
-		id: 'defense',
-		label: "Select the defense players' starting position for your play"
-	}];
+  const list = [{
+    id: 'offense',
+    label: "Select the offense players' starting position for your play"
+  }, {
+    id: 'defense',
+    label: "Select the defense players' starting position for your play"
+  }];
 
-	clean('#create-strategy');
-	clean('#strategy-creation-panes');
-	render(domElementToRenderTemplate, templateMenuTabs);
-	render(domElementToRenderTemplate, templatePanes, list);
+  clean('#create-strategy');
+  clean('#strategy-creation-panes');
+  render(domElementToRenderTemplate, templateMenuTabs);
+  render(domElementToRenderTemplate, templatePanes, list);
 }

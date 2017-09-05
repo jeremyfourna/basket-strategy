@@ -9,13 +9,11 @@ const cleanSVG = require('../utils.js').cleanSVG;
 exports.renderStrategySelection = renderStrategySelection;
 
 function templateStrategySelection(listOfStrategy) {
-	function listOfStrategyString(list) {
-		return R.reduce((prev, cur) => {
-			return R.concat(prev, `<option value="${R.prop('id', cur)}">${R.prop('name', cur)}</option>`);
-		}, '', list);
-	}
+  function listOfStrategyString(list) {
+    return R.reduce((prev, cur) => R.concat(prev, `<option value="${R.prop('id', cur)}">${R.prop('name', cur)}</option>`), '', list);
+  }
 
-	return `<div class="presentation">
+  return `<div class="presentation">
 				<form class="form-inline">
 				<select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
 					<option disabled="disabled" selected="selected">Select an offensive play</option>
@@ -59,28 +57,27 @@ function templateStrategySelection(listOfStrategy) {
 }
 
 function renderStrategySelection(db, domElementToRenderTemplate) {
-	function changeStrategyToDisplay(event) {
-		const valueForSelectLens = R.lensPath(['target', 'value']);
-		const functionToLaunch = $('#offensivePlaySelector').val();
-		const sizeToDisplay = $('#offensivePlaySize').val();
+  function changeStrategyToDisplay(event) {
+    const valueForSelectLens = R.lensPath(['target', 'value']);
+    const functionToLaunch = $('#offensivePlaySelector').val();
+    const sizeToDisplay = $('#offensivePlaySize').val();
 
-		if (
-			R.and(
-				R.equals(R.isNil(functionToLaunch), false),
-				R.equals(R.isNil(sizeToDisplay), false)
-			)
-		) {
-			// Clean the body
-			cleanSVG();
-			// Run the strategy
-			strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
-		}
-	}
+    if (
+      R.and(
+        R.equals(R.isNil(functionToLaunch), false),
+        R.equals(R.isNil(sizeToDisplay), false)
+      )
+    ) {
+      // Clean the body
+      cleanSVG();
+      // Run the strategy
+      strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
+    }
+  }
 
-	removeEventListener('click', '#runConfiguration');
-	clean(domElementToRenderTemplate);
+  removeEventListener('click', '#runConfiguration');
+  clean(domElementToRenderTemplate);
 
-	addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
-	render(domElementToRenderTemplate, templateStrategySelection, []);
-
+  addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
+  render(domElementToRenderTemplate, templateStrategySelection, []);
 }

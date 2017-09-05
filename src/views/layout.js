@@ -5,7 +5,7 @@ const render = require('./utils.js').render;
 exports.renderLayout = renderLayout;
 
 function templateMenuTabs() {
-	return `<ul id="menu" class="nav nav-tabs" role="tablist">
+  return `<ul id="menu" class="nav nav-tabs" role="tablist">
 						<li class="nav-item">
 							<a class="nav-link active" data-toggle="tab" href="#view-strategies" role="tab">View strategies</a>
 						</li>
@@ -16,15 +16,15 @@ function templateMenuTabs() {
 }
 
 function templatePanes() {
-	return `<div id="menu-panes" class="tab-content">
+  return `<div id="menu-panes" class="tab-content">
 						<div class="tab-pane active" id="view-strategies" role="tabpanel"></div>
 						<div class="tab-pane" id="creation-lab" role="tabpanel"></div>
 					</div>`;
 }
 
 function renderLayout(db, domElementToRenderTemplate) {
-	clean('#menu-panes');
-	clean('#menu');
-	render(domElementToRenderTemplate, templateMenuTabs);
-	render(domElementToRenderTemplate, templatePanes);
+  clean('#menu-panes');
+  clean('#menu');
+  render(domElementToRenderTemplate, templateMenuTabs);
+  render(domElementToRenderTemplate, templatePanes);
 }
