@@ -11,7 +11,6 @@ const {
   playersPositionsGrouped
 } = require('../players-positions.js');
 const {
-  selectAndSeeSelection,
   regularSelect,
   selectOptGrpAndSeeSelection
 } = require('./components/select.js');
@@ -21,10 +20,10 @@ function templateSelectPlayers(listOfElements) {
     R.reduce((prev, cur) => {
       const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 ${selectOptGrpAndSeeSelection(
-                                  R.prop('id', cur),
-                                  R.prop('label', cur),
-                                  playersPositionsGrouped()
-                                )}
+    R.prop('id', cur),
+    R.prop('label', cur),
+    playersPositionsGrouped()
+  )}
                                </div>`;
       return R.concat(prev, selectTemplate);
     }, '<div class="row">', listOfElements),
@@ -211,9 +210,9 @@ function templateMoves() {
             <div class="form-group">
               <label for="#action-type">What action will be done ?</label>
               ${regularSelect(
-                'action-type',
-                mapActionTypes('Select an action to perform', actionTypes)
-              )}
+    'action-type',
+    mapActionTypes('Select an action to perform', actionTypes)
+  )}
             </div>
           </form>
           <form id="move-options"></form>

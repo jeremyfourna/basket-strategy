@@ -27,9 +27,9 @@ function initSelectOptGrpForPlayers(playersList) {
   function group(element) {
     return `<optgroup label="${R.head(element)}">
               ${R.join(
-                '',
-                R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, R.last(element)))
-              )}
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, R.last(element)))
+  )}
             </optgroup>`;
   }
 
@@ -95,9 +95,9 @@ function selectOptGrpAndSeeSelection(idForSelect, labelText, listForSelectOption
             <div class="form-group">
               <label for="#select-${idForSelect}-players">${labelText}</label>
               ${regularSelect(
-                `select-${idForSelect}-players`,
-                initSelectOptGrpForPlayers(listForSelectOptions)
-              )}
+    `select-${idForSelect}-players`,
+    initSelectOptGrpForPlayers(listForSelectOptions)
+  )}
             </div>
           </form>
           <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;

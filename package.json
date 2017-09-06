@@ -6,7 +6,8 @@
   "scripts": {
     "test": "nyc mocha --timeout=3000",
     "build": "webpack",
-    "dev-server": "node_modules/.bin/webpack-dev-server"
+    "dev-server": "node_modules/.bin/webpack-dev-server",
+    "clean": "eslint --fix src/"
   },
   "repository": {
     "type": "git",
