@@ -1,8 +1,6 @@
 const R = require('ramda');
 const d3 = Object.assign({}, require('d3-selection'), require('d3-transition'));
-const mapIndexed = require('./utils.js').mapIndexed;
-
-exports.playMovements = playMovements;
+const { mapIndexed } = require('./utils.js');
 
 function moveFromTo(origin, destination, speed, waitingTime, elementClassName) {
   const element = d3.select(elementClassName);
@@ -29,7 +27,7 @@ function moveBallFromTo(origin, destination, waitingTime, elementClassName) {
 }
 
 function playMovements(movementsList) {
-  mapIndexed((cur, index) => {
+  mapIndexed((cur) => {
     if (R.equals(R.head(cur), 'moveBallFromTo')) {
       R.apply(moveBallFromTo, R.tail(cur));
     } else {
@@ -37,3 +35,5 @@ function playMovements(movementsList) {
     }
   }, movementsList);
 }
+
+exports.playMovements = playMovements;

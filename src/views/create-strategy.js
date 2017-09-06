@@ -1,59 +1,27 @@
 const R = require('ramda');
 const $ = require('jquery');
-const clean = require('./utils.js').clean;
-const render = require('./utils.js').render;
-const addEventListener = require('./utils.js').addEventListener;
-const removeEventListener = require('./utils.js').removeEventListener;
-const playersPositions = require('../players-positions.js').playersPositions;
-const selectAndSeeSelection = require('./components/select.js').selectAndSeeSelection;
-const regularSelect = require('./components/select.js').regularSelect;
-
-exports.renderCreateStrategy = renderCreateStrategy;
-
-function templateMenuTabs() {
-  return `<div id="create-strategy">
-				<ul id="strategy-creation-menu" class="nav nav-tabs" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#select-players" role="tab">Select players</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#select-ball-holder" role="tab">Select ball holder</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#define-movements" role="tab">Define the movements</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#validate-play" role="tab">Validate your configuration</a>
-					</li>
-				</ul>
-			</div>`;
-}
-
-function templatePanes(list) {
-  return `<div id="strategy-creation-panes" class="tab-content">
-				<div class="tab-pane active" id="select-players" role="tabpanel">
-					${templateSelectPlayers(list)}
-				</div>
-				<div class="tab-pane" id="select-ball-holder" role="tabpanel">
-					${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
-				</div>
-				<div class="tab-pane" id="define-movements" role="tabpanel">
-					${templateMoves()}
-				</div>
-				<div class="tab-pane" id="validate-play" role="tabpanel"></div>
-			</div>`;
-}
+const {
+  clean,
+  render,
+  addEventListener,
+  removeEventListener
+} = require('./utils.js');
+const { playersPositions } = require('../players-positions.js');
+const {
+  selectAndSeeSelection,
+  regularSelect
+} = require('./components/select.js');
 
 function templateSelectPlayers(listOfElements) {
   return R.concat(
     R.reduce((prev, cur) => {
       const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-										${selectAndSeeSelection(
+                    ${selectAndSeeSelection(
     R.prop('id', cur),
     R.prop('label', cur),
     playersPositions()
   )}
-									</div>`;
+                  </div>`;
 
       return R.concat(prev, selectTemplate);
     }, '<div class="row">', listOfElements),
@@ -61,6 +29,24 @@ function templateSelectPlayers(listOfElements) {
   );
 }
 
+function templateMenuTabs() {
+  return `<div id="create-strategy">
+        <ul id="strategy-creation-menu" class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#select-players" role="tab">Select players</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#select-ball-holder" role="tab">Select ball holder</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#define-movements" role="tab">Define the movements</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#validate-play" role="tab">Validate your configuration</a>
+          </li>
+        </ul>
+      </div>`;
+}
 
 function initSelectForPlayers(playersList) {
   const options = R.join(
@@ -76,87 +62,14 @@ function initSelectForPlayers(playersList) {
 
 function templateSelect(idForSelect, labelText) {
   return `<form>
-				<div class="form-group">
-					<label for="${idForSelect}">${labelText}</label>
-					${regularSelect(
+        <div class="form-group">
+          <label for="${idForSelect}">${labelText}</label>
+          ${regularSelect(
     idForSelect,
     initSelectForPlayers(playersPositions())
   )}
-				</div>
-			</form>`;
-}
-
-function templateDrive() {
-  const speedTypes = [{
-    value: 'sprint',
-    label: 'Fast'
-  }, {
-    value: 'regular',
-    label: 'Normal'
-  }];
-  return `<div class="form-group" data-action="drive">
-				<label for="#origin-drive">Where does the player start ?</label>
-				${regularSelect(
-    'origin-drive',
-    initSelectForPlayers(playersPositions())
-  )}
-			</div>
-			<div class="form-group" data-action="drive">
-				<label for="#destination-drive">Where does the player stop ?</label>
-				${regularSelect(
-    'destination-drive',
-    initSelectForPlayers(playersPositions())
-  )}
-			</div>
-			<div class="form-group" data-action="drive">
-				<label for="#speed-drive">What is the speed of the player ?</label>
-				${regularSelect(
-    'speed-drive',
-    mapActionTypes('Select the speed of the player', speedTypes)
-  )}
-			</div>`;
-}
-
-function templatePass() {
-  return `<div class="form-group" data-action="pass">
-				<label for="#origin-drive">Where does the ball go ?</label>
-				${regularSelect(
-    'destination-pass',
-    initSelectForPlayers(playersPositions())
-  )}
-			</div>`;
-}
-
-function templateMovement() {
-  const speedTypes = [{
-    value: 'sprint',
-    label: 'Fast'
-  }, {
-    value: 'regular',
-    label: 'Normal'
-  }];
-
-  return `<div class="form-group" data-action="move">
-				<label for="#origin-movement">Which player will move ?</label>
-				${regularSelect(
-    'origin-movement',
-    initSelectForPlayers(getSelectedPlayers('selected-offense-players', 'selected-defense-players'))
-  )}
-			</div>
-			<div class="form-group" data-action="move">
-				<label for="#destination-movement">To which position the player will go ?</label>
-				${regularSelect(
-    'destination-movement',
-    initSelectForPlayers(playersPositions())
-  )}
-			</div>
-			<div class="form-group" data-action="move">
-				<label for="#speed-movement">What is the speed of the player ?</label>
-				${regularSelect(
-    'speed-movement',
-    mapActionTypes('Select the speed of the player', speedTypes)
-  )}
-			</div>`;
+        </div>
+      </form>`;
 }
 
 function mapActionTypes(defaultLabel, listOfTypes) {
@@ -171,7 +84,48 @@ function mapActionTypes(defaultLabel, listOfTypes) {
   );
 }
 
-function getSelectedPlayers(domIdForOffenseSelectedPlayersList, domIdForDefenseSelectedPlayersList) {
+function templateDrive() {
+  const speedTypes = [{
+    value: 'sprint',
+    label: 'Fast'
+  }, {
+    value: 'regular',
+    label: 'Normal'
+  }];
+  return `<div class="form-group" data-action="drive">
+        <label for="#origin-drive">Where does the player start ?</label>
+        ${regularSelect(
+    'origin-drive',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>
+      <div class="form-group" data-action="drive">
+        <label for="#destination-drive">Where does the player stop ?</label>
+        ${regularSelect(
+    'destination-drive',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>
+      <div class="form-group" data-action="drive">
+        <label for="#speed-drive">What is the speed of the player ?</label>
+        ${regularSelect(
+    'speed-drive',
+    mapActionTypes('Select the speed of the player', speedTypes)
+  )}
+      </div>`;
+}
+
+function templatePass() {
+  return `<div class="form-group" data-action="pass">
+        <label for="#origin-drive">Where does the ball go ?</label>
+        ${regularSelect(
+    'destination-pass',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>`;
+}
+
+function getSelectedPlayers(domIdForOffSelectedPlayersList, domIdForDefSelectedPlayersList) {
   function getListOfSelectedPlayers(domElement) {
     return $(`#${domElement} li`).map((index, element) => ({
       className: $(element).attr('data-player-position'),
@@ -180,10 +134,42 @@ function getSelectedPlayers(domIdForOffenseSelectedPlayersList, domIdForDefenseS
     })).get();
   }
 
-  const offenseList = getListOfSelectedPlayers(domIdForOffenseSelectedPlayersList);
-  const defenseList = getListOfSelectedPlayers(domIdForDefenseSelectedPlayersList);
+  const offenseList = getListOfSelectedPlayers(domIdForOffSelectedPlayersList);
+  const defenseList = getListOfSelectedPlayers(domIdForDefSelectedPlayersList);
 
   return R.concat(offenseList, defenseList);
+}
+
+function templateMovement() {
+  const speedTypes = [{
+    value: 'sprint',
+    label: 'Fast'
+  }, {
+    value: 'regular',
+    label: 'Normal'
+  }];
+
+  return `<div class="form-group" data-action="move">
+        <label for="#origin-movement">Which player will move ?</label>
+        ${regularSelect(
+    'origin-movement',
+    initSelectForPlayers(getSelectedPlayers('selected-offense-players', 'selected-defense-players'))
+  )}
+      </div>
+      <div class="form-group" data-action="move">
+        <label for="#destination-movement">To which position the player will go ?</label>
+        ${regularSelect(
+    'destination-movement',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>
+      <div class="form-group" data-action="move">
+        <label for="#speed-movement">What is the speed of the player ?</label>
+        ${regularSelect(
+    'speed-movement',
+    mapActionTypes('Select the speed of the player', speedTypes)
+  )}
+      </div>`;
 }
 
 function templateMoves() {
@@ -192,7 +178,7 @@ function templateMoves() {
     const value = R.view(selectValueLens, event);
 
     clean('#move-options');
-    console.log(value);
+    // console.log(value);
 
     const cond = R.cond([
       [R.equals('drive'), R.always(templateDrive)],
@@ -219,19 +205,33 @@ function templateMoves() {
   addEventListener('change', '#action-type', changeOnSelect);
 
   return `<form>
-				<div class="form-group">
-					<label for="#action-type">What action will be done ?</label>
-					${regularSelect(
+        <div class="form-group">
+          <label for="#action-type">What action will be done ?</label>
+          ${regularSelect(
     'action-type',
     mapActionTypes('Select an action to perform', actionTypes)
   )}
-				</div>
-			</form>
-			<form id="move-options">
-			</form>
-			<ul id="selected-moves" class="list-group"></ul>`;
+        </div>
+      </form>
+      <form id="move-options">
+      </form>
+      <ul id="selected-moves" class="list-group"></ul>`;
 }
 
+function templatePanes(list) {
+  return `<div id="strategy-creation-panes" class="tab-content">
+        <div class="tab-pane active" id="select-players" role="tabpanel">
+          ${templateSelectPlayers(list)}
+        </div>
+        <div class="tab-pane" id="select-ball-holder" role="tabpanel">
+          ${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
+        </div>
+        <div class="tab-pane" id="define-movements" role="tabpanel">
+          ${templateMoves()}
+        </div>
+        <div class="tab-pane" id="validate-play" role="tabpanel"></div>
+      </div>`;
+}
 
 function renderCreateStrategy(db, domElementToRenderTemplate) {
   const list = [{
@@ -247,3 +247,5 @@ function renderCreateStrategy(db, domElementToRenderTemplate) {
   render(domElementToRenderTemplate, templateMenuTabs);
   render(domElementToRenderTemplate, templatePanes, list);
 }
+
+exports.renderCreateStrategy = renderCreateStrategy;

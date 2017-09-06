@@ -1,5 +1,3 @@
-exports.config = config;
-
 function config() {
   return {
     apiKey: 'AIzaSyAXVn5ltlrOj7tYUUU6HzVVXaQPSXZeZJo',
@@ -10,3 +8,5 @@ function config() {
     messagingSenderId: '400036476847'
   };
 }
+
+exports.config = config;

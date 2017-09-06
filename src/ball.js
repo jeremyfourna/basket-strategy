@@ -1,8 +1,5 @@
 const R = require('ramda');
-const createCircle = require('./utils.js').createCircle;
-
-exports.addBallToGame = addBallToGame;
-exports.generateBallPosition = generateBallPosition;
+const { createCircle } = require('./utils.js');
 
 function addBallToGame(player, allPlayers) {
   const ballPosition = R.prop(player, R.pick([player], allPlayers));
@@ -21,3 +18,6 @@ function generateBallPosition(wishedZoom, ballPosition, context) {
     context
   );
 }
+
+exports.addBallToGame = addBallToGame;
+exports.generateBallPosition = generateBallPosition;

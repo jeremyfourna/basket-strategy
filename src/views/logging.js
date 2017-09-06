@@ -1,76 +1,74 @@
 const R = require('ramda');
 const $ = require('jquery');
-const addEventListener = require('./utils.js').addEventListener;
-const removeEventListener = require('./utils.js').removeEventListener;
-const clean = require('./utils.js').clean;
-const render = require('./utils.js').render;
-const hide = require('./utils.js').hide;
-const show = require('./utils.js').show;
-
-exports.initLogging = initLogging;
-
+const {
+  addEventListener,
+  removeEventListener,
+  clean,
+  render,
+  hide,
+  show
+} = require('./utils.js');
 
 function templateLogging() {
   return `<div id="logging-component">
-				<form>
-					<div class="form-group">
-						<label for="email-address">Email address</label>
-						<input id="email-address" class="form-control" type="email", placeholder="Enter email"/>
-					</div>
-					<div class="form-group">
-						<label for="password">Password</label>
-						<input id="password" class="form-control" type="password", placeholder="Password"/>
-					</div>
-					<button id="logging" type="button" class="btn btn-primary">Submit</button>
-				</form>
-			</div>`;
+        <form>
+          <div class="form-group">
+            <label for="email-address">Email address</label>
+            <input id="email-address" class="form-control" type="email", placeholder="Enter email"/>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" class="form-control" type="password", placeholder="Password"/>
+          </div>
+          <button id="logging" type="button" class="btn btn-primary">Submit</button>
+        </form>
+      </div>`;
 }
 
 
 function initLogging(db, domElementToRenderTemplate) {
-  function validateLogging(event) {
-    const email = $('#email-address').val();
-    const password = $('#password').val();
-
-    const notDefined = R.equals('');
-
-    if (R.any(notDefined, [email, password])) {
-      console.log(email, password);
-    } else {
-      connectToAccount(db, email, password);
-    }
-  }
-
-  function createAccount(db, email, password) {
+  function createAccount(email, password) {
     return db.auth()
       .createUserWithEmailAndPassword(email, password)
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+
+        throw new Error(`${errorCode} ${errorMessage}`);
       });
   }
 
-  function connectToAccount(db, email, password) {
+  function connectToAccount(email, password) {
     return db.auth()
       .signInWithEmailAndPassword(email, password)
       .catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
 
         if (error) {
-          return createAccount(db, email, password);
+          return createAccount(email, password);
         }
+        return true;
       });
   }
 
-  function loggingState(db, loggingElement) {
+  function validateLogging() { // event
+    const email = $('#email-address').val();
+    const password = $('#password').val();
+
+    const notDefined = R.equals('');
+
+    if (R.any(notDefined, [email, password])) {
+      throw new Error(`${email} ${password}`);
+    } else {
+      connectToAccount(email, password);
+    }
+  }
+
+  function loggingState(loggingElement) {
     const user = R.prop('currentUser', db.auth());
 
-    console.log(user);
+    // console.log(user);
 
     if (R.equals(R.isNil(user), false)) {
       // User is signed in.
@@ -89,10 +87,12 @@ function initLogging(db, domElementToRenderTemplate) {
 
   addEventListener('click', '#logging', validateLogging);
   render(domElementToRenderTemplate, templateLogging);
-  loggingState(db, '#logging-component');
+  loggingState('#logging-component');
 
   db.auth()
-    .onAuthStateChanged((user) => {
-      loggingState(db, '#logging-component');
+    .onAuthStateChanged(() => {
+      loggingState('#logging-component');
     });
 }
+
+exports.initLogging = initLogging;

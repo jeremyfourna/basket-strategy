@@ -2,16 +2,6 @@ const R = require('ramda');
 const d3 = Object.assign({}, require('d3-shape'));
 const $ = require('jquery');
 
-
-exports.createRectangle = createRectangle;
-exports.createCircle = createCircle;
-exports.createLine = createLine;
-exports.createArc = createArc;
-exports.cleanSVG = cleanSVG;
-// regular map but with index to process actions
-exports.mapIndexed = R.addIndex(R.map);
-
-
 function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context) {
   context.append('rect')
     .attr('x', topLeftCornerX)
@@ -67,3 +57,11 @@ function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) 
 function cleanSVG() {
   $('svg').remove();
 }
+
+exports.createRectangle = createRectangle;
+exports.createCircle = createCircle;
+exports.createLine = createLine;
+exports.createArc = createArc;
+exports.cleanSVG = cleanSVG;
+// regular map but with index to process actions
+exports.mapIndexed = R.addIndex(R.map);

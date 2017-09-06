@@ -52011,39 +52011,35 @@ module.exports = _curry3(function zipWith(fn, a, b) {
 
 },{"./internal/_curry3":266}],479:[function(require,module,exports){
 const R = require('ramda');
-const createCircle = require('./utils.js').createCircle;
+const { createCircle } = require('./utils.js');
+
+function addBallToGame(player, allPlayers) {
+  const ballPosition = R.prop(player, R.pick([player], allPlayers));
+  return R.assoc('className', 'ball', ballPosition);
+}
+
+function generateBallPosition(wishedZoom, ballPosition, context) {
+  createCircle(
+    R.prop('x', ballPosition),
+    R.prop('y', ballPosition),
+    // Impure because access wishedZoom outside the function
+    R.multiply(wishedZoom, 0.25),
+    'black',
+    'orange',
+    R.prop('className', ballPosition),
+    context
+  );
+}
 
 exports.addBallToGame = addBallToGame;
 exports.generateBallPosition = generateBallPosition;
 
-function addBallToGame(player, allPlayers) {
-	const ballPosition = R.prop(player, R.pick([player], allPlayers));
-	return R.assoc('className', 'ball', ballPosition);
-}
-
-function generateBallPosition(wishedZoom, ballPosition, context) {
-	createCircle(
-		R.prop('x', ballPosition),
-		R.prop('y', ballPosition),
-		// Impure because access wishedZoom outside the function
-		R.multiply(wishedZoom, 0.25),
-		'black',
-		'orange',
-		R.prop('className', ballPosition),
-		context
-	);
-}
-
 },{"./utils.js":488,"ramda":161}],480:[function(require,module,exports){
-const R = require('ramda');
-const $ = require("jquery");
-const cleanSVG = require("./utils.js").cleanSVG;
-const strategySelector = require("./strategies.js").strategySelector;
-const startFirebase = require("./database/firebase.js").startFirebase;
-const initLogging = require("./views/logging.js").initLogging;
-const renderLayout = require("./views/layout.js").renderLayout;
-const renderCreateStrategy = require("./views/create-strategy.js").renderCreateStrategy;
-const renderStrategySelection = require("./views/display-strategy.js").renderStrategySelection;
+const { startFirebase } = require('./database/firebase.js');
+const { initLogging } = require('./views/logging.js');
+const { renderLayout } = require('./views/layout.js');
+const { renderCreateStrategy } = require('./views/create-strategy.js');
+const { renderStrategySelection } = require('./views/display-strategy.js');
 
 
 const db = startFirebase();
@@ -52052,3526 +52048,3552 @@ const db = startFirebase();
 renderLayout(db, 'body');
 initLogging(db, '#creation-lab');
 renderStrategySelection(db, '#view-strategies');
-renderCreateStrategy(db, '#creation-lab')
+renderCreateStrategy(db, '#creation-lab');
 
-},{"./database/firebase.js":483,"./strategies.js":486,"./utils.js":488,"./views/create-strategy.js":490,"./views/display-strategy.js":491,"./views/layout.js":492,"./views/logging.js":493,"jquery":159,"ramda":161}],481:[function(require,module,exports){
+},{"./database/firebase.js":483,"./views/create-strategy.js":490,"./views/display-strategy.js":491,"./views/layout.js":492,"./views/logging.js":493}],481:[function(require,module,exports){
 const R = require('ramda');
-const d3 = Object.assign({}, require("d3-selection"));
-const createRectangle = require('./utils.js').createRectangle;
-const createCircle = require('./utils.js').createCircle;
-const createLine = require('./utils.js').createLine;
-const createArc = require('./utils.js').createArc;
+const d3 = Object.assign({}, require('d3-selection'));
+const {
+  createRectangle,
+  createCircle,
+  createLine,
+  createArc
+} = require('./utils.js');
+
+// Basket-Ball court dimensions for FIBA
+const courtConfig = {
+  topX: 0,
+  topY: 0,
+  height: 28, // meters
+  width: 15,
+  centerRing: {
+    centerX: 7.5,
+    centerY: 14,
+    radius: 1.8
+  },
+  topRing: {
+    centerX: 7.5,
+    centerY: 5.8,
+    radius: 1.8
+  },
+  bottomRing: {
+    centerX: 7.5,
+    centerY: 22.2,
+    radius: 1.8
+  },
+  topPaint: {
+    topX: 5.05,
+    topY: 0,
+    width: 4.9,
+    height: 5.8,
+    separationLines: [{
+      topX: 4.95,
+      topY: 1.75,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 4.95,
+      topY: 2.68,
+      height: 0.4,
+      width: 0.1
+    }, {
+      topX: 4.95,
+      topY: 3.93,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 4.95,
+      topY: 4.86,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 1.75,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 2.68,
+      height: 0.4,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 3.93,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 4.86,
+      height: 0.08,
+      width: 0.1
+    }]
+  },
+  bottomPaint: {
+    topX: 5.05,
+    topY: 22.2,
+    width: 4.9,
+    height: 5.8,
+    separationLines: [{
+      topX: 4.95,
+      topY: 26.25,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 4.95,
+      topY: 25.32,
+      height: 0.4,
+      width: 0.1
+    }, {
+      topX: 4.95,
+      topY: 24.07,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 4.95,
+      topY: 23.14,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 26.25,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 25.32,
+      height: 0.4,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 24.07,
+      height: 0.08,
+      width: 0.1
+    }, {
+      topX: 9.95,
+      topY: 23.14,
+      height: 0.08,
+      width: 0.1
+    }]
+  },
+  topBasket: {
+    bigLine: {
+      x1: 6.6,
+      y1: 1.2,
+      x2: 8.4,
+      y2: 1.2
+    },
+    smallLine: {
+      x1: 7.5,
+      y1: 1.2,
+      x2: 7.5,
+      y2: 1.32
+    },
+    ring: {
+      centerX: 7.5,
+      centerY: 1.545,
+      radius: 0.225
+    }
+  },
+  bottomBasket: {
+    bigLine: {
+      x1: 6.6,
+      y1: 26.8,
+      x2: 8.4,
+      y2: 26.8
+    },
+    smallLine: {
+      x1: 7.5,
+      y1: 26.8,
+      x2: 7.5,
+      y2: 26.68
+    },
+    ring: {
+      centerX: 7.5,
+      centerY: 26.455,
+      radius: 0.225
+    }
+  },
+  top3Points: {
+    leftLine: {
+      x1: 0.9,
+      y1: 0,
+      x2: 0.9,
+      y2: 2.99
+    },
+    rightLine: {
+      x1: 14.1,
+      y1: 0,
+      x2: 14.1,
+      y2: 2.99
+    },
+    arc: {
+      innerRadius: 6.75,
+      outerRadius: 6.75,
+      startAngle: 1.785,
+      endAngle: 4.5
+    }
+  },
+  bottom3Points: {
+    leftLine: {
+      x1: 0.9,
+      y1: 28,
+      x2: 0.9,
+      y2: 25.01
+    },
+    rightLine: {
+      x1: 14.1,
+      y1: 28,
+      x2: 14.1,
+      y2: 25.01
+    },
+    arc: {
+      innerRadius: 6.75,
+      outerRadius: 6.75,
+      startAngle: 4.5,
+      endAngle: 1.785
+    }
+  }
+};
+
+function courtConfigZoomed(zoomSize, courtConfiguration = courtConfig) {
+  function zoom(courtZoom) {
+    // props equal to 0 don't need a function to evolve
+    const separationLinesTransformations = {
+      topX: R.multiply(courtZoom),
+      topY: R.multiply(courtZoom),
+      height: R.multiply(courtZoom),
+      width: R.multiply(courtZoom)
+    };
+
+    return {
+      height: R.multiply(courtZoom),
+      width: R.multiply(courtZoom),
+      centerRing: {
+        centerX: R.multiply(courtZoom),
+        centerY: R.multiply(courtZoom),
+        radius: R.multiply(courtZoom)
+      },
+      topRing: {
+        centerX: R.multiply(courtZoom),
+        centerY: R.multiply(courtZoom),
+        radius: R.multiply(courtZoom)
+      },
+      bottomRing: {
+        centerX: R.multiply(courtZoom),
+        centerY: R.multiply(courtZoom),
+        radius: R.multiply(courtZoom)
+      },
+      topPaint: {
+        topX: R.multiply(courtZoom),
+        width: R.multiply(courtZoom),
+        height: R.multiply(courtZoom),
+        separationLines: R.map(R.evolve(separationLinesTransformations))
+      },
+      bottomPaint: {
+        topX: R.multiply(courtZoom),
+        topY: R.multiply(courtZoom),
+        width: R.multiply(courtZoom),
+        height: R.multiply(courtZoom),
+        separationLines: R.map(R.evolve(separationLinesTransformations))
+      },
+      topBasket: {
+        bigLine: {
+          x1: R.multiply(courtZoom),
+          y1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        smallLine: {
+          x1: R.multiply(courtZoom),
+          y1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        ring: {
+          centerX: R.multiply(courtZoom),
+          centerY: R.multiply(courtZoom),
+          radius: R.multiply(courtZoom)
+        }
+      },
+      bottomBasket: {
+        bigLine: {
+          x1: R.multiply(courtZoom),
+          y1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        smallLine: {
+          x1: R.multiply(courtZoom),
+          y1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        ring: {
+          centerX: R.multiply(courtZoom),
+          centerY: R.multiply(courtZoom),
+          radius: R.multiply(courtZoom)
+        }
+      },
+      top3Points: {
+        leftLine: {
+          x1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        rightLine: {
+          x1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        arc: {
+          innerRadius: R.multiply(courtZoom),
+          outerRadius: R.multiply(courtZoom)
+        }
+      },
+      bottom3Points: {
+        leftLine: {
+          x1: R.multiply(courtZoom),
+          y1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        rightLine: {
+          x1: R.multiply(courtZoom),
+          y1: R.multiply(courtZoom),
+          x2: R.multiply(courtZoom),
+          y2: R.multiply(courtZoom)
+        },
+        arc: {
+          innerRadius: R.multiply(courtZoom),
+          outerRadius: R.multiply(courtZoom)
+        }
+      }
+    };
+  }
+
+  return R.evolve(zoom(zoomSize), courtConfiguration);
+}
+
+function generateCourt(domElementToRenderSVG, courtConfiguration, wishedZoom) {
+  // wishedZoom is only passed to allow clickOnSVG to access it
+  // Function to do something when user click on the SVG
+  function clickOnSVG() {
+    const x = R.head(d3.mouse(this));
+    const y = R.last(d3.mouse(this));
+    const svg = d3.select('svg');
+    // console.log(x, y);
+    // Impure because access wishedZoom outside the function
+    createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
+  }
+  // Create the svg in the body
+  const svg = d3.select(domElementToRenderSVG)
+    .append('svg')
+    .on('click', clickOnSVG);
+  // Define width and height of the svg
+  svg.attr('width', R.prop('width', courtConfiguration));
+  svg.attr('height', R.prop('height', courtConfiguration));
+  // Full court
+  createRectangle(
+    R.prop('topX', courtConfiguration),
+    R.prop('topY', courtConfiguration),
+    R.prop('width', courtConfiguration),
+    R.prop('height', courtConfiguration),
+    svg
+  );
+  // Half court
+  createRectangle(
+    R.prop('topX', courtConfiguration),
+    R.prop('topY', courtConfiguration),
+    R.prop('width', courtConfiguration),
+    R.divide(R.prop('height', courtConfiguration), 2), // Divide height by 2 to have the half court
+    svg
+  );
+  // Ring center
+  createCircle(
+    R.path(['centerRing', 'centerX'], courtConfiguration),
+    R.path(['centerRing', 'centerY'], courtConfiguration),
+    R.path(['centerRing', 'radius'], courtConfiguration),
+    'black',
+    'none',
+    'ringCenter',
+    svg
+  );
+  // Ring top
+  createCircle(
+    R.path(['topRing', 'centerX'], courtConfiguration),
+    R.path(['topRing', 'centerY'], courtConfiguration),
+    R.path(['topRing', 'radius'], courtConfiguration),
+    'black',
+    'none',
+    'ringTop',
+    svg
+  );
+  // Ring bottom
+  createCircle(
+    R.path(['bottomRing', 'centerX'], courtConfiguration),
+    R.path(['bottomRing', 'centerY'], courtConfiguration),
+    R.path(['bottomRing', 'radius'], courtConfiguration),
+    'black',
+    'none',
+    'ringBottom',
+    svg
+  );
+  // Top paint
+  createRectangle(
+    R.path(['topPaint', 'topX'], courtConfiguration),
+    R.path(['topPaint', 'topY'], courtConfiguration),
+    R.path(['topPaint', 'width'], courtConfiguration),
+    R.path(['topPaint', 'height'], courtConfiguration),
+    svg
+  );
+  // Separation lines for Top paint
+  R.map(cur => createRectangle(
+    R.prop('topX', cur),
+    R.prop('topY', cur),
+    R.prop('width', cur),
+    R.prop('height', cur),
+    svg
+  ), R.path(['topPaint', 'separationLines'], courtConfiguration));
+  // Bottom paint
+  createRectangle(
+    R.path(['bottomPaint', 'topX'], courtConfiguration),
+    R.path(['bottomPaint', 'topY'], courtConfiguration),
+    R.path(['bottomPaint', 'width'], courtConfiguration),
+    R.path(['bottomPaint', 'height'], courtConfiguration),
+    svg
+  );
+  // Separation lines for Bottom paint
+  R.map(cur => createRectangle(
+    R.prop('topX', cur),
+    R.prop('topY', cur),
+    R.prop('width', cur),
+    R.prop('height', cur),
+    svg
+  ), R.path(['bottomPaint', 'separationLines'], courtConfiguration));
+  // Top basket
+  createLine(
+    R.path(['topBasket', 'bigLine', 'x1'], courtConfiguration),
+    R.path(['topBasket', 'bigLine', 'y1'], courtConfiguration),
+    R.path(['topBasket', 'bigLine', 'x2'], courtConfiguration),
+    R.path(['topBasket', 'bigLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createLine(
+    R.path(['topBasket', 'smallLine', 'x1'], courtConfiguration),
+    R.path(['topBasket', 'smallLine', 'y1'], courtConfiguration),
+    R.path(['topBasket', 'smallLine', 'x2'], courtConfiguration),
+    R.path(['topBasket', 'smallLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createCircle(
+    R.path(['topBasket', 'ring', 'centerX'], courtConfiguration),
+    R.path(['topBasket', 'ring', 'centerY'], courtConfiguration),
+    R.path(['topBasket', 'ring', 'radius'], courtConfiguration),
+    'black',
+    'none',
+    'topBasket',
+    svg
+  );
+  // Bottom basket
+  createLine(
+    R.path(['bottomBasket', 'bigLine', 'x1'], courtConfiguration),
+    R.path(['bottomBasket', 'bigLine', 'y1'], courtConfiguration),
+    R.path(['bottomBasket', 'bigLine', 'x2'], courtConfiguration),
+    R.path(['bottomBasket', 'bigLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createLine(
+    R.path(['bottomBasket', 'smallLine', 'x1'], courtConfiguration),
+    R.path(['bottomBasket', 'smallLine', 'y1'], courtConfiguration),
+    R.path(['bottomBasket', 'smallLine', 'x2'], courtConfiguration),
+    R.path(['bottomBasket', 'smallLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createCircle(
+    R.path(['bottomBasket', 'ring', 'centerX'], courtConfiguration),
+    R.path(['bottomBasket', 'ring', 'centerY'], courtConfiguration),
+    R.path(['bottomBasket', 'ring', 'radius'], courtConfiguration),
+    'black',
+    'none',
+    'bottomBasket',
+    svg
+  );
+  // Top 3 points lines and arc
+  createLine(
+    R.path(['top3Points', 'leftLine', 'x1'], courtConfiguration),
+    R.path(['top3Points', 'leftLine', 'y1'], courtConfiguration),
+    R.path(['top3Points', 'leftLine', 'x2'], courtConfiguration),
+    R.path(['top3Points', 'leftLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createLine(
+    R.path(['top3Points', 'rightLine', 'x1'], courtConfiguration),
+    R.path(['top3Points', 'rightLine', 'y1'], courtConfiguration),
+    R.path(['top3Points', 'rightLine', 'x2'], courtConfiguration),
+    R.path(['top3Points', 'rightLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createArc(
+    R.path(['top3Points', 'arc', 'innerRadius'], courtConfiguration),
+    R.path(['top3Points', 'arc', 'outerRadius'], courtConfiguration),
+    R.path(['top3Points', 'arc', 'startAngle'], courtConfiguration),
+    R.path(['top3Points', 'arc', 'endAngle'], courtConfiguration),
+    R.divide(R.prop('width', courtConfiguration), 2),
+    R.path(['topBasket', 'ring', 'centerY'], courtConfiguration),
+    false,
+    svg
+  );
+  // Bottom 3 points lines and arc
+  createLine(
+    R.path(['bottom3Points', 'leftLine', 'x1'], courtConfiguration),
+    R.path(['bottom3Points', 'leftLine', 'y1'], courtConfiguration),
+    R.path(['bottom3Points', 'leftLine', 'x2'], courtConfiguration),
+    R.path(['bottom3Points', 'leftLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createLine(
+    R.path(['bottom3Points', 'rightLine', 'x1'], courtConfiguration),
+    R.path(['bottom3Points', 'rightLine', 'y1'], courtConfiguration),
+    R.path(['bottom3Points', 'rightLine', 'x2'], courtConfiguration),
+    R.path(['bottom3Points', 'rightLine', 'y2'], courtConfiguration),
+    svg
+  );
+  createArc(
+    R.path(['bottom3Points', 'arc', 'innerRadius'], courtConfiguration),
+    R.path(['bottom3Points', 'arc', 'outerRadius'], courtConfiguration),
+    R.path(['bottom3Points', 'arc', 'startAngle'], courtConfiguration),
+    R.path(['bottom3Points', 'arc', 'endAngle'], courtConfiguration),
+    R.divide(R.prop('width', courtConfiguration), 2),
+    R.path(['bottomBasket', 'ring', 'centerY'], courtConfiguration),
+    true,
+    svg
+  );
+
+  return svg;
+}
 
 exports.courtConfigZoomed = courtConfigZoomed;
 exports.generateCourt = generateCourt;
 
-// Basket-Ball court dimensions for FIBA
-const courtConfig = {
-	topX: 0,
-	topY: 0,
-	height: 28, // meters
-	width: 15,
-	centerRing: {
-		centerX: 7.5,
-		centerY: 14,
-		radius: 1.8
-	},
-	topRing: {
-		centerX: 7.5,
-		centerY: 5.8,
-		radius: 1.8
-	},
-	bottomRing: {
-		centerX: 7.5,
-		centerY: 22.2,
-		radius: 1.8
-	},
-	topPaint: {
-		topX: 5.05,
-		topY: 0,
-		width: 4.9,
-		height: 5.8,
-		separationLines: [{
-			topX: 4.95,
-			topY: 1.75,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 4.95,
-			topY: 2.68,
-			height: 0.4,
-			width: 0.1,
-		}, {
-			topX: 4.95,
-			topY: 3.93,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 4.95,
-			topY: 4.86,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 1.75,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 2.68,
-			height: 0.4,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 3.93,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 4.86,
-			height: 0.08,
-			width: 0.1,
-		}]
-	},
-	bottomPaint: {
-		topX: 5.05,
-		topY: 22.2,
-		width: 4.9,
-		height: 5.8,
-		separationLines: [{
-			topX: 4.95,
-			topY: 26.25,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 4.95,
-			topY: 25.32,
-			height: 0.4,
-			width: 0.1,
-		}, {
-			topX: 4.95,
-			topY: 24.07,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 4.95,
-			topY: 23.14,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 26.25,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 25.32,
-			height: 0.4,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 24.07,
-			height: 0.08,
-			width: 0.1,
-		}, {
-			topX: 9.95,
-			topY: 23.14,
-			height: 0.08,
-			width: 0.1,
-		}]
-	},
-	topBasket: {
-		bigLine: {
-			x1: 6.6,
-			y1: 1.2,
-			x2: 8.4,
-			y2: 1.2
-		},
-		smallLine: {
-			x1: 7.5,
-			y1: 1.2,
-			x2: 7.5,
-			y2: 1.32
-		},
-		ring: {
-			centerX: 7.5,
-			centerY: 1.545,
-			radius: 0.225
-		}
-	},
-	bottomBasket: {
-		bigLine: {
-			x1: 6.6,
-			y1: 26.8,
-			x2: 8.4,
-			y2: 26.8
-		},
-		smallLine: {
-			x1: 7.5,
-			y1: 26.8,
-			x2: 7.5,
-			y2: 26.68
-		},
-		ring: {
-			centerX: 7.5,
-			centerY: 26.455,
-			radius: 0.225
-		}
-	},
-	top3Points: {
-		leftLine: {
-			x1: 0.9,
-			y1: 0,
-			x2: 0.9,
-			y2: 2.99
-		},
-		rightLine: {
-			x1: 14.1,
-			y1: 0,
-			x2: 14.1,
-			y2: 2.99
-		},
-		arc: {
-			innerRadius: 6.75,
-			outerRadius: 6.75,
-			startAngle: 1.785,
-			endAngle: 4.5
-		}
-	},
-	bottom3Points: {
-		leftLine: {
-			x1: 0.9,
-			y1: 28,
-			x2: 0.9,
-			y2: 25.01
-		},
-		rightLine: {
-			x1: 14.1,
-			y1: 28,
-			x2: 14.1,
-			y2: 25.01
-		},
-		arc: {
-			innerRadius: 6.75,
-			outerRadius: 6.75,
-			startAngle: 4.5,
-			endAngle: 1.785
-		}
-	}
-};
-
-function courtConfigZoomed(zoomSize, courtConfiguration = courtConfig) {
-	function zoom(courtZoom) {
-		// props equal to 0 don't need a function to evolve
-		const separationLinesTransformations = {
-			topX: R.multiply(courtZoom),
-			topY: R.multiply(courtZoom),
-			height: R.multiply(courtZoom),
-			width: R.multiply(courtZoom)
-		};
-
-		return {
-			height: R.multiply(courtZoom),
-			width: R.multiply(courtZoom),
-			centerRing: {
-				centerX: R.multiply(courtZoom),
-				centerY: R.multiply(courtZoom),
-				radius: R.multiply(courtZoom)
-			},
-			topRing: {
-				centerX: R.multiply(courtZoom),
-				centerY: R.multiply(courtZoom),
-				radius: R.multiply(courtZoom)
-			},
-			bottomRing: {
-				centerX: R.multiply(courtZoom),
-				centerY: R.multiply(courtZoom),
-				radius: R.multiply(courtZoom)
-			},
-			topPaint: {
-				topX: R.multiply(courtZoom),
-				width: R.multiply(courtZoom),
-				height: R.multiply(courtZoom),
-				separationLines: R.map(R.evolve(separationLinesTransformations))
-			},
-			bottomPaint: {
-				topX: R.multiply(courtZoom),
-				topY: R.multiply(courtZoom),
-				width: R.multiply(courtZoom),
-				height: R.multiply(courtZoom),
-				separationLines: R.map(R.evolve(separationLinesTransformations))
-			},
-			topBasket: {
-				bigLine: {
-					x1: R.multiply(courtZoom),
-					y1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				smallLine: {
-					x1: R.multiply(courtZoom),
-					y1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				ring: {
-					centerX: R.multiply(courtZoom),
-					centerY: R.multiply(courtZoom),
-					radius: R.multiply(courtZoom)
-				}
-			},
-			bottomBasket: {
-				bigLine: {
-					x1: R.multiply(courtZoom),
-					y1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				smallLine: {
-					x1: R.multiply(courtZoom),
-					y1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				ring: {
-					centerX: R.multiply(courtZoom),
-					centerY: R.multiply(courtZoom),
-					radius: R.multiply(courtZoom)
-				}
-			},
-			top3Points: {
-				leftLine: {
-					x1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				rightLine: {
-					x1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				arc: {
-					innerRadius: R.multiply(courtZoom),
-					outerRadius: R.multiply(courtZoom)
-				}
-			},
-			bottom3Points: {
-				leftLine: {
-					x1: R.multiply(courtZoom),
-					y1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				rightLine: {
-					x1: R.multiply(courtZoom),
-					y1: R.multiply(courtZoom),
-					x2: R.multiply(courtZoom),
-					y2: R.multiply(courtZoom)
-				},
-				arc: {
-					innerRadius: R.multiply(courtZoom),
-					outerRadius: R.multiply(courtZoom)
-				}
-			}
-		};
-	}
-
-	return R.evolve(zoom(zoomSize), courtConfiguration);
-}
-
-function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
-	// wishedZoom is only passed to allow clickOnSVG to access it
-	// Function to do something when user click on the SVG
-	function clickOnSVG() {
-		const x = R.head(d3.mouse(this));
-		const y = R.last(d3.mouse(this));
-		const svg = d3.select('svg');
-		console.log(x, y);
-		// Impure because access wishedZoom outside the function
-		createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
-	}
-	// Create the svg in the body
-	const svg = d3.select(domElementToRenderSVG)
-		.append('svg')
-		.on('click', clickOnSVG);
-	// Define width and height of the svg
-	svg.attr('width', R.prop('width', courtConfig));
-	svg.attr('height', R.prop('height', courtConfig));
-	// Full court
-	createRectangle(
-		R.prop('topX', courtConfig),
-		R.prop('topY', courtConfig),
-		R.prop('width', courtConfig),
-		R.prop('height', courtConfig),
-		svg
-	);
-	// Half court
-	createRectangle(
-		R.prop('topX', courtConfig),
-		R.prop('topY', courtConfig),
-		R.prop('width', courtConfig),
-		R.divide(R.prop('height', courtConfig), 2), // Divide height by 2 to have the half court
-		svg
-	);
-	// Ring center
-	createCircle(
-		R.path(['centerRing', 'centerX'], courtConfig),
-		R.path(['centerRing', 'centerY'], courtConfig),
-		R.path(['centerRing', 'radius'], courtConfig),
-		'black',
-		'none',
-		'ringCenter',
-		svg
-	);
-	// Ring top
-	createCircle(
-		R.path(['topRing', 'centerX'], courtConfig),
-		R.path(['topRing', 'centerY'], courtConfig),
-		R.path(['topRing', 'radius'], courtConfig),
-		'black',
-		'none',
-		'ringTop',
-		svg
-	);
-	// Ring bottom
-	createCircle(
-		R.path(['bottomRing', 'centerX'], courtConfig),
-		R.path(['bottomRing', 'centerY'], courtConfig),
-		R.path(['bottomRing', 'radius'], courtConfig),
-		'black',
-		'none',
-		'ringBottom',
-		svg
-	);
-	// Top paint
-	createRectangle(
-		R.path(['topPaint', 'topX'], courtConfig),
-		R.path(['topPaint', 'topY'], courtConfig),
-		R.path(['topPaint', 'width'], courtConfig),
-		R.path(['topPaint', 'height'], courtConfig),
-		svg
-	);
-	// Separation lines for Top paint
-	R.map((cur) => {
-		createRectangle(
-			R.prop('topX', cur),
-			R.prop('topY', cur),
-			R.prop('width', cur),
-			R.prop('height', cur),
-			svg
-		);
-	}, R.path(['topPaint', 'separationLines'], courtConfig));
-	// Bottom paint
-	createRectangle(
-		R.path(['bottomPaint', 'topX'], courtConfig),
-		R.path(['bottomPaint', 'topY'], courtConfig),
-		R.path(['bottomPaint', 'width'], courtConfig),
-		R.path(['bottomPaint', 'height'], courtConfig),
-		svg
-	);
-	// Separation lines for Bottom paint
-	R.map((cur) => {
-		createRectangle(
-			R.prop('topX', cur),
-			R.prop('topY', cur),
-			R.prop('width', cur),
-			R.prop('height', cur),
-			svg
-		);
-	}, R.path(['bottomPaint', 'separationLines'], courtConfig));
-	// Top basket
-	createLine(
-		R.path(['topBasket', 'bigLine', 'x1'], courtConfig),
-		R.path(['topBasket', 'bigLine', 'y1'], courtConfig),
-		R.path(['topBasket', 'bigLine', 'x2'], courtConfig),
-		R.path(['topBasket', 'bigLine', 'y2'], courtConfig),
-		svg
-	);
-	createLine(
-		R.path(['topBasket', 'smallLine', 'x1'], courtConfig),
-		R.path(['topBasket', 'smallLine', 'y1'], courtConfig),
-		R.path(['topBasket', 'smallLine', 'x2'], courtConfig),
-		R.path(['topBasket', 'smallLine', 'y2'], courtConfig),
-		svg
-	);
-	createCircle(
-		R.path(['topBasket', 'ring', 'centerX'], courtConfig),
-		R.path(['topBasket', 'ring', 'centerY'], courtConfig),
-		R.path(['topBasket', 'ring', 'radius'], courtConfig),
-		'black',
-		'none',
-		'topBasket',
-		svg
-	);
-	// Bottom basket
-	createLine(
-		R.path(['bottomBasket', 'bigLine', 'x1'], courtConfig),
-		R.path(['bottomBasket', 'bigLine', 'y1'], courtConfig),
-		R.path(['bottomBasket', 'bigLine', 'x2'], courtConfig),
-		R.path(['bottomBasket', 'bigLine', 'y2'], courtConfig),
-		svg
-	);
-	createLine(
-		R.path(['bottomBasket', 'smallLine', 'x1'], courtConfig),
-		R.path(['bottomBasket', 'smallLine', 'y1'], courtConfig),
-		R.path(['bottomBasket', 'smallLine', 'x2'], courtConfig),
-		R.path(['bottomBasket', 'smallLine', 'y2'], courtConfig),
-		svg
-	);
-	createCircle(
-		R.path(['bottomBasket', 'ring', 'centerX'], courtConfig),
-		R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
-		R.path(['bottomBasket', 'ring', 'radius'], courtConfig),
-		'black',
-		'none',
-		'bottomBasket',
-		svg
-	);
-	// Top 3 points lines and arc
-	createLine(
-		R.path(['top3Points', 'leftLine', 'x1'], courtConfig),
-		R.path(['top3Points', 'leftLine', 'y1'], courtConfig),
-		R.path(['top3Points', 'leftLine', 'x2'], courtConfig),
-		R.path(['top3Points', 'leftLine', 'y2'], courtConfig),
-		svg
-	);
-	createLine(
-		R.path(['top3Points', 'rightLine', 'x1'], courtConfig),
-		R.path(['top3Points', 'rightLine', 'y1'], courtConfig),
-		R.path(['top3Points', 'rightLine', 'x2'], courtConfig),
-		R.path(['top3Points', 'rightLine', 'y2'], courtConfig),
-		svg
-	);
-	createArc(
-		R.path(['top3Points', 'arc', 'innerRadius'], courtConfig),
-		R.path(['top3Points', 'arc', 'outerRadius'], courtConfig),
-		R.path(['top3Points', 'arc', 'startAngle'], courtConfig),
-		R.path(['top3Points', 'arc', 'endAngle'], courtConfig),
-		R.divide(R.prop('width', courtConfig), 2),
-		R.path(['topBasket', 'ring', 'centerY'], courtConfig),
-		false,
-		svg
-	);
-	// Bottom 3 points lines and arc
-	createLine(
-		R.path(['bottom3Points', 'leftLine', 'x1'], courtConfig),
-		R.path(['bottom3Points', 'leftLine', 'y1'], courtConfig),
-		R.path(['bottom3Points', 'leftLine', 'x2'], courtConfig),
-		R.path(['bottom3Points', 'leftLine', 'y2'], courtConfig),
-		svg
-	);
-	createLine(
-		R.path(['bottom3Points', 'rightLine', 'x1'], courtConfig),
-		R.path(['bottom3Points', 'rightLine', 'y1'], courtConfig),
-		R.path(['bottom3Points', 'rightLine', 'x2'], courtConfig),
-		R.path(['bottom3Points', 'rightLine', 'y2'], courtConfig),
-		svg
-	);
-	createArc(
-		R.path(['bottom3Points', 'arc', 'innerRadius'], courtConfig),
-		R.path(['bottom3Points', 'arc', 'outerRadius'], courtConfig),
-		R.path(['bottom3Points', 'arc', 'startAngle'], courtConfig),
-		R.path(['bottom3Points', 'arc', 'endAngle'], courtConfig),
-		R.divide(R.prop('width', courtConfig), 2),
-		R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
-		true,
-		svg
-	);
-
-	return svg;
-}
-
 },{"./utils.js":488,"d3-selection":6,"ramda":161}],482:[function(require,module,exports){
+function config() {
+  return {
+    apiKey: 'AIzaSyAXVn5ltlrOj7tYUUU6HzVVXaQPSXZeZJo',
+    authDomain: 'basket-strategy.firebaseapp.com',
+    databaseURL: 'https://basket-strategy.firebaseio.com',
+    projectId: 'basket-strategy',
+    storageBucket: 'basket-strategy.appspot.com',
+    messagingSenderId: '400036476847'
+  };
+}
+
 exports.config = config;
 
-function config() {
-	return {
-		apiKey: "AIzaSyAXVn5ltlrOj7tYUUU6HzVVXaQPSXZeZJo",
-		authDomain: "basket-strategy.firebaseapp.com",
-		databaseURL: "https://basket-strategy.firebaseio.com",
-		projectId: "basket-strategy",
-		storageBucket: "basket-strategy.appspot.com",
-		messagingSenderId: "400036476847"
-	};
-}
-
 },{}],483:[function(require,module,exports){
-const firebase = require("firebase");
-const config = require('./config.js').config;
+const firebase = require('firebase');
+const { config } = require('./config.js');
 // Create a file named config.js
 // In this file create a function named config that return an object
 // with the following properties
 // {
-//		apiKey: "",
-//		authDomain: "",
-//		databaseURL: "",
-//		projectId: "",
-//		storageBucket: "",
-//		messagingSenderId: ""
+//    apiKey: "",
+//    authDomain: "",
+//    databaseURL: "",
+//    projectId: "",
+//    storageBucket: "",
+//    messagingSenderId: ""
 // };
 // And export the function via
 // exports.config = config;
 
-exports.startFirebase = startFirebase;
 
 function startFirebase() {
-	// Initialize Firebase
-	return firebase.initializeApp(config());
+  // Initialize Firebase
+  return firebase.initializeApp(config());
 }
 // Use this function like this
 // const db = startFirebase();
 
+exports.startFirebase = startFirebase;
+
 },{"./config.js":482,"firebase":97}],484:[function(require,module,exports){
 const R = require('ramda');
-const d3 = Object.assign({}, require("d3-selection"), require("d3-transition"));
-const mapIndexed = require('./utils.js').mapIndexed;
-
-exports.playMovements = playMovements;
+const d3 = Object.assign({}, require('d3-selection'), require('d3-transition'));
+const { mapIndexed } = require('./utils.js');
 
 function moveFromTo(origin, destination, speed, waitingTime, elementClassName) {
-	const element = d3.select(elementClassName);
-	const translateX = R.subtract(
-		R.prop('x', destination),
-		R.prop('x', origin)
-	);
-	const translateY = R.subtract(
-		R.prop('y', destination),
-		R.prop('y', origin)
-	);
-	element.transition()
-		.delay(waitingTime)
-		.duration(speed)
-		.attr('transform', `translate(${translateX},${translateY})`);
+  const element = d3.select(elementClassName);
+  const translateX = R.subtract(
+    R.prop('x', destination),
+    R.prop('x', origin)
+  );
+  const translateY = R.subtract(
+    R.prop('y', destination),
+    R.prop('y', origin)
+  );
+  element.transition()
+    .delay(waitingTime)
+    .duration(speed)
+    .attr('transform', `translate(${translateX},${translateY})`);
 }
 
 function movePlayerFromTo(origin, destination, waitingTime, elementClassName) {
-	moveFromTo(origin, destination, 2000, waitingTime, elementClassName);
+  moveFromTo(origin, destination, 2000, waitingTime, elementClassName);
 }
 
 function moveBallFromTo(origin, destination, waitingTime, elementClassName) {
-	moveFromTo(origin, destination, 500, waitingTime, elementClassName);
+  moveFromTo(origin, destination, 500, waitingTime, elementClassName);
 }
 
 function playMovements(movementsList) {
-	mapIndexed((cur, index) => {
-		if (R.equals(R.head(cur), 'moveBallFromTo')) {
-			R.apply(moveBallFromTo, R.tail(cur));
-		} else {
-			R.apply(movePlayerFromTo, R.tail(cur));
-		}
-	}, movementsList);
+  mapIndexed((cur) => {
+    if (R.equals(R.head(cur), 'moveBallFromTo')) {
+      R.apply(moveBallFromTo, R.tail(cur));
+    } else {
+      R.apply(movePlayerFromTo, R.tail(cur));
+    }
+  }, movementsList);
 }
+
+exports.playMovements = playMovements;
 
 },{"./utils.js":488,"d3-selection":6,"d3-transition":9,"ramda":161}],485:[function(require,module,exports){
 const R = require('ramda');
-const mapIndexed = require('./utils.js').mapIndexed;
-const createCircle = require('./utils.js').createCircle;
+const {
+  mapIndexed,
+  createCircle
+} = require('./utils.js');
+
+// Picks in diagonal x = 0.71 and y = 0.7
+function pgPositions() {
+  // Positions regarding space around PG
+  return {
+    pg: {
+      x: 7.5,
+      y: 8.325,
+      def: 'PG - Natural position',
+      className: 'pg'
+    },
+    pgPickBottom: {
+      x: 7.5,
+      y: 7.325,
+      def: 'PG - Defenser position',
+      className: 'pgPickBottom'
+    },
+    pgPickBottomLeft: {
+      x: 6.79,
+      y: 7.625,
+      def: 'PG - Pick on the left side',
+      className: 'pgPickBottomLeft'
+    },
+    pgPickBottomRight: {
+      x: 8.21,
+      y: 7.625,
+      def: 'PG - Pick on the right side',
+      className: 'pgPickBottomRight'
+    },
+    pgPickRight: {
+      x: 8.5,
+      y: 8.325,
+      def: 'PG - Position a little bit on the right',
+      className: 'pgPickRight'
+    },
+    pgPickLeft: {
+      x: 6.5,
+      y: 8.325,
+      def: 'PG - Position a little bit on the left',
+      className: 'pgPickLeft'
+    },
+    pgPickTop: {
+      x: 7.5,
+      y: 9.325,
+      def: 'PG - Position above the 3 points line',
+      className: 'pgPickTop'
+    },
+    pgPickTopLeft: {
+      x: 6.79,
+      y: 9.025,
+      def: 'PG - Position above the 3 points line on the left',
+      className: 'pgPickTopLeft'
+    },
+    pgPickTopRight: {
+      x: 8.21,
+      y: 9.025,
+      def: 'PG - Position above the 3 points line on the right',
+      className: 'pgPickTopRight'
+    }
+  };
+}
+
+function sgPositions() {
+  return {
+    // Positions regarding space around SG left
+    sgLeft: {
+      x: 5.05,
+      y: 7.84,
+      def: 'SG left - Natural position',
+      className: 'sgLeft'
+    },
+    sgLeftPickBottom: {
+      x: 5.05,
+      y: 6.84,
+      def: 'SG left - Defenser position',
+      className: 'sgLeftPickBottom'
+    },
+    sgLeftPickBottomLeft: {
+      x: 4.34,
+      y: 7.14,
+      def: 'SG left - Pick on the left side',
+      className: 'sgLeftPickBottomLeft'
+    },
+    sgLeftPickBottomRight: {
+      x: 5.76,
+      y: 7.14,
+      def: 'SG left - Pick on the right side',
+      className: 'sgLeftPickBottomRight'
+    },
+    sgLeftPickTop: {
+      x: 5.05,
+      y: 8.84,
+      def: 'SG left - Position above the 3 points line',
+      className: 'sgLeftPickTop'
+    },
+    sgLeftPickTopLeft: {
+      x: 4.34,
+      y: 8.54,
+      def: 'SG left - Position above the 3 points line on the left',
+      className: 'sgLeftPickTopLeft'
+    },
+    sgLeftPickTopRight: {
+      x: 5.76,
+      y: 8.54,
+      def: 'SG left - Position above the 3 points line on the right',
+      className: 'sgLeftPickTopRight'
+    },
+    sgLeftPickLeft: {
+      x: 4.05,
+      y: 7.84,
+      def: 'SG left - Position a little bit on the left',
+      className: 'sgLeftPickLeft'
+    },
+    sgLeftPickRight: {
+      x: 6.05,
+      y: 7.84,
+      def: 'SG left - Position a little bit on the right',
+      className: 'sgLeftPickRight'
+    },
+    // Positions regarding space around SG right
+    sgRight: {
+      x: 9.95,
+      y: 7.84,
+      def: 'SG right - Natural position',
+      className: 'sgRight'
+    },
+    sgRightPickBottom: {
+      x: 9.95,
+      y: 6.84,
+      def: 'SG right - Defenser position',
+      className: 'sgRightPickBottom'
+    },
+    sgRightPickBottomLeft: {
+      x: 9.24,
+      y: 7.14,
+      def: 'SG right - Pick on the left side',
+      className: 'sgRightPickBottomLeft'
+    },
+    sgRightPickBottomRight: {
+      x: 10.66,
+      y: 7.14,
+      def: 'SG right - Pick on the right side',
+      className: 'sgRightPickBottomRight'
+    },
+    sgRightPickTop: {
+      x: 9.95,
+      y: 8.84,
+      def: 'SG right - Position above the 3 points line',
+      className: 'sgRightPickTop'
+    },
+    sgRightPickTopLeft: {
+      x: 10.66,
+      y: 8.54,
+      def: 'SG right - Position above the 3 points line on the left',
+      className: 'sgRightPickTopLeft'
+    },
+    sgRightPickTopRight: {
+      x: 9.24,
+      y: 8.54,
+      def: 'SG right - Position above the 3 points line on the right',
+      className: 'sgRightPickTopRight'
+    },
+    sgRightPickLeft: {
+      x: 8.95,
+      y: 7.84,
+      def: 'SG right - Position a little bit on the left',
+      className: 'sgRightPickLeft'
+    },
+    sgRightPickRight: {
+      x: 10.95,
+      y: 7.84,
+      def: 'SG right - Position a little bit on the right',
+      className: 'sgRightPickRight'
+    },
+    // Player movement after pick
+    sgRightAfterPickBottomLeft: {
+      x: 8.24,
+      y: 7.14,
+      className: 'sgRightAfterPickBottomLeft'
+    }
+  };
+}
+
+function sfPositions() {
+  return {
+    // Positions regarding space around SF left
+    sfLeft: {
+      x: 1.80,
+      y: 5.17,
+      def: 'SF left - Natural position',
+      className: 'sfLeft'
+    },
+    sfLeftPickBottom: {
+      x: 1.80,
+      y: 4.17,
+      def: 'SF left - Position a little bit down the free throw line',
+      className: 'sfLeftPickBottom'
+    },
+    sfLeftPickBottomLeft: {
+      x: 1.09,
+      y: 4.47,
+      def: 'SF left - Position a little bit closer to the side line',
+      className: 'sfLeftPickBottomLeft'
+    },
+    sfLeftPickBottomRight: {
+      x: 2.51,
+      y: 4.47,
+      def: 'SF left - Pick on the left side',
+      className: 'sfLeftPickBottomRight'
+    },
+    sfLeftPickTop: {
+      x: 1.80,
+      y: 6.17,
+      def: 'SF left - Position a little bit up the free throw line',
+      className: 'sfLeftPickTop'
+    },
+    sfLeftPickTopLeft: {
+      x: 1.09,
+      y: 5.87,
+      def: 'Babar',
+      className: 'sfLeftPickTopLeft'
+    },
+    sfLeftPickTopRight: {
+      x: 2.51,
+      y: 5.87,
+      def: 'Babar',
+      className: 'sfLeftPickTopRight'
+    },
+    sfLeftPickLeft: {
+      x: 0.80,
+      y: 5.17,
+      def: 'Babar',
+      className: 'sfLeftPickLeft'
+    },
+    sfLeftPickRight: {
+      x: 2.80,
+      y: 5.17,
+      def: 'Babar',
+      className: 'sfLeftPickRight'
+    },
+    // Player movement after pick
+    sfLeftAfterPickBottomRight: {
+      x: 2.51,
+      y: 3.47,
+      def: 'Babar',
+      className: 'sfLeftAfterPickBottomRight'
+    },
+    // Positions regarding space around SF right
+    sfRight: {
+      x: 13.2,
+      y: 5.17,
+      def: 'Babar',
+      className: 'sfRight'
+    },
+    sfRightPickBottom: {
+      x: 13.2,
+      y: 4.17,
+      def: 'Babar',
+      className: 'sfRightPickBottom'
+    },
+    sfRightPickBottomLeft: {
+      x: 12.49,
+      y: 4.47,
+      def: 'Babar',
+      className: 'sfRightPickBottomLeft'
+    },
+    sfRightPickBottomRight: {
+      x: 13.91,
+      y: 4.47,
+      def: 'Babar',
+      className: 'sfRightPickBottomRight'
+    },
+    sfRightPickTop: {
+      x: 13.2,
+      y: 6.17,
+      def: 'Babar',
+      className: 'sfRightPickTop'
+    },
+    sfRightPickTopLeft: {
+      x: 12.49,
+      y: 5.87,
+      def: 'Babar',
+      className: 'sfRightPickTopLeft'
+    },
+    sfRightPickTopRight: {
+      x: 13.91,
+      y: 5.87,
+      def: 'Babar',
+      className: 'sfRightPickTopRight'
+    },
+    sfRightPickRight: {
+      x: 14.2,
+      y: 5.17,
+      def: 'Babar',
+      className: 'sfRightPickRight'
+    },
+    sfRightPickLeft: {
+      x: 12.2,
+      y: 5.17,
+      def: 'Babar',
+      className: 'sfRightPickLeft'
+    },
+    // Player movement after pick
+    sfRightAfterPickBottomLeft: {
+      x: 12.49,
+      y: 3.47,
+      def: 'Babar',
+      className: 'sfRightAfterPickBottomLeft'
+    }
+  };
+}
+
+function cornerPositions() {
+  return {
+    // Positions regarding space around corner left
+    cornerLeft: {
+      x: 0.9,
+      y: 1.545,
+      def: 'Babar',
+      className: 'cornerLeft'
+    },
+    cornerLeftPickTop: {
+      x: 0.9,
+      y: 2.545,
+      def: 'Babar',
+      className: 'cornerLeftPickTop'
+    },
+    cornerLeftPickTopRight: {
+      x: 1.61,
+      y: 2.245,
+      def: 'Babar',
+      className: 'cornerLeftPickTopRight'
+    },
+    cornerLeftPickBottom: {
+      x: 0.9,
+      y: 0.545,
+      def: 'Babar',
+      className: 'cornerLeftPickBottom'
+    },
+    cornerLeftPickBottomRight: {
+      x: 1.61,
+      y: 0.845,
+      def: 'Babar',
+      className: 'cornerLeftPickBottomRight'
+    },
+    cornerLeftPickRight: {
+      x: 1.9,
+      y: 1.545,
+      def: 'Babar',
+      className: 'cornerLeftPickRight'
+    },
+    // Positions regarding space around corner right
+    cornerRight: {
+      x: 14.1,
+      y: 1.545,
+      def: 'Babar',
+      className: 'cornerRight'
+    },
+    cornerRightPickTop: {
+      x: 14.1,
+      y: 2.545,
+      def: 'Babar',
+      className: 'cornerRightPickTop'
+    },
+    cornerRightPickTopLeft: {
+      x: 13.39,
+      y: 2.245,
+      def: 'Babar',
+      className: 'cornerRightPickTopLeft'
+    },
+    cornerRightPickBottom: {
+      x: 14.1,
+      y: 0.545,
+      def: 'Babar',
+      className: 'cornerRightPickBottom'
+    },
+    cornerRightPickBottomLeft: {
+      x: 13.39,
+      y: 0.845,
+      def: 'Babar',
+      className: 'cornerRightPickBottomLeft'
+    },
+    cornerRightPickLeft: {
+      x: 13.1,
+      y: 1.545,
+      def: 'Babar',
+      className: 'cornerRightPickLeft'
+    }
+  };
+}
+
+function pfPositions() {
+  return {
+    // Positions regarding space around PF left
+    pfLeft: {
+      x: 5.05,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfLeft'
+    },
+    pfLeftPickBottom: {
+      x: 5.05,
+      y: 4.8,
+      def: 'Babar',
+      className: 'pfLeftPickBottom'
+    },
+    pfLeftPickBottomRight: {
+      x: 5.76,
+      y: 5.1,
+      def: 'Babar',
+      className: 'pfLeftPickBottomRight'
+    },
+    pfLeftPickBottomLeft: {
+      x: 4.34,
+      y: 5.1,
+      def: 'Babar',
+      className: 'pfLeftPickBottomLeft'
+    },
+    pfLeftPickTop: {
+      x: 5.05,
+      y: 6.8,
+      def: 'Babar',
+      className: 'pfLeftPickTop'
+    },
+    pfLeftPickTopRight: {
+      x: 5.76,
+      y: 6.5,
+      def: 'Babar',
+      className: 'pfLeftPickTopRight'
+    },
+    pfLeftPickTopLeft: {
+      x: 4.34,
+      y: 6.5,
+      def: 'Babar',
+      className: 'pfLeftPickTopLeft'
+    },
+    pfLeftPickRight: {
+      x: 6.05,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfLeftPickRight'
+    },
+    pfLeftPickLeft: {
+      x: 4.05,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfLeftPickLeft'
+    },
+    // Player movement after pick
+    pfLeftAfterPickBottomRight: {
+      x: 9.32,
+      y: 3.97,
+      def: 'Babar',
+      className: 'pfLeftAfterPickBottomRight'
+    },
+    // Positions regarding space around PF right
+    pfRight: {
+      x: 9.95,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfRight'
+    },
+    pfRightPickBottom: {
+      x: 9.95,
+      y: 4.8,
+      def: 'Babar',
+      className: 'pfRightPickBottom'
+    },
+    pfRightPickBottomLeft: {
+      x: 9.24,
+      y: 5.1,
+      def: 'Babar',
+      className: 'pfRightPickBottomLeft'
+    },
+    pfRightPickBottomRight: {
+      x: 10.66,
+      y: 5.1,
+      def: 'Babar',
+      className: 'pfRightPickBottomRight'
+    },
+    pfRightPickTop: {
+      x: 9.95,
+      y: 6.8,
+      def: 'Babar',
+      className: 'pfRightPickTop'
+    },
+    pfRightPickTopLeft: {
+      x: 9.24,
+      y: 6.5,
+      def: 'Babar',
+      className: 'pfRightPickTopLeft'
+    },
+    pfRightPickTopRight: {
+      x: 10.66,
+      y: 6.5,
+      def: 'Babar',
+      className: 'pfRightPickTopRight'
+    },
+    pfRightPickLeft: {
+      x: 8.95,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfRightPickLeft'
+    },
+    pfRightPickRight: {
+      x: 10.95,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfRightPickRight'
+    },
+    // Player movement after pick
+    pfRightAfterPickBottomLeft: {
+      x: 5.68,
+      y: 3.97,
+      def: 'Babar',
+      className: 'pfRightAfterPickBottomLeft'
+    },
+    // Positions regarding space around PF center
+    pfCenter: {
+      x: 7.5,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfCenter'
+    },
+    pfCenterPickBottom: {
+      x: 7.5,
+      y: 4.8,
+      def: 'Babar',
+      className: 'pfCenterPickBottom'
+    },
+    pfCenterPickBottomLeft: {
+      x: 6.79,
+      y: 5.1,
+      def: 'Babar',
+      className: 'pfCenterPickBottomLeft'
+    },
+    pfCenterPickBottomRight: {
+      x: 8.21,
+      y: 5.1,
+      def: 'Babar',
+      className: 'pfCenterPickBottomRight'
+    },
+    pfCenterPickTop: {
+      x: 7.5,
+      y: 6.8,
+      def: 'Babar',
+      className: 'pfCenterPickTop'
+    },
+    pfCenterPickTopLeft: {
+      x: 6.79,
+      y: 6.5,
+      def: 'Babar',
+      className: 'pfCenterPickTopLeft'
+    },
+    pfCenterPickTopRight: {
+      x: 8.21,
+      y: 6.5,
+      def: 'Babar',
+      className: 'pfCenterPickTopRight'
+    },
+    pfCenterPickLeft: {
+      x: 6.5,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfCenterPickLeft'
+    },
+    pfCenterPickRight: {
+      x: 8.5,
+      y: 5.8,
+      def: 'Babar',
+      className: 'pfCenterPickRight'
+    }
+  };
+}
+
+function cPositions() {
+  return {
+    // Positions regarding space around C left
+    cLeft: {
+      x: 4.95,
+      y: 2.88,
+      def: 'Babar',
+      className: 'cLeft'
+    },
+    cLeftPickBottom: {
+      x: 4.95,
+      y: 1.88,
+      def: 'Babar',
+      className: 'cLeftPickBottom'
+    },
+    cLeftPickBottomLeft: {
+      x: 4.24,
+      y: 2.18,
+      def: 'Babar',
+      className: 'cLeftPickBottomLeft'
+    },
+    cLeftPickBottomRight: {
+      x: 5.66,
+      y: 2.18,
+      def: 'Babar',
+      className: 'cLeftPickBottomRight'
+    },
+    cLeftPickTop: {
+      x: 4.95,
+      y: 3.88,
+      def: 'Babar',
+      className: 'cLeftPickTop'
+    },
+    cLeftPickTopLeft: {
+      x: 4.24,
+      y: 3.68,
+      def: 'Babar',
+      className: 'cLeftPickTopLeft'
+    },
+    cLeftPickTopRight: {
+      x: 5.66,
+      y: 3.68,
+      def: 'Babar',
+      className: 'cLeftPickTopRight'
+    },
+    cLeftPickLeft: {
+      x: 3.95,
+      y: 2.88,
+      def: 'Babar',
+      className: 'cLeftPickLeft'
+    },
+    cLeftPickRight: {
+      x: 5.95,
+      y: 2.88,
+      def: 'Babar',
+      className: 'cLeftPickRight'
+    },
+    // Positions regarding space around C bottom
+    cLeftBottom: {
+      x: 4.95,
+      y: 2.25,
+      def: 'Babar',
+      className: 'cLeftBottom'
+    },
+    cLeftBottomPickRight: {
+      x: 5.84,
+      y: 1.63,
+      def: 'Babar',
+      className: 'cLeftBottomPickRight'
+    },
+    cRightBottom: {
+      x: 9.95,
+      y: 2.25,
+      def: 'Babar',
+      className: 'cRightBottom'
+    },
+    cRightBottomPickLeft: {
+      x: 9.16,
+      y: 1.63,
+      def: 'Babar',
+      className: 'cRightBottomPickLeft'
+    },
+    // Positions regarding space around C left
+    cRight: {
+      x: 9.95,
+      y: 2.88,
+      def: 'Babar',
+      className: 'cRight'
+    },
+    cRightPickBottom: {
+      x: 9.95,
+      y: 1.88,
+      def: 'Babar',
+      className: 'cRightPickBottom'
+    },
+    cRightPickBottomLeft: {
+      x: 9.24,
+      y: 2.18,
+      def: 'Babar',
+      className: 'cRightPickBottomLeft'
+    },
+    cRightPickBottomRight: {
+      x: 10.66,
+      y: 2.18,
+      def: 'Babar',
+      className: 'cRightPickBottomRight'
+    },
+    cRightPickTop: {
+      x: 9.95,
+      y: 3.88,
+      def: 'Babar',
+      className: 'cRightPickTop'
+    },
+    cRightPickTopLeft: {
+      x: 9.24,
+      y: 3.58,
+      def: 'Babar',
+      className: 'cRightPickTopLeft'
+    },
+    cRightPickTopRight: {
+      x: 10.66,
+      y: 3.58,
+      def: 'Babar',
+      className: 'cRightPickTopRight'
+    },
+    cRightPickLeft: {
+      x: 8.95,
+      y: 2.88,
+      def: 'Babar',
+      className: 'cRightLeft'
+    },
+    cRightPickRight: {
+      x: 10.95,
+      y: 2.88,
+      def: 'Babar',
+      className: 'cRightPickRight'
+    }
+  };
+}
+
+function underRingPositions() {
+  return {
+    // Positions regarding space around ring top
+    underRing: {
+      x: 7.5,
+      y: 1.545,
+      def: 'Babar',
+      className: 'underRing'
+    },
+    underRingBottom: {
+      x: 7.5,
+      y: 0.545,
+      def: 'Babar',
+      className: 'underRingBottom'
+    },
+    underRingTop: {
+      x: 7.5,
+      y: 2.545,
+      def: 'Babar',
+      className: 'underRingTop'
+    },
+    underRingTopLeft: {
+      x: 6.79,
+      y: 2.245,
+      def: 'Babar',
+      className: 'underRingTopLeft'
+    },
+    underRingTopRight: {
+      x: 8.21,
+      y: 2.245,
+      def: 'Babar',
+      className: 'underRingTopRight'
+    }
+  };
+}
+
+function touchPositions() {
+  return {
+    // Positions regarding space around outOfBound top
+    touchBottomLeft: {
+      x: 4.5,
+      y: 0,
+      def: 'Babar',
+      className: 'touchBottomLeft'
+    },
+    touchBottomRight: {
+      x: 10.5,
+      y: 0,
+      def: 'Babar',
+      className: 'touchBottomRight'
+    }
+  };
+}
+
+function farAwayPositions() {
+  return {
+    // Other positions
+    farAwayLeft: {
+      x: 2.8,
+      y: 10,
+      def: 'Babar',
+      className: 'farAwayLeft'
+    },
+    farAwayRight: {
+      x: 12.2,
+      y: 10,
+      def: 'Babar',
+      className: 'farAwayRight'
+    }
+  };
+}
+
+// Basket-Ball players positions for FIBA
+function playersPositions() {
+  return R.reduce((prev, cur) => R.mergeDeepLeft(prev, cur), {}, [
+    pgPositions(),
+    sgPositions(),
+    sfPositions(),
+    cornerPositions(),
+    pfPositions(),
+    cPositions(),
+    underRingPositions(),
+    touchPositions(),
+    farAwayPositions()
+  ]);
+}
+
+function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
+  function zoom(courtZoom) {
+    return R.map(() => ({
+      x: R.multiply(courtZoom),
+      y: R.multiply(courtZoom)
+    }), playersPosConfig);
+  }
+
+  return R.evolve(zoom(zoomSize), playersPosConfig);
+}
+
+function generatePlayersPositions(wishedZoom, playersPositionsSelected, context) {
+  const colorConditions = R.cond([
+    [R.equals(0), R.always('lightskyblue')],
+    [R.equals(1), R.always('yellow')],
+    [R.equals(2), R.always('green')],
+    [R.equals(3), R.always('red')],
+    [R.equals(4), R.always('violet')],
+    [R.T, R.always('black')]
+  ]);
+
+  mapIndexed((cur, index) => {
+    createCircle(
+      R.prop('x', cur),
+      R.prop('y', cur),
+      // Impure because access wishedZoom outside the function
+      R.multiply(wishedZoom, 0.5),
+      'black',
+      colorConditions(index),
+      R.prop('className', cur),
+      context
+    );
+  }, playersPositionsSelected);
+}
 
 exports.playersPositions = playersPositions;
 exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
 exports.generatePlayersPositions = generatePlayersPositions;
 
-// Picks in diagonal x = 0.71 and y = 0.7
-function pgPositions() {
-	// Positions regarding space around PG
-	return {
-		pg: {
-			x: 7.5,
-			y: 8.325,
-			def: 'PG - Natural position',
-			className: 'pg'
-		},
-		pgPickBottom: {
-			x: 7.5,
-			y: 7.325,
-			def: 'PG - Defenser position',
-			className: 'pgPickBottom'
-		},
-		pgPickBottomLeft: {
-			x: 6.79,
-			y: 7.625,
-			def: 'PG - Pick on the left side',
-			className: 'pgPickBottomLeft'
-		},
-		pgPickBottomRight: {
-			x: 8.21,
-			y: 7.625,
-			def: 'PG - Pick on the right side',
-			className: 'pgPickBottomRight'
-		},
-		pgPickRight: {
-			x: 8.5,
-			y: 8.325,
-			def: 'PG - Position a little bit on the right',
-			className: 'pgPickRight'
-		},
-		pgPickLeft: {
-			x: 6.5,
-			y: 8.325,
-			def: 'PG - Position a little bit on the left',
-			className: 'pgPickLeft'
-		},
-		pgPickTop: {
-			x: 7.5,
-			y: 9.325,
-			def: 'PG - Position above the 3 points line',
-			className: 'pgPickTop'
-		},
-		pgPickTopLeft: {
-			x: 6.79,
-			y: 9.025,
-			def: 'PG - Position above the 3 points line on the left',
-			className: 'pgPickTopLeft'
-		},
-		pgPickTopRight: {
-			x: 8.21,
-			y: 9.025,
-			def: 'PG - Position above the 3 points line on the right',
-			className: 'pgPickTopRight'
-		}
-	};
-}
-
-function sgPositions() {
-	return {
-		// Positions regarding space around SG left
-		sgLeft: {
-			x: 5.05,
-			y: 7.84,
-			def: 'SG left - Natural position',
-			className: 'sgLeft'
-		},
-		sgLeftPickBottom: {
-			x: 5.05,
-			y: 6.84,
-			def: 'SG left - Defenser position',
-			className: 'sgLeftPickBottom'
-		},
-		sgLeftPickBottomLeft: {
-			x: 4.34,
-			y: 7.14,
-			def: 'SG left - Pick on the left side',
-			className: 'sgLeftPickBottomLeft'
-		},
-		sgLeftPickBottomRight: {
-			x: 5.76,
-			y: 7.14,
-			def: 'SG left - Pick on the right side',
-			className: 'sgLeftPickBottomRight'
-		},
-		sgLeftPickTop: {
-			x: 5.05,
-			y: 8.84,
-			def: 'SG left - Position above the 3 points line',
-			className: 'sgLeftPickTop'
-		},
-		sgLeftPickTopLeft: {
-			x: 4.34,
-			y: 8.54,
-			def: 'SG left - Position above the 3 points line on the left',
-			className: 'sgLeftPickTopLeft'
-		},
-		sgLeftPickTopRight: {
-			x: 5.76,
-			y: 8.54,
-			def: 'SG left - Position above the 3 points line on the right',
-			className: 'sgLeftPickTopRight'
-		},
-		sgLeftPickLeft: {
-			x: 4.05,
-			y: 7.84,
-			def: 'SG left - Position a little bit on the left',
-			className: 'sgLeftPickLeft'
-		},
-		sgLeftPickRight: {
-			x: 6.05,
-			y: 7.84,
-			def: 'SG left - Position a little bit on the right',
-			className: 'sgLeftPickRight'
-		},
-		// Positions regarding space around SG right
-		sgRight: {
-			x: 9.95,
-			y: 7.84,
-			def: 'SG right - Natural position',
-			className: 'sgRight'
-		},
-		sgRightPickBottom: {
-			x: 9.95,
-			y: 6.84,
-			def: 'SG right - Defenser position',
-			className: 'sgRightPickBottom'
-		},
-		sgRightPickBottomLeft: {
-			x: 9.24,
-			y: 7.14,
-			def: 'SG right - Pick on the left side',
-			className: 'sgRightPickBottomLeft'
-		},
-		sgRightPickBottomRight: {
-			x: 10.66,
-			y: 7.14,
-			def: 'SG right - Pick on the right side',
-			className: 'sgRightPickBottomRight'
-		},
-		sgRightPickTop: {
-			x: 9.95,
-			y: 8.84,
-			def: 'SG right - Position above the 3 points line',
-			className: 'sgRightPickTop'
-		},
-		sgRightPickTopLeft: {
-			x: 10.66,
-			y: 8.54,
-			def: 'SG right - Position above the 3 points line on the left',
-			className: 'sgRightPickTopLeft'
-		},
-		sgRightPickTopRight: {
-			x: 9.24,
-			y: 8.54,
-			def: 'SG right - Position above the 3 points line on the right',
-			className: 'sgRightPickTopRight'
-		},
-		sgRightPickLeft: {
-			x: 8.95,
-			y: 7.84,
-			def: 'SG right - Position a little bit on the left',
-			className: 'sgRightPickLeft'
-		},
-		sgRightPickRight: {
-			x: 10.95,
-			y: 7.84,
-			def: 'SG right - Position a little bit on the right',
-			className: 'sgRightPickRight'
-		},
-		// Player movement after pick
-		sgRightAfterPickBottomLeft: {
-			x: 8.24,
-			y: 7.14,
-			className: 'sgRightAfterPickBottomLeft'
-		}
-	};
-}
-
-function sfPositions() {
-	return {
-		// Positions regarding space around SF left
-		sfLeft: {
-			x: 1.80,
-			y: 5.17,
-			def: 'SF left - Natural position',
-			className: 'sfLeft'
-		},
-		sfLeftPickBottom: {
-			x: 1.80,
-			y: 4.17,
-			def: 'SF left - Position a little bit down the free throw line',
-			className: 'sfLeftPickBottom'
-		},
-		sfLeftPickBottomLeft: {
-			x: 1.09,
-			y: 4.47,
-			def: 'SF left - Position a little bit closer to the side line',
-			className: 'sfLeftPickBottomLeft'
-		},
-		sfLeftPickBottomRight: {
-			x: 2.51,
-			y: 4.47,
-			def: 'SF left - Pick on the left side',
-			className: 'sfLeftPickBottomRight'
-		},
-		sfLeftPickTop: {
-			x: 1.80,
-			y: 6.17,
-			def: 'SF left - Position a little bit up the free throw line',
-			className: 'sfLeftPickTop'
-		},
-		sfLeftPickTopLeft: {
-			x: 1.09,
-			y: 5.87,
-			def: 'Babar',
-			className: 'sfLeftPickTopLeft'
-		},
-		sfLeftPickTopRight: {
-			x: 2.51,
-			y: 5.87,
-			def: 'Babar',
-			className: 'sfLeftPickTopRight'
-		},
-		sfLeftPickLeft: {
-			x: 0.80,
-			y: 5.17,
-			def: 'Babar',
-			className: 'sfLeftPickLeft'
-		},
-		sfLeftPickRight: {
-			x: 2.80,
-			y: 5.17,
-			def: 'Babar',
-			className: 'sfLeftPickRight'
-		},
-		// Player movement after pick
-		sfLeftAfterPickBottomRight: {
-			x: 2.51,
-			y: 3.47,
-			def: 'Babar',
-			className: 'sfLeftAfterPickBottomRight'
-		},
-		// Positions regarding space around SF right
-		sfRight: {
-			x: 13.2,
-			y: 5.17,
-			def: 'Babar',
-			className: 'sfRight'
-		},
-		sfRightPickBottom: {
-			x: 13.2,
-			y: 4.17,
-			def: 'Babar',
-			className: 'sfRightPickBottom'
-		},
-		sfRightPickBottomLeft: {
-			x: 12.49,
-			y: 4.47,
-			def: 'Babar',
-			className: 'sfRightPickBottomLeft'
-		},
-		sfRightPickBottomRight: {
-			x: 13.91,
-			y: 4.47,
-			def: 'Babar',
-			className: 'sfRightPickBottomRight'
-		},
-		sfRightPickTop: {
-			x: 13.2,
-			y: 6.17,
-			def: 'Babar',
-			className: 'sfRightPickTop'
-		},
-		sfRightPickTopLeft: {
-			x: 12.49,
-			y: 5.87,
-			def: 'Babar',
-			className: 'sfRightPickTopLeft'
-		},
-		sfRightPickTopRight: {
-			x: 13.91,
-			y: 5.87,
-			def: 'Babar',
-			className: 'sfRightPickTopRight'
-		},
-		sfRightPickRight: {
-			x: 14.2,
-			y: 5.17,
-			def: 'Babar',
-			className: 'sfRightPickRight'
-		},
-		sfRightPickLeft: {
-			x: 12.2,
-			y: 5.17,
-			def: 'Babar',
-			className: 'sfRightPickLeft'
-		},
-		// Player movement after pick
-		sfRightAfterPickBottomLeft: {
-			x: 12.49,
-			y: 3.47,
-			def: 'Babar',
-			className: 'sfRightAfterPickBottomLeft'
-		}
-	};
-}
-
-function cornerPositions() {
-	return {
-		// Positions regarding space around corner left
-		cornerLeft: {
-			x: 0.9,
-			y: 1.545,
-			def: 'Babar',
-			className: 'cornerLeft'
-		},
-		cornerLeftPickTop: {
-			x: 0.9,
-			y: 2.545,
-			def: 'Babar',
-			className: 'cornerLeftPickTop'
-		},
-		cornerLeftPickTopRight: {
-			x: 1.61,
-			y: 2.245,
-			def: 'Babar',
-			className: 'cornerLeftPickTopRight'
-		},
-		cornerLeftPickBottom: {
-			x: 0.9,
-			y: 0.545,
-			def: 'Babar',
-			className: 'cornerLeftPickBottom'
-		},
-		cornerLeftPickBottomRight: {
-			x: 1.61,
-			y: 0.845,
-			def: 'Babar',
-			className: 'cornerLeftPickBottomRight'
-		},
-		cornerLeftPickRight: {
-			x: 1.9,
-			y: 1.545,
-			def: 'Babar',
-			className: 'cornerLeftPickRight'
-		},
-		// Positions regarding space around corner right
-		cornerRight: {
-			x: 14.1,
-			y: 1.545,
-			def: 'Babar',
-			className: 'cornerRight'
-		},
-		cornerRightPickTop: {
-			x: 14.1,
-			y: 2.545,
-			def: 'Babar',
-			className: 'cornerRightPickTop'
-		},
-		cornerRightPickTopLeft: {
-			x: 13.39,
-			y: 2.245,
-			def: 'Babar',
-			className: 'cornerRightPickTopLeft'
-		},
-		cornerRightPickBottom: {
-			x: 14.1,
-			y: 0.545,
-			def: 'Babar',
-			className: 'cornerRightPickBottom'
-		},
-		cornerRightPickBottomLeft: {
-			x: 13.39,
-			y: 0.845,
-			def: 'Babar',
-			className: 'cornerRightPickBottomLeft'
-		},
-		cornerRightPickLeft: {
-			x: 13.1,
-			y: 1.545,
-			def: 'Babar',
-			className: 'cornerRightPickLeft'
-		},
-	};
-}
-
-function pfPositions() {
-	return {
-		// Positions regarding space around PF left
-		pfLeft: {
-			x: 5.05,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfLeft'
-		},
-		pfLeftPickBottom: {
-			x: 5.05,
-			y: 4.8,
-			def: 'Babar',
-			className: 'pfLeftPickBottom'
-		},
-		pfLeftPickBottomRight: {
-			x: 5.76,
-			y: 5.1,
-			def: 'Babar',
-			className: 'pfLeftPickBottomRight'
-		},
-		pfLeftPickBottomLeft: {
-			x: 4.34,
-			y: 5.1,
-			def: 'Babar',
-			className: 'pfLeftPickBottomLeft'
-		},
-		pfLeftPickTop: {
-			x: 5.05,
-			y: 6.8,
-			def: 'Babar',
-			className: 'pfLeftPickTop'
-		},
-		pfLeftPickTopRight: {
-			x: 5.76,
-			y: 6.5,
-			def: 'Babar',
-			className: 'pfLeftPickTopRight'
-		},
-		pfLeftPickTopLeft: {
-			x: 4.34,
-			y: 6.5,
-			def: 'Babar',
-			className: 'pfLeftPickTopLeft'
-		},
-		pfLeftPickRight: {
-			x: 6.05,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfLeftPickRight'
-		},
-		pfLeftPickLeft: {
-			x: 4.05,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfLeftPickLeft'
-		},
-		// Player movement after pick
-		pfLeftAfterPickBottomRight: {
-			x: 9.32,
-			y: 3.97,
-			def: 'Babar',
-			className: 'pfLeftAfterPickBottomRight'
-		},
-		// Positions regarding space around PF right
-		pfRight: {
-			x: 9.95,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfRight'
-		},
-		pfRightPickBottom: {
-			x: 9.95,
-			y: 4.8,
-			def: 'Babar',
-			className: 'pfRightPickBottom'
-		},
-		pfRightPickBottomLeft: {
-			x: 9.24,
-			y: 5.1,
-			def: 'Babar',
-			className: 'pfRightPickBottomLeft'
-		},
-		pfRightPickBottomRight: {
-			x: 10.66,
-			y: 5.1,
-			def: 'Babar',
-			className: 'pfRightPickBottomRight'
-		},
-		pfRightPickTop: {
-			x: 9.95,
-			y: 6.8,
-			def: 'Babar',
-			className: 'pfRightPickTop'
-		},
-		pfRightPickTopLeft: {
-			x: 9.24,
-			y: 6.5,
-			def: 'Babar',
-			className: 'pfRightPickTopLeft'
-		},
-		pfRightPickTopRight: {
-			x: 10.66,
-			y: 6.5,
-			def: 'Babar',
-			className: 'pfRightPickTopRight'
-		},
-		pfRightPickLeft: {
-			x: 8.95,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfRightPickLeft'
-		},
-		pfRightPickRight: {
-			x: 10.95,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfRightPickRight'
-		},
-		// Player movement after pick
-		pfRightAfterPickBottomLeft: {
-			x: 5.68,
-			y: 3.97,
-			def: 'Babar',
-			className: 'pfRightAfterPickBottomLeft'
-		},
-		// Positions regarding space around PF center
-		pfCenter: {
-			x: 7.5,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfCenter'
-		},
-		pfCenterPickBottom: {
-			x: 7.5,
-			y: 4.8,
-			def: 'Babar',
-			className: 'pfCenterPickBottom'
-		},
-		pfCenterPickBottomLeft: {
-			x: 6.79,
-			y: 5.1,
-			def: 'Babar',
-			className: 'pfCenterPickBottomLeft'
-		},
-		pfCenterPickBottomRight: {
-			x: 8.21,
-			y: 5.1,
-			def: 'Babar',
-			className: 'pfCenterPickBottomRight'
-		},
-		pfCenterPickTop: {
-			x: 7.5,
-			y: 6.8,
-			def: 'Babar',
-			className: 'pfCenterPickTop'
-		},
-		pfCenterPickTopLeft: {
-			x: 6.79,
-			y: 6.5,
-			def: 'Babar',
-			className: 'pfCenterPickTopLeft'
-		},
-		pfCenterPickTopRight: {
-			x: 8.21,
-			y: 6.5,
-			def: 'Babar',
-			className: 'pfCenterPickTopRight'
-		},
-		pfCenterPickLeft: {
-			x: 6.5,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfCenterPickLeft'
-		},
-		pfCenterPickRight: {
-			x: 8.5,
-			y: 5.8,
-			def: 'Babar',
-			className: 'pfCenterPickRight'
-		},
-	};
-}
-
-function cPositions() {
-	return {
-		// Positions regarding space around C left
-		cLeft: {
-			x: 4.95,
-			y: 2.88,
-			def: 'Babar',
-			className: 'cLeft'
-		},
-		cLeftPickBottom: {
-			x: 4.95,
-			y: 1.88,
-			def: 'Babar',
-			className: 'cLeftPickBottom'
-		},
-		cLeftPickBottomLeft: {
-			x: 4.24,
-			y: 2.18,
-			def: 'Babar',
-			className: 'cLeftPickBottomLeft'
-		},
-		cLeftPickBottomRight: {
-			x: 5.66,
-			y: 2.18,
-			def: 'Babar',
-			className: 'cLeftPickBottomRight'
-		},
-		cLeftPickTop: {
-			x: 4.95,
-			y: 3.88,
-			def: 'Babar',
-			className: 'cLeftPickTop'
-		},
-		cLeftPickTopLeft: {
-			x: 4.24,
-			y: 3.68,
-			def: 'Babar',
-			className: 'cLeftPickTopLeft'
-		},
-		cLeftPickTopRight: {
-			x: 5.66,
-			y: 3.68,
-			def: 'Babar',
-			className: 'cLeftPickTopRight'
-		},
-		cLeftPickLeft: {
-			x: 3.95,
-			y: 2.88,
-			def: 'Babar',
-			className: 'cLeftPickLeft'
-		},
-		cLeftPickRight: {
-			x: 5.95,
-			y: 2.88,
-			def: 'Babar',
-			className: 'cLeftPickRight'
-		},
-		// Positions regarding space around C bottom
-		cLeftBottom: {
-			x: 4.95,
-			y: 2.25,
-			def: 'Babar',
-			className: 'cLeftBottom'
-		},
-		cLeftBottomPickRight: {
-			x: 5.84,
-			y: 1.63,
-			def: 'Babar',
-			className: 'cLeftBottomPickRight'
-		},
-		cRightBottom: {
-			x: 9.95,
-			y: 2.25,
-			def: 'Babar',
-			className: 'cRightBottom'
-		},
-		cRightBottomPickLeft: {
-			x: 9.16,
-			y: 1.63,
-			def: 'Babar',
-			className: 'cRightBottomPickLeft'
-		},
-		// Positions regarding space around C left
-		cRight: {
-			x: 9.95,
-			y: 2.88,
-			def: 'Babar',
-			className: 'cRight'
-		},
-		cRightPickBottom: {
-			x: 9.95,
-			y: 1.88,
-			def: 'Babar',
-			className: 'cRightPickBottom'
-		},
-		cRightPickBottomLeft: {
-			x: 9.24,
-			y: 2.18,
-			def: 'Babar',
-			className: 'cRightPickBottomLeft'
-		},
-		cRightPickBottomRight: {
-			x: 10.66,
-			y: 2.18,
-			def: 'Babar',
-			className: 'cRightPickBottomRight'
-		},
-		cRightPickTop: {
-			x: 9.95,
-			y: 3.88,
-			def: 'Babar',
-			className: 'cRightPickTop'
-		},
-		cRightPickTopLeft: {
-			x: 9.24,
-			y: 3.58,
-			def: 'Babar',
-			className: 'cRightPickTopLeft'
-		},
-		cRightPickTopRight: {
-			x: 10.66,
-			y: 3.58,
-			def: 'Babar',
-			className: 'cRightPickTopRight'
-		},
-		cRightPickLeft: {
-			x: 8.95,
-			y: 2.88,
-			def: 'Babar',
-			className: 'cRightLeft'
-		},
-		cRightPickRight: {
-			x: 10.95,
-			y: 2.88,
-			def: 'Babar',
-			className: 'cRightPickRight'
-		},
-	};
-}
-
-function underRingPositions() {
-	return {
-		// Positions regarding space around ring top
-		underRing: {
-			x: 7.5,
-			y: 1.545,
-			def: 'Babar',
-			className: 'underRing'
-		},
-		underRingBottom: {
-			x: 7.5,
-			y: 0.545,
-			def: 'Babar',
-			className: 'underRingBottom'
-		},
-		underRingTop: {
-			x: 7.5,
-			y: 2.545,
-			def: 'Babar',
-			className: 'underRingTop'
-		},
-		underRingTopLeft: {
-			x: 6.79,
-			y: 2.245,
-			def: 'Babar',
-			className: 'underRingTopLeft'
-		},
-		underRingTopRight: {
-			x: 8.21,
-			y: 2.245,
-			def: 'Babar',
-			className: 'underRingTopRight'
-		},
-	};
-}
-
-function touchPositions() {
-	return {
-		// Positions regarding space around outOfBound top
-		touchBottomLeft: {
-			x: 4.5,
-			y: 0,
-			def: 'Babar',
-			className: 'touchBottomLeft'
-		},
-		touchBottomRight: {
-			x: 10.5,
-			y: 0,
-			def: 'Babar',
-			className: 'touchBottomRight'
-		}
-	};
-}
-
-function farAwayPositions() {
-	return {
-		// Other positions
-		farAwayLeft: {
-			x: 2.8,
-			y: 10,
-			def: 'Babar',
-			className: 'farAwayLeft'
-		},
-		farAwayRight: {
-			x: 12.2,
-			y: 10,
-			def: 'Babar',
-			className: 'farAwayRight'
-		}
-	};
-}
-
-// Basket-Ball players positions for FIBA
-function playersPositions() {
-	return R.reduce((prev, cur) => {
-		return R.mergeDeepLeft(prev, cur);
-	}, {}, [
-		pgPositions(),
-		sgPositions(),
-		sfPositions(),
-		cornerPositions(),
-		pfPositions(),
-		cPositions(),
-		underRingPositions(),
-		touchPositions(),
-		farAwayPositions()
-	]);
-}
-
-function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
-
-	function zoom(courtZoom, playersPosConfig) {
-		return R.map(cur => {
-			return {
-				x: R.multiply(courtZoom),
-				y: R.multiply(courtZoom)
-			}
-		}, playersPosConfig);
-	}
-
-	return R.evolve(zoom(zoomSize, playersPosConfig), playersPosConfig);
-}
-
-function generatePlayersPositions(wishedZoom, playersPositions, context) {
-	const colorConditions = R.cond([
-		[R.equals(0), R.always('lightskyblue')],
-		[R.equals(1), R.always('yellow')],
-		[R.equals(2), R.always('green')],
-		[R.equals(3), R.always('red')],
-		[R.equals(4), R.always('violet')],
-		[R.T, R.always('black')]
-	]);
-
-	mapIndexed((cur, index) => {
-		createCircle(
-			R.prop('x', cur),
-			R.prop('y', cur),
-			// Impure because access wishedZoom outside the function
-			R.multiply(wishedZoom, 0.5),
-			'black',
-			colorConditions(index),
-			R.prop('className', cur),
-			context
-		);
-	}, playersPositions);
-}
 },{"./utils.js":488,"ramda":161}],486:[function(require,module,exports){
 const R = require('ramda');
-const strategyCreator = require('./strategy-factory.js').strategyCreator;
-
-exports.strategySelector = strategySelector;
+const { strategyCreator } = require('./strategy-factory.js');
 
 function strategyNormalStar(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'pg',
-		'sfLeft',
-		'sfRight',
-		'cornerLeft',
-		'cornerRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'pg';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'underRing'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'sfRight'
-		}, {
-			action: 'regular',
-			origin: 'pg',
-			destination: 'cornerRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'pg'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'underRing'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerLeft',
-			destination: 'sfLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cornerLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'underRing'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'sfLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cornerLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cornerRight'
-		}, {
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'underRing'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerLeft',
-			destination: 'sfRight'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'sfLeft'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'cornerLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'underRing'
-		}],
-		[{
-			origin: 'sprint',
-			origin: 'pg',
-			destination: 'cornerRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'pg'
-		}, {
-			action: 'sprint',
-			origin: 'cornerLeft',
-			destination: 'underRing'
-		}],
-		[{
-			origin: 'sprint',
-			origin: 'pg',
-			destination: 'sfRight'
-		}, {
-			action: 'regular',
-			origin: 'cornerLeft',
-			destination: 'cornerRight'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'pg',
+    'sfLeft',
+    'sfRight',
+    'cornerLeft',
+    'cornerRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'pg';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'underRing'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'sfRight'
+    }, {
+      action: 'regular',
+      origin: 'pg',
+      destination: 'cornerRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'pg'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'underRing'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerLeft',
+      destination: 'sfLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cornerLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'underRing'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'sfLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cornerRight'
+    }, {
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'underRing'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerLeft',
+      destination: 'sfRight'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'sfLeft'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'cornerLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'underRing'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'cornerRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'pg'
+    }, {
+      action: 'sprint',
+      origin: 'cornerLeft',
+      destination: 'underRing'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'sfRight'
+    }, {
+      action: 'regular',
+      origin: 'cornerLeft',
+      destination: 'cornerRight'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyLowStar(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'pg',
-		'sfLeft',
-		'sfRight',
-		'cLeft',
-		'cRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'pg';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftBottom'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cRightBottom'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cRightBottom'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cLeftBottom'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sfLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'sfRightPickLeft'
-		}, {
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'pfCenter'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'pg'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'sfRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'sfRightPickLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'ball',
-			destination: 'sfRightAfterPickBottomLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'sfRightAfterPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'sgLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cornerLeft'
-		}, {
-			action: 'sprint',
-			origin: 'ball',
-			destination: 'underRing'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'underRing'
-		}, {
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'cornerRight'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'pg',
+    'sfLeft',
+    'sfRight',
+    'cLeft',
+    'cRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'pg';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftBottom'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cRightBottom'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cRightBottom'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cLeftBottom'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sfLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'sfRightPickLeft'
+    }, {
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'pfCenter'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'pg'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'sfRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'sfRightPickLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'ball',
+      destination: 'sfRightAfterPickBottomLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'sfRightAfterPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'sgLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
+    }, {
+      action: 'sprint',
+      origin: 'ball',
+      destination: 'underRing'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'underRing'
+    }, {
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'cornerRight'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyTouchDowmLeft(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'touchBottomLeft',
-		'pfLeft',
-		'cRightBottom',
-		'cLeftBottom',
-		'pfRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'touchBottomLeft';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'sprint',
-			origin: 'cLeftBottom',
-			destination: 'pfLeftPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'cRightBottom',
-			destination: 'pfRightAfterPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cRightBottom',
-			destination: 'cLeftBottom'
-		}, {
-			action: 'sprint',
-			origin: 'pfLeft',
-			destination: 'cornerLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pfRight',
-			destination: 'farAwayLeft'
-		}, {
-			action: 'sprint',
-			origin: 'cLeftBottom',
-			destination: 'underRingTopRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopRight'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'touchBottomLeft',
+    'pfLeft',
+    'cRightBottom',
+    'cLeftBottom',
+    'pfRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'touchBottomLeft';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'sprint',
+      origin: 'cLeftBottom',
+      destination: 'pfLeftPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'cRightBottom',
+      destination: 'pfRightAfterPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cRightBottom',
+      destination: 'cLeftBottom'
+    }, {
+      action: 'sprint',
+      origin: 'pfLeft',
+      destination: 'cornerLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pfRight',
+      destination: 'farAwayLeft'
+    }, {
+      action: 'sprint',
+      origin: 'cLeftBottom',
+      destination: 'underRingTopRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopRight'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyTouchDowmRight(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'touchBottomRight',
-		'pfLeft',
-		'cRightBottom',
-		'cLeftBottom',
-		'pfRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'touchBottomRight';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'sprint',
-			origin: 'cLeftBottom',
-			destination: 'pfLeftAfterPickBottomRight'
-		}, {
-			action: 'sprint',
-			origin: 'cRightBottom',
-			destination: 'pfRightPickBottom'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cLeftBottom',
-			destination: 'cRightBottom'
-		}, {
-			action: 'sprint',
-			origin: 'pfRight',
-			destination: 'cornerRight'
-		}, {
-			action: 'sprint',
-			origin: 'pfLeft',
-			destination: 'farAwayRight'
-		}, {
-			action: 'sprint',
-			origin: 'cRightBottom',
-			destination: 'underRingTopLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopLeft'
-		}]
+  // Players starting position
+  const defaultPlayersPositions = [
+    'touchBottomRight',
+    'pfLeft',
+    'cRightBottom',
+    'cLeftBottom',
+    'pfRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'touchBottomRight';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'sprint',
+      origin: 'cLeftBottom',
+      destination: 'pfLeftAfterPickBottomRight'
+    }, {
+      action: 'sprint',
+      origin: 'cRightBottom',
+      destination: 'pfRightPickBottom'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cLeftBottom',
+      destination: 'cRightBottom'
+    }, {
+      action: 'sprint',
+      origin: 'pfRight',
+      destination: 'cornerRight'
+    }, {
+      action: 'sprint',
+      origin: 'pfLeft',
+      destination: 'farAwayRight'
+    }, {
+      action: 'sprint',
+      origin: 'cRightBottom',
+      destination: 'underRingTopLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopLeft'
+    }]
 
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyTouchBoxLeft(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'touchBottomLeft',
-		'pfLeft',
-		'cRight',
-		'cLeft',
-		'pfRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'touchBottomLeft';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'sprint',
-			origin: 'cLeft',
-			destination: 'underRingTopRight'
-		}, {
-			action: 'sprint',
-			origin: 'pfLeft',
-			destination: 'pfRightPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'cornerLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pfRight',
-			destination: 'sfLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cLeft',
-			destination: 'underRingTopLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pfLeft',
-			destination: 'underRingTopRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopRight'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'touchBottomLeft',
+    'pfLeft',
+    'cRight',
+    'cLeft',
+    'pfRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'touchBottomLeft';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'sprint',
+      origin: 'cLeft',
+      destination: 'underRingTopRight'
+    }, {
+      action: 'sprint',
+      origin: 'pfLeft',
+      destination: 'pfRightPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'cornerLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pfRight',
+      destination: 'sfLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cLeft',
+      destination: 'underRingTopLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pfLeft',
+      destination: 'underRingTopRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopRight'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyStrongSideOffenseOption1(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'cRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgRight';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'sfRightPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sgLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sfRightPickLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRightPickLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cRightPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'pfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'sgLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickBottomLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cRightPickBottom'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'cRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgRight';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'sfRightPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sgLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sfRightPickLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRightPickLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cRightPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'pfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'sgLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickBottomLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cRightPickBottom'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyStrongSideOffenseOption2(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'cRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgRight';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'sfRightPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sgLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sfRightPickLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRightPickLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cRightPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'pfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'sgLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickBottomLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'pfRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'cRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgRight';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'sfRightPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sgLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sfRightPickLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRightPickLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cRightPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'pfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'sgLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickBottomLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'pfRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyStrongSideOffenseOption3(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'cRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgRight';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'sfRightPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sgLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cornerRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sfRightPickLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRightPickLeft'
-		}],
-		[{
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cRightPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cRightPickTop'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'sgLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickBottomLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'cRightPickTop'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'cRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgRight';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'sfRightPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sgLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cornerRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sfRightPickLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRightPickLeft'
+    }],
+    [{
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cRightPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cRightPickTop'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'sgLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickBottomLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'cRightPickTop'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategyStrongSideOffenseOption4(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'cRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgRight';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'sfRightPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sgLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cornerRight'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'cRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgRight';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'sfRightPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sgLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cornerRight'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzbergFlexOption1(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'pg',
-		'sfLeft',
-		'sfRight',
-		'cornerLeft',
-		'cornerRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'pg';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cornerLeftPickTopRight'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cornerRightPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerLeft',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'sfRight'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cRightPickLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cornerRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cornerLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'cornerRightPickTopLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'cRightPickRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'cRightPickTop'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'underRingTopLeft'
-		}, {
-			action: 'regular',
-			origin: 'pg',
-			destination: 'pfCenterPickBottom'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'pg',
+    'sfLeft',
+    'sfRight',
+    'cornerLeft',
+    'cornerRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'pg';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cornerLeftPickTopRight'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cornerRightPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerLeft',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'sfRight'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cRightPickLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cornerRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'cornerRightPickTopLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'cRightPickRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'cRightPickTop'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'underRingTopLeft'
+    }, {
+      action: 'regular',
+      origin: 'pg',
+      destination: 'pfCenterPickBottom'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzbergFlexOption2(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'pg',
-		'sfLeft',
-		'sfRight',
-		'cornerLeft',
-		'cornerRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'pg';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'regular',
-			origin: 'cornerLeft',
-			destination: 'sfLeftPickBottomRight'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'sfRightPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'sfLeftAfterPickBottomRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sfRightAfterPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cRightPickLeft'
-		}, {
-			action: 'regular',
-			origin: 'cornerLeft',
-			destination: 'sfLeft'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'sfRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cornerRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cornerLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'cornerRightPickTopLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'cRightPickRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'cRightPickTop'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'underRingTopLeft'
-		}, {
-			action: 'regular',
-			origin: 'pg',
-			destination: 'pfCenterPickBottom'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'pg',
+    'sfLeft',
+    'sfRight',
+    'cornerLeft',
+    'cornerRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'pg';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'regular',
+      origin: 'cornerLeft',
+      destination: 'sfLeftPickBottomRight'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'sfRightPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'sfLeftAfterPickBottomRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sfRightAfterPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cRightPickLeft'
+    }, {
+      action: 'regular',
+      origin: 'cornerLeft',
+      destination: 'sfLeft'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'sfRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cornerRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'cornerRightPickTopLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'cRightPickRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'cRightPickTop'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'underRingTopLeft'
+    }, {
+      action: 'regular',
+      origin: 'pg',
+      destination: 'pfCenterPickBottom'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzbergFlexOption3(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'pg',
-		'sfLeft',
-		'sfRight',
-		'cornerLeft',
-		'cornerRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'pg';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cornerLeftPickTopRight'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cornerRightPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerLeft',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'sfRight'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cRightPickLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cornerRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cornerLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'cornerRightPickTopLeft'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'underRingTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'cornerRight',
-			destination: 'cRightPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'cRightPickRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'cornerRight',
-			destination: 'underRingTopLeft'
-		}, {
-			action: 'regular',
-			origin: 'pg',
-			destination: 'pfCenterPickBottom'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'pg',
+    'sfLeft',
+    'sfRight',
+    'cornerLeft',
+    'cornerRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'pg';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cornerLeftPickTopRight'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cornerRightPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerLeft',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'sfRight'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cRightPickLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cornerRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'cornerRightPickTopLeft'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'underRingTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'cornerRight',
+      destination: 'cRightPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'cRightPickRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'cornerRight',
+      destination: 'underRingTopLeft'
+    }, {
+      action: 'regular',
+      origin: 'pg',
+      destination: 'pfCenterPickBottom'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzberg212Option1(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'pfCenter'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgLeft';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'pfCenter'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'pfCenterPickRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'pfCenterPickLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'cRightPickLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cLeftPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'sgLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'sgRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'sfLeft'
-		}, {
-			origin: 'ball',
-			destination: 'sgRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cLeftPickLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickTop'
-		}, {
-			action: 'regular',
-			origin: 'pfCenter',
-			destination: 'cLeftPickRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'pfLeftPickTop'
-		}, {
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickBottomRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'underRingTopRight'
-		}, {
-			action: 'regular',
-			origin: 'pfCenter',
-			destination: 'pfCenterPickBottom'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'pfCenter'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgLeft';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'pfCenter'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'pfCenterPickRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'pfCenterPickLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'cRightPickLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cLeftPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'sgLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'sgRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'sfLeft'
+    }, {
+      origin: 'ball',
+      destination: 'sgRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cLeftPickLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickTop'
+    }, {
+      action: 'regular',
+      origin: 'pfCenter',
+      destination: 'cLeftPickRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'pfLeftPickTop'
+    }, {
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickBottomRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'underRingTopRight'
+    }, {
+      action: 'regular',
+      origin: 'pfCenter',
+      destination: 'pfCenterPickBottom'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzberg212Option2(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'pfCenter'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgLeft';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'sgRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'pfCenterPickRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'cRightPickLeft'
-		}, {
-			action: 'regular',
-			origin: 'pfCenter',
-			destination: 'cLeftPickTopRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickTop'
-		}, {
-			action: 'regular',
-			origin: 'sgLeft',
-			destination: 'cLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'pfLeftPickTop'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'cLeftPickRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'underRingTopRight'
-		}, {
-			action: 'regular',
-			origin: 'pfCenter',
-			destination: 'pfCenter'
-		}, {
-			action: 'regular',
-			origin: 'sgLeft',
-			destination: 'sgLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRingTopRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'pfCenter'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgLeft';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'sgRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'pfCenterPickRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'cRightPickLeft'
+    }, {
+      action: 'regular',
+      origin: 'pfCenter',
+      destination: 'cLeftPickTopRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickTop'
+    }, {
+      action: 'regular',
+      origin: 'sgLeft',
+      destination: 'cLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'pfLeftPickTop'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'cLeftPickRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'underRingTopRight'
+    }, {
+      action: 'regular',
+      origin: 'pfCenter',
+      destination: 'pfCenter'
+    }, {
+      action: 'regular',
+      origin: 'sgLeft',
+      destination: 'sgLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRingTopRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzberg212Option3(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'sgLeft',
-		'sgRight',
-		'sfLeft',
-		'sfRight',
-		'pfCenter'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'sgLeft';
-	// List of moves
-	const listOfMoves = [
-		[{
-			origin: 'ball',
-			destination: 'pfCenter'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'pfCenterPickRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'pfCenterPickLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'cRightPickLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'cLeftPickRight'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'sgLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'sgRight'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sgRight',
-			destination: 'sfLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'pfCenter',
-			destination: 'sgRightPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sgRightAfterPickBottomLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'underRingTopRight'
-		}, {
-			action: 'sprint',
-			origin: 'pfCenter',
-			destination: 'sfRightPickLeft'
-		}, {
-			action: 'regular',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}],
-		[{
-			action: 'regular',
-			origin: 'sfRight',
-			destination: 'cornerLeft'
-		}, {
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'sfRightPickTopLeft'
-		}, {
-			action: 'sprint',
-			origin: 'ball',
-			destination: 'sfRightPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sgLeft',
-			destination: 'underRingTop'
-		}, {
-			action: 'sprint',
-			origin: 'pfCenter',
-			destination: 'cRightPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'ball',
-			destination: 'underRingTop'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'sgLeft',
+    'sgRight',
+    'sfLeft',
+    'sfRight',
+    'pfCenter'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'sgLeft';
+  // List of moves
+  const listOfMoves = [
+    [{
+      origin: 'ball',
+      destination: 'pfCenter'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'pfCenterPickRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'pfCenterPickLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'cRightPickLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'cLeftPickRight'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'sgLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'sgRight'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sgRight',
+      destination: 'sfLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'pfCenter',
+      destination: 'sgRightPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sgRightAfterPickBottomLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'underRingTopRight'
+    }, {
+      action: 'sprint',
+      origin: 'pfCenter',
+      destination: 'sfRightPickLeft'
+    }, {
+      action: 'regular',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }],
+    [{
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
+    }, {
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'sfRightPickTopLeft'
+    }, {
+      action: 'sprint',
+      origin: 'ball',
+      destination: 'sfRightPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sgLeft',
+      destination: 'underRingTop'
+    }, {
+      action: 'sprint',
+      origin: 'pfCenter',
+      destination: 'cRightPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'ball',
+      destination: 'underRingTop'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function issKreuzberg122Option1(domElement, wishedZoom) {
-	// Players starting position
-	const defaultPlayersPositions = [
-		'pg',
-		'sfLeft',
-		'sfRight',
-		'cLeft',
-		'cRight'
-	];
-	// Define ball holder at the beginning of the play
-	const ballHolder = 'pg';
-	// List of moves
-	const listOfMoves = [
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'cLeftPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'cRightPickBottom'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'sfRight',
-			destination: 'sfLeft'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfLeft'
-		}, {
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'pfCenterPickLeft'
-		}, {
-			action: 'regular',
-			origin: 'pg',
-			destination: 'sfRightPickLeft'
-		}, {
-			action: 'regular',
-			origin: 'cLeft',
-			destination: 'cLeftPickBottom'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'sfLeft',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'pg',
-			destination: 'sfRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'pg'
-		}, {
-			action: 'regular',
-			origin: 'cRight',
-			destination: 'pfCenterPickRight'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'sfRight'
-		}, {
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'sfRightPickLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'sfRightPickTopLeft'
-		}, {
-			action: 'sprint',
-			origin: 'ball',
-			destination: 'sfRightPickTopLeft'
-		}],
-		[{
-			action: 'sprint',
-			origin: 'pg',
-			destination: 'pfCenterPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'cRight',
-			destination: 'cRightPickBottom'
-		}, {
-			action: 'sprint',
-			origin: 'ball',
-			destination: 'pfCenterPickBottom'
-		}],
-		[{
-			origin: 'ball',
-			destination: 'underRing'
-		}]
-	];
-	// Display the stategy
-	strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
+  // Players starting position
+  const defaultPlayersPositions = [
+    'pg',
+    'sfLeft',
+    'sfRight',
+    'cLeft',
+    'cRight'
+  ];
+  // Define ball holder at the beginning of the play
+  const ballHolder = 'pg';
+  // List of moves
+  const listOfMoves = [
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'cLeftPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'cRightPickBottom'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'sfRight',
+      destination: 'sfLeft'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfLeft'
+    }, {
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'pfCenterPickLeft'
+    }, {
+      action: 'regular',
+      origin: 'pg',
+      destination: 'sfRightPickLeft'
+    }, {
+      action: 'regular',
+      origin: 'cLeft',
+      destination: 'cLeftPickBottom'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'sfLeft',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'pg',
+      destination: 'sfRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'cRight',
+      destination: 'pfCenterPickRight'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'sfRight'
+    }, {
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'sfRightPickLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'sfRightPickTopLeft'
+    }, {
+      action: 'sprint',
+      origin: 'ball',
+      destination: 'sfRightPickTopLeft'
+    }],
+    [{
+      action: 'sprint',
+      origin: 'pg',
+      destination: 'pfCenterPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'cRight',
+      destination: 'cRightPickBottom'
+    }, {
+      action: 'sprint',
+      origin: 'ball',
+      destination: 'pfCenterPickBottom'
+    }],
+    [{
+      origin: 'ball',
+      destination: 'underRing'
+    }]
+  ];
+  // Display the stategy
+  strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 
 function strategySelector(domElement, wishedZoom, strategyName) {
-	// Evaluate the strategyName to launch function
-	const condition = R.cond([
-		[R.equals('issKreuzbergFlexOption1'), R.always(issKreuzbergFlexOption1)],
-		[R.equals('issKreuzbergFlexOption2'), R.always(issKreuzbergFlexOption2)],
-		[R.equals('issKreuzbergFlexOption3'), R.always(issKreuzbergFlexOption3)],
-		[R.equals('issKreuzberg212Option1'), R.always(issKreuzberg212Option1)],
-		[R.equals('issKreuzberg212Option2'), R.always(issKreuzberg212Option2)],
-		[R.equals('issKreuzberg212Option3'), R.always(issKreuzberg212Option3)],
-		[R.equals('issKreuzberg122Option1'), R.always(issKreuzberg122Option1)],
-		[R.equals('strategyStrongSideOffenseOption1'), R.always(strategyStrongSideOffenseOption1)],
-		[R.equals('strategyStrongSideOffenseOption2'), R.always(strategyStrongSideOffenseOption2)],
-		[R.equals('strategyStrongSideOffenseOption3'), R.always(strategyStrongSideOffenseOption3)],
-		[R.equals('strategyStrongSideOffenseOption4'), R.always(strategyStrongSideOffenseOption4)],
-		[R.equals('strategyNormalStar'), R.always(strategyNormalStar)],
-		[R.equals('strategyLowStar'), R.always(strategyLowStar)],
-		[R.equals('strategyTouchDowmLeft'), R.always(strategyTouchDowmLeft)],
-		[R.equals('strategyTouchDowmRight'), R.always(strategyTouchDowmRight)],
-		[R.equals('strategyTouchBoxLeft'), R.always(strategyTouchBoxLeft)]
-	]);
+  // Evaluate the strategyName to launch function
+  const condition = R.cond([
+    [R.equals('issKreuzbergFlexOption1'), R.always(issKreuzbergFlexOption1)],
+    [R.equals('issKreuzbergFlexOption2'), R.always(issKreuzbergFlexOption2)],
+    [R.equals('issKreuzbergFlexOption3'), R.always(issKreuzbergFlexOption3)],
+    [R.equals('issKreuzberg212Option1'), R.always(issKreuzberg212Option1)],
+    [R.equals('issKreuzberg212Option2'), R.always(issKreuzberg212Option2)],
+    [R.equals('issKreuzberg212Option3'), R.always(issKreuzberg212Option3)],
+    [R.equals('issKreuzberg122Option1'), R.always(issKreuzberg122Option1)],
+    [R.equals('strategyStrongSideOffenseOption1'), R.always(strategyStrongSideOffenseOption1)],
+    [R.equals('strategyStrongSideOffenseOption2'), R.always(strategyStrongSideOffenseOption2)],
+    [R.equals('strategyStrongSideOffenseOption3'), R.always(strategyStrongSideOffenseOption3)],
+    [R.equals('strategyStrongSideOffenseOption4'), R.always(strategyStrongSideOffenseOption4)],
+    [R.equals('strategyNormalStar'), R.always(strategyNormalStar)],
+    [R.equals('strategyLowStar'), R.always(strategyLowStar)],
+    [R.equals('strategyTouchDowmLeft'), R.always(strategyTouchDowmLeft)],
+    [R.equals('strategyTouchDowmRight'), R.always(strategyTouchDowmRight)],
+    [R.equals('strategyTouchBoxLeft'), R.always(strategyTouchBoxLeft)]
+  ]);
 
-	return condition(strategyName)(domElement, wishedZoom);
+  return condition(strategyName)(domElement, wishedZoom);
 }
+
+exports.strategySelector = strategySelector;
+
 },{"./strategy-factory.js":487,"ramda":161}],487:[function(require,module,exports){
 const R = require('ramda');
-const mapIndexed = require('./utils.js').mapIndexed;
-const courtConfigZoomed = require('./court-dimensions.js').courtConfigZoomed;
-const generateCourt = require('./court-dimensions.js').generateCourt;
-const playersPositions = require('./players-positions.js').playersPositions;
-const playersPositionsConfigZoomed = require('./players-positions.js').playersPositionsConfigZoomed;
-const generatePlayersPositions = require('./players-positions.js').generatePlayersPositions;
-const addBallToGame = require('./ball.js').addBallToGame;
-const generateBallPosition = require('./ball.js').generateBallPosition;
-const playMovements = require('./movement.js').playMovements;
-
-exports.strategyCreator = strategyCreator;
+const { mapIndexed } = require('./utils.js');
+const {
+  courtConfigZoomed,
+  generateCourt
+} = require('./court-dimensions.js');
+const {
+  playersPositions,
+  playersPositionsConfigZoomed,
+  generatePlayersPositions
+} = require('./players-positions.js');
+const {
+  addBallToGame,
+  generateBallPosition
+} = require('./ball.js');
+const { playMovements } = require('./movement.js');
 
 /*
 Move = {
-	action: regular || sprint
-	origin : Position
-	destination : Position
+  action: regular || sprint
+  origin : Position
+  destination : Position
 }
 The action property is only needed if you want to move a player with or without the ball
 */
 
 function generateStategy(allPositions, selectedPlayers, ballPosition, listOfMoves) {
-	const listOfMovesTransformed = mapIndexed((cur, index) => {
-		const waitingTime = R.ifElse(
-			R.equals('regular'),
-			R.always(R.add(R.multiply(2000, index), 400)),
-			R.always(R.multiply(2000, index))
-		);
-		return R.map(cur1 => {
-			if (R.isNil(R.prop('action', cur1))) { // If action property is defined
-				if (R.equals(R.prop('origin', cur1), 'ball')) {
-					return [
-						'moveBallFromTo',
-						ballPosition,
-						R.prop(R.prop('destination', cur1), allPositions),
-						R.multiply(2000, index),
-						'.ball'
-					];
-				} else {
-					return [
-						'movePlayerFromTo',
-						R.prop(R.prop('origin', cur1), selectedPlayers),
-						R.prop(R.prop('destination', cur1), allPositions),
-						waitingTime('regular'),
-						`.${R.prop('origin', cur1)}`
-					];
-				}
-			} else {
-				const isADrive = R.ifElse(
-					R.equals('ball'),
-					R.always(ballPosition),
-					R.always(R.prop(R.prop('origin', cur1), selectedPlayers))
-				);
-				return [
-					'movePlayerFromTo',
-					isADrive(R.prop('origin', cur1)),
-					R.prop(R.prop('destination', cur1), allPositions),
-					waitingTime(R.prop('action', cur1)),
-					`.${R.prop('origin', cur1)}`
-				];
-			}
-		}, cur);
-	}, listOfMoves);
+  const listOfMovesTransformed = mapIndexed((cur, index) => {
+    const waitingTime = R.ifElse(
+      R.equals('regular'),
+      R.always(R.add(R.multiply(2000, index), 400)),
+      R.always(R.multiply(2000, index))
+    );
+    return R.map((cur1) => {
+      if (R.isNil(R.prop('action', cur1))) { // If action property is defined
+        if (R.equals(R.prop('origin', cur1), 'ball')) {
+          return [
+            'moveBallFromTo',
+            ballPosition,
+            R.prop(R.prop('destination', cur1), allPositions),
+            R.multiply(2000, index),
+            '.ball'
+          ];
+        }
+        return [
+          'movePlayerFromTo',
+          R.prop(R.prop('origin', cur1), selectedPlayers),
+          R.prop(R.prop('destination', cur1), allPositions),
+          waitingTime('regular'),
+          `.${R.prop('origin', cur1)}`
+        ];
+      }
+      const isADrive = R.ifElse(
+        R.equals('ball'),
+        R.always(ballPosition),
+        R.always(R.prop(R.prop('origin', cur1), selectedPlayers))
+      );
+      return [
+        'movePlayerFromTo',
+        isADrive(R.prop('origin', cur1)),
+        R.prop(R.prop('destination', cur1), allPositions),
+        waitingTime(R.prop('action', cur1)),
+        `.${R.prop('origin', cur1)}`
+      ];
+    }, cur);
+  }, listOfMoves);
 
-	return R.reduce((prev, cur) => {
-		return R.concat(prev, cur);
-	}, [], listOfMovesTransformed);
+  return R.reduce((prev, cur) => R.concat(prev, cur), [], listOfMovesTransformed);
 }
 
 function strategyCreator(domElement, wishedZoom, players, ballHolder, listOfMoves) {
-	// Generate the court
-	const courtSVG = generateCourt(domElement, courtConfigZoomed(wishedZoom), wishedZoom);
-	// Select only the right positions via the players array
-	const selectPlayersPositions = R.pick(players, playersPositions());
-	// Transform the player position via the wishedZoom constant
-	const playersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, selectPlayersPositions);
-	// Transform all players position via the wishedZoom constant
-	const allPlayersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, playersPositions());
-	// Add the selected players into the court
-	generatePlayersPositions(wishedZoom, playersPositionsZoomed, courtSVG);
-	// Add the ball into the court
-	const ballPosition = addBallToGame(ballHolder, playersPositionsZoomed);
-	generateBallPosition(wishedZoom, ballPosition, courtSVG);
+  // Generate the court
+  const courtSVG = generateCourt(domElement, courtConfigZoomed(wishedZoom), wishedZoom);
+  // Select only the right positions via the players array
+  const selectPlayersPositions = R.pick(players, playersPositions());
+  // Transform the player position via the wishedZoom constant
+  const playersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, selectPlayersPositions);
+  // Transform all players position via the wishedZoom constant
+  const allPlayersPositionsZoomed = playersPositionsConfigZoomed(wishedZoom, playersPositions());
+  // Add the selected players into the court
+  generatePlayersPositions(wishedZoom, playersPositionsZoomed, courtSVG);
+  // Add the ball into the court
+  const ballPosition = addBallToGame(ballHolder, playersPositionsZoomed);
+  generateBallPosition(wishedZoom, ballPosition, courtSVG);
 
-	const generatedStrategy = generateStategy(allPlayersPositionsZoomed, playersPositionsZoomed, ballPosition, listOfMoves);
+  const generatedStrategy = generateStategy(
+    allPlayersPositionsZoomed,
+    playersPositionsZoomed,
+    ballPosition,
+    listOfMoves
+  );
 
-	playMovements(generatedStrategy);
+  playMovements(generatedStrategy);
 }
+
+exports.strategyCreator = strategyCreator;
 
 },{"./ball.js":479,"./court-dimensions.js":481,"./movement.js":484,"./players-positions.js":485,"./utils.js":488,"ramda":161}],488:[function(require,module,exports){
 const R = require('ramda');
-const d3 = Object.assign({}, require("d3-shape"));
-const $ = require("jquery");
+const d3 = Object.assign({}, require('d3-shape'));
+const $ = require('jquery');
 
+function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context) {
+  context.append('rect')
+    .attr('x', topLeftCornerX)
+    .attr('y', topLeftCornerY)
+    .attr('width', width)
+    .attr('height', height)
+    .style('fill', 'none')
+    .style('stroke', 'black');
+}
+
+function createCircle(centerX, centerY, radius, strokeColor, fillColor, className, context) {
+  context.append('circle')
+    .attr('cx', centerX)
+    .attr('cy', centerY)
+    .attr('r', radius)
+    .attr('class', className)
+    .style('fill', fillColor)
+    .style('stroke', strokeColor);
+}
+
+function createLine(beginX, beginY, endX, endY, context) {
+  context.append('line')
+    .attr('x1', beginX)
+    .attr('y1', beginY)
+    .attr('x2', endX)
+    .attr('y2', endY)
+    .style('stroke-width', '1')
+    .style('stroke', 'black');
+}
+
+function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) {
+  const arc = d3.arc()
+    .innerRadius(innerRad)
+    .outerRadius(outerRad)
+    .startAngle(startAng)
+    .endAngle(endAng);
+
+  if (R.equals(invert, true)) {
+    context.append('path')
+      .attr('d', arc)
+      .attr('transform', `translate(${x},${y}) rotate(180)`)
+      .style('fill', 'none')
+      .style('stroke', 'black');
+  } else {
+    context.append('path')
+      .attr('d', arc)
+      .attr('transform', `translate(${x},${y})`)
+      .style('fill', 'none')
+      .style('stroke', 'black');
+  }
+}
+
+function cleanSVG() {
+  $('svg').remove();
+}
 
 exports.createRectangle = createRectangle;
 exports.createCircle = createCircle;
 exports.createLine = createLine;
 exports.createArc = createArc;
 exports.cleanSVG = cleanSVG;
-// regular map but with index to process actions 
+// regular map but with index to process actions
 exports.mapIndexed = R.addIndex(R.map);
-
-
-
-function createRectangle(topLeftCornerX, topLeftCornerY, width, height, context) {
-	context.append('rect')
-		.attr('x', topLeftCornerX)
-		.attr('y', topLeftCornerY)
-		.attr('width', width)
-		.attr('height', height)
-		.style('fill', 'none')
-		.style('stroke', 'black');
-}
-
-function createCircle(centerX, centerY, radius, strokeColor, fillColor, className, context) {
-	context.append('circle')
-		.attr('cx', centerX)
-		.attr('cy', centerY)
-		.attr('r', radius)
-		.attr('class', className)
-		.style('fill', fillColor)
-		.style('stroke', strokeColor);
-}
-
-function createLine(beginX, beginY, endX, endY, context) {
-	context.append('line')
-		.attr('x1', beginX)
-		.attr('y1', beginY)
-		.attr('x2', endX)
-		.attr('y2', endY)
-		.style('stroke-width', '1')
-		.style('stroke', 'black');
-}
-
-function createArc(innerRad, outerRad, startAng, endAng, x, y, invert, context) {
-	const arc = d3.arc()
-		.innerRadius(innerRad)
-		.outerRadius(outerRad)
-		.startAngle(startAng)
-		.endAngle(endAng);
-
-	if (R.equals(invert, true)) {
-		context.append('path')
-			.attr('d', arc)
-			.attr('transform', `translate(${x},${y}) rotate(180)`)
-			.style('fill', 'none')
-			.style('stroke', 'black');
-	} else {
-		context.append('path')
-			.attr('d', arc)
-			.attr('transform', `translate(${x},${y})`)
-			.style('fill', 'none')
-			.style('stroke', 'black');
-	}
-}
-
-function cleanSVG() {
-	$('svg').remove();
-}
 
 },{"d3-shape":7,"jquery":159,"ramda":161}],489:[function(require,module,exports){
 const R = require('ramda');
-const $ = require("jquery");
-const addEventListener = require('../utils.js').addEventListener;
-const removeEventListener = require('../utils.js').removeEventListener;
+const $ = require('jquery');
+const {
+  addEventListener,
+  removeEventListener
+} = require('../utils.js');
+
+function regularSelect(id, options) {
+  return `<select id="${id}" class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100">
+        ${options}
+      </select>`;
+}
+
+function initSelectForPlayers(playersList) {
+  const options = R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, playersList))
+  );
+
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+    options
+  );
+}
+
+function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
+  function appendSelectedOption(event) {
+    const selectValueLens = R.lensPath(['target', 'value']);
+    const value = R.view(selectValueLens, event);
+    const label = $(`#select-${idForSelect}-players option:selected`).text();
+
+    const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
+
+    $(`#selected-${idForSelect}-players`).append(listItem);
+  }
+
+  function removeSelectedPlayer(event) {
+    $(R.prop('currentTarget', event)).parent('li').remove();
+  }
+
+  removeEventListener('change', `#select-${idForSelect}-players`);
+  removeEventListener('click', `.remove-${idForSelect}-player`);
+  addEventListener('change', `#select-${idForSelect}-players`, appendSelectedOption);
+  addEventListener('click', `.remove-${idForSelect}-player`, removeSelectedPlayer);
+
+  return `<form>
+        <div class="form-group">
+          <label for="#select-${idForSelect}-players">${labelText}</label>
+          ${regularSelect(
+    `select-${idForSelect}-players`,
+    initSelectForPlayers(listForSelectOptions)
+  )}
+        </div>
+      </form>
+      <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
+}
 
 exports.selectAndSeeSelection = selectAndSeeSelection;
 exports.regularSelect = regularSelect;
 
-function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
-	function appendSelectedOption(event) {
-		const selectValueLens = R.lensPath(['target', 'value']);
-		const value = R.view(selectValueLens, event);
-		const label = $(`#select-${idForSelect}-players option:selected`).text();
-
-		const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
-
-		$(`#selected-${idForSelect}-players`).append(listItem);
-	}
-
-	function removeSelectedPlayer(event) {
-		$(R.prop('currentTarget', event)).parent('li').remove();
-	}
-
-	removeEventListener('change', `#select-${idForSelect}-players`);
-	removeEventListener('click', `.remove-${idForSelect}-player`);
-	addEventListener('change', `#select-${idForSelect}-players`, appendSelectedOption);
-	addEventListener('click', `.remove-${idForSelect}-player`, removeSelectedPlayer);
-
-	return `<form>
-				<div class="form-group">
-					<label for="#select-${idForSelect}-players">${labelText}</label>
-					${regularSelect(
-						`select-${idForSelect}-players`,
-						initSelectForPlayers(listForSelectOptions)
-					)}
-				</div>
-			</form>
-			<ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
-}
-
-
-function regularSelect(id, options) {
-	return `<select id="${id}" class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100">
-				${options}
-			</select>`;
-}
-
-function initSelectForPlayers(playersList) {
-	const options = R.join(
-		'',
-		R.values(R.map((cur) => {
-			return `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`;
-		}, playersList))
-	);
-
-	return R.concat(
-		'<option selected="selected" disabled="disabled">Select a player\'s position</option>',
-		options
-	);
-}
 },{"../utils.js":494,"jquery":159,"ramda":161}],490:[function(require,module,exports){
 const R = require('ramda');
-const $ = require("jquery");
-const clean = require('./utils.js').clean;
-const render = require('./utils.js').render;
-const addEventListener = require('./utils.js').addEventListener;
-const removeEventListener = require('./utils.js').removeEventListener;
-const playersPositions = require('../players-positions.js').playersPositions;
-const selectAndSeeSelection = require('./components/select.js').selectAndSeeSelection;
-const regularSelect = require('./components/select.js').regularSelect;
-
-exports.renderCreateStrategy = renderCreateStrategy;
-
-function templateMenuTabs() {
-	return `<div id="create-strategy">
-				<ul id="strategy-creation-menu" class="nav nav-tabs" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#select-players" role="tab">Select players</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#select-ball-holder" role="tab">Select ball holder</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#define-movements" role="tab">Define the movements</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#validate-play" role="tab">Validate your configuration</a>
-					</li>
-				</ul>
-			</div>`;
-}
-
-function templatePanes(list) {
-	return `<div id="strategy-creation-panes" class="tab-content">
-				<div class="tab-pane active" id="select-players" role="tabpanel">
-					${templateSelectPlayers(list)}
-				</div>
-				<div class="tab-pane" id="select-ball-holder" role="tabpanel">
-					${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
-				</div>
-				<div class="tab-pane" id="define-movements" role="tabpanel">
-					${templateMoves()}
-				</div>
-				<div class="tab-pane" id="validate-play" role="tabpanel"></div>
-			</div>`;
-}
+const $ = require('jquery');
+const {
+  clean,
+  render,
+  addEventListener,
+  removeEventListener
+} = require('./utils.js');
+const { playersPositions } = require('../players-positions.js');
+const {
+  selectAndSeeSelection,
+  regularSelect
+} = require('./components/select.js');
 
 function templateSelectPlayers(listOfElements) {
-	return R.concat(
-		R.reduce((prev, cur) => {
-			const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-										${selectAndSeeSelection(
-											R.prop('id', cur),
-											R.prop('label', cur),
-											playersPositions()
-										)}
-									</div>`;
+  return R.concat(
+    R.reduce((prev, cur) => {
+      const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    ${selectAndSeeSelection(
+    R.prop('id', cur),
+    R.prop('label', cur),
+    playersPositions()
+  )}
+                  </div>`;
 
-			return R.concat(prev, selectTemplate);
-
-		}, '<div class="row">', listOfElements),
-		'</div>'
-	);
+      return R.concat(prev, selectTemplate);
+    }, '<div class="row">', listOfElements),
+    '</div>'
+  );
 }
 
+function templateMenuTabs() {
+  return `<div id="create-strategy">
+        <ul id="strategy-creation-menu" class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#select-players" role="tab">Select players</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#select-ball-holder" role="tab">Select ball holder</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#define-movements" role="tab">Define the movements</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#validate-play" role="tab">Validate your configuration</a>
+          </li>
+        </ul>
+      </div>`;
+}
 
 function initSelectForPlayers(playersList) {
-	const options = R.join(
-		'',
-		R.values(R.map((cur) => {
-			return `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`;
-		}, playersList))
-	);
+  const options = R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, playersList))
+  );
 
-	return R.concat(
-		'<option selected="selected" disabled="disabled">Select a player\'s position</option>',
-		options
-	);
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+    options
+  );
 }
 
 function templateSelect(idForSelect, labelText) {
-	return `<form>
-				<div class="form-group">
-					<label for="${idForSelect}">${labelText}</label>
-					${regularSelect(
-						idForSelect,
-						initSelectForPlayers(playersPositions())
-					)}
-				</div>
-			</form>`;
-}
-
-function templateDrive() {
-	const speedTypes = [{
-		value: 'sprint',
-		label: 'Fast'
-	}, {
-		value: 'regular',
-		label: 'Normal'
-	}];
-	return `<div class="form-group" data-action="drive">
-				<label for="#origin-drive">Where does the player start ?</label>
-				${regularSelect(
-					'origin-drive',
-					initSelectForPlayers(playersPositions())
-				)}
-			</div>
-			<div class="form-group" data-action="drive">
-				<label for="#destination-drive">Where does the player stop ?</label>
-				${regularSelect(
-					'destination-drive',
-					initSelectForPlayers(playersPositions())
-				)}
-			</div>
-			<div class="form-group" data-action="drive">
-				<label for="#speed-drive">What is the speed of the player ?</label>
-				${regularSelect(
-					'speed-drive',
-					mapActionTypes('Select the speed of the player', speedTypes)
-				)}
-			</div>`;
-}
-
-function templatePass() {
-	return `<div class="form-group" data-action="pass">
-				<label for="#origin-drive">Where does the ball go ?</label>
-				${regularSelect(
-					'destination-pass',
-					initSelectForPlayers(playersPositions())
-				)}
-			</div>`;
-}
-
-function templateMovement() {
-	const speedTypes = [{
-		value: 'sprint',
-		label: 'Fast'
-	}, {
-		value: 'regular',
-		label: 'Normal'
-	}];
-
-	return `<div class="form-group" data-action="move">
-				<label for="#origin-movement">Which player will move ?</label>
-				${regularSelect(
-					'origin-movement',
-					initSelectForPlayers(getSelectedPlayers('selected-offense-players', 'selected-defense-players'))
-				)}
-			</div>
-			<div class="form-group" data-action="move">
-				<label for="#destination-movement">To which position the player will go ?</label>
-				${regularSelect(
-					'destination-movement',
-					initSelectForPlayers(playersPositions())
-				)}
-			</div>
-			<div class="form-group" data-action="move">
-				<label for="#speed-movement">What is the speed of the player ?</label>
-				${regularSelect(
-					'speed-movement',
-					mapActionTypes('Select the speed of the player', speedTypes)
-				)}
-			</div>`;
+  return `<form>
+        <div class="form-group">
+          <label for="${idForSelect}">${labelText}</label>
+          ${regularSelect(
+    idForSelect,
+    initSelectForPlayers(playersPositions())
+  )}
+        </div>
+      </form>`;
 }
 
 function mapActionTypes(defaultLabel, listOfTypes) {
-	const options = R.join(
-		'',
-		R.values(R.map((cur) => {
-			return `<option value="${R.prop('value', cur)}" data-label="${R.prop('label', cur)}">${R.prop('label', cur)}</option>`;
-		}, listOfTypes))
-	);
+  const options = R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('value', cur)}" data-label="${R.prop('label', cur)}">${R.prop('label', cur)}</option>`, listOfTypes))
+  );
 
-	return R.concat(
-		`<option selected="selected" disabled="disabled">${defaultLabel}</option>`,
-		options
-	);
+  return R.concat(
+    `<option selected="selected" disabled="disabled">${defaultLabel}</option>`,
+    options
+  );
 }
 
-function getSelectedPlayers(domIdForOffenseSelectedPlayersList, domIdForDefenseSelectedPlayersList) {
-	function getListOfSelectedPlayers(domElement) {
-		return $(`#${domElement} li`).map(function(index, element) {
-			return {
-				className: $(element).attr('data-player-position'),
-				// We remove the x at the end of the text
-				def: R.init($(element).text())
-			};
-		}).get();
-	}
+function templateDrive() {
+  const speedTypes = [{
+    value: 'sprint',
+    label: 'Fast'
+  }, {
+    value: 'regular',
+    label: 'Normal'
+  }];
+  return `<div class="form-group" data-action="drive">
+        <label for="#origin-drive">Where does the player start ?</label>
+        ${regularSelect(
+    'origin-drive',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>
+      <div class="form-group" data-action="drive">
+        <label for="#destination-drive">Where does the player stop ?</label>
+        ${regularSelect(
+    'destination-drive',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>
+      <div class="form-group" data-action="drive">
+        <label for="#speed-drive">What is the speed of the player ?</label>
+        ${regularSelect(
+    'speed-drive',
+    mapActionTypes('Select the speed of the player', speedTypes)
+  )}
+      </div>`;
+}
 
-	const offenseList = getListOfSelectedPlayers(domIdForOffenseSelectedPlayersList);
-	const defenseList = getListOfSelectedPlayers(domIdForDefenseSelectedPlayersList);
+function templatePass() {
+  return `<div class="form-group" data-action="pass">
+        <label for="#origin-drive">Where does the ball go ?</label>
+        ${regularSelect(
+    'destination-pass',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>`;
+}
 
-	return R.concat(offenseList, defenseList);
+function getSelectedPlayers(domIdForOffSelectedPlayersList, domIdForDefSelectedPlayersList) {
+  function getListOfSelectedPlayers(domElement) {
+    return $(`#${domElement} li`).map((index, element) => ({
+      className: $(element).attr('data-player-position'),
+      // We remove the x at the end of the text
+      def: R.init($(element).text())
+    })).get();
+  }
+
+  const offenseList = getListOfSelectedPlayers(domIdForOffSelectedPlayersList);
+  const defenseList = getListOfSelectedPlayers(domIdForDefSelectedPlayersList);
+
+  return R.concat(offenseList, defenseList);
+}
+
+function templateMovement() {
+  const speedTypes = [{
+    value: 'sprint',
+    label: 'Fast'
+  }, {
+    value: 'regular',
+    label: 'Normal'
+  }];
+
+  return `<div class="form-group" data-action="move">
+        <label for="#origin-movement">Which player will move ?</label>
+        ${regularSelect(
+    'origin-movement',
+    initSelectForPlayers(getSelectedPlayers('selected-offense-players', 'selected-defense-players'))
+  )}
+      </div>
+      <div class="form-group" data-action="move">
+        <label for="#destination-movement">To which position the player will go ?</label>
+        ${regularSelect(
+    'destination-movement',
+    initSelectForPlayers(playersPositions())
+  )}
+      </div>
+      <div class="form-group" data-action="move">
+        <label for="#speed-movement">What is the speed of the player ?</label>
+        ${regularSelect(
+    'speed-movement',
+    mapActionTypes('Select the speed of the player', speedTypes)
+  )}
+      </div>`;
 }
 
 function templateMoves() {
-	function changeOnSelect(event) {
-		const selectValueLens = R.lensPath(['target', 'value']);
-		const value = R.view(selectValueLens, event);
+  function changeOnSelect(event) {
+    const selectValueLens = R.lensPath(['target', 'value']);
+    const value = R.view(selectValueLens, event);
 
-		clean('#move-options');
-		console.log(value);
+    clean('#move-options');
+    // console.log(value);
 
-		const cond = R.cond([
-			[R.equals('drive'), R.always(templateDrive)],
-			[R.equals('pass'), R.always(templatePass)],
-			[R.equals('move'), R.always(templateMovement)]
-		]);
+    const cond = R.cond([
+      [R.equals('drive'), R.always(templateDrive)],
+      [R.equals('pass'), R.always(templatePass)],
+      [R.equals('move'), R.always(templateMovement)]
+    ]);
 
-		render('#move-options', cond(value));
-	}
+    render('#move-options', cond(value));
+  }
 
 
-	const actionTypes = [{
-		value: 'drive',
-		label: 'Player dribble with the ball'
-	}, {
-		value: 'pass',
-		label: 'The ball move between players'
-	}, {
-		value: 'move',
-		label: 'The player move to another position'
-	}];
+  const actionTypes = [{
+    value: 'drive',
+    label: 'Player dribble with the ball'
+  }, {
+    value: 'pass',
+    label: 'The ball move between players'
+  }, {
+    value: 'move',
+    label: 'The player move to another position'
+  }];
 
-	removeEventListener('change', '#action-type');
-	addEventListener('change', '#action-type', changeOnSelect);
+  removeEventListener('change', '#action-type');
+  addEventListener('change', '#action-type', changeOnSelect);
 
-	return `<form>
-				<div class="form-group">
-					<label for="#action-type">What action will be done ?</label>
-					${regularSelect(
-						'action-type',
-						mapActionTypes('Select an action to perform', actionTypes)
-					)}
-				</div>
-			</form>
-			<form id="move-options">
-			</form>
-			<ul id="selected-moves" class="list-group"></ul>`;
+  return `<form>
+        <div class="form-group">
+          <label for="#action-type">What action will be done ?</label>
+          ${regularSelect(
+    'action-type',
+    mapActionTypes('Select an action to perform', actionTypes)
+  )}
+        </div>
+      </form>
+      <form id="move-options">
+      </form>
+      <ul id="selected-moves" class="list-group"></ul>`;
 }
 
+function templatePanes(list) {
+  return `<div id="strategy-creation-panes" class="tab-content">
+        <div class="tab-pane active" id="select-players" role="tabpanel">
+          ${templateSelectPlayers(list)}
+        </div>
+        <div class="tab-pane" id="select-ball-holder" role="tabpanel">
+          ${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
+        </div>
+        <div class="tab-pane" id="define-movements" role="tabpanel">
+          ${templateMoves()}
+        </div>
+        <div class="tab-pane" id="validate-play" role="tabpanel"></div>
+      </div>`;
+}
 
 function renderCreateStrategy(db, domElementToRenderTemplate) {
-	const list = [{
-		id: 'offense',
-		label: "Select the offense players' starting position for your play"
-	}, {
-		id: 'defense',
-		label: "Select the defense players' starting position for your play"
-	}];
+  const list = [{
+    id: 'offense',
+    label: "Select the offense players' starting position for your play"
+  }, {
+    id: 'defense',
+    label: "Select the defense players' starting position for your play"
+  }];
 
-	clean('#create-strategy');
-	clean('#strategy-creation-panes');
-	render(domElementToRenderTemplate, templateMenuTabs);
-	render(domElementToRenderTemplate, templatePanes, list);
+  clean('#create-strategy');
+  clean('#strategy-creation-panes');
+  render(domElementToRenderTemplate, templateMenuTabs);
+  render(domElementToRenderTemplate, templatePanes, list);
 }
+
+exports.renderCreateStrategy = renderCreateStrategy;
 
 },{"../players-positions.js":485,"./components/select.js":489,"./utils.js":494,"jquery":159,"ramda":161}],491:[function(require,module,exports){
 const R = require('ramda');
-const strategySelector = require('../strategies.js').strategySelector;
-const addEventListener = require('./utils.js').addEventListener;
-const removeEventListener = require('./utils.js').removeEventListener;
-const render = require('./utils.js').render;
-const clean = require('./utils.js').clean;
-const cleanSVG = require('../utils.js').cleanSVG;
+const $ = require('jquery');
+const { strategySelector } = require('../strategies.js');
+const {
+  addEventListener,
+  removeEventListener,
+  render,
+  clean
+} = require('./utils.js');
+const { cleanSVG } = require('../utils.js');
 
-exports.renderStrategySelection = renderStrategySelection;
+function templateStrategySelection() { // listOfStrategy
+  /* function listOfStrategyString(list) {
+    return R.reduce((prev, cur) => R.concat(prev, `<option value="${R.prop('id', cur)}">
+                                                    ${R.prop('name', cur)}
+                                                  </option>`), '', list);
+  } */
 
-function templateStrategySelection(listOfStrategy) {
-	function listOfStrategyString(list) {
-		return R.reduce((prev, cur) => {
-			return R.concat(prev, `<option value="${R.prop('id', cur)}">${R.prop('name', cur)}</option>`);
-		}, '', list);
-	}
-
-	return `<div class="presentation">
-				<form class="form-inline">
-				<select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
-					<option disabled="disabled" selected="selected">Select an offensive play</option>
-					<optgroup label="ISS Kreuzberg - Flex">
-						<option value="issKreuzbergFlexOption1">Option 1</option>
-						<option value="issKreuzbergFlexOption2">Option 2</option>
-						<option value="issKreuzbergFlexOption3">Option 3</option>
-					</optgroup>
-					<optgroup label="ISS Kreuzberg - 1 2 2">
-						<option value="issKreuzberg122Option1">Option 1</option>
-					</optgroup>
-					<optgroup label="ISS Kreuzberg - 2 1 2">
-						<option value="issKreuzberg212Option1">Option 1</option>
-						<option value="issKreuzberg212Option2">Option 2</option>
-						<option value="issKreuzberg212Option3">Option 3</option>
-					</optgroup>
-					<optgroup label="ISS Kreuzberg - 2 3">
-						<option value="strategyStrongSideOffenseOption1">Option 1</option>
-						<option value="strategyStrongSideOffenseOption2">Option 2</option>
-						<option value="strategyStrongSideOffenseOption3">Option 3</option>
-					</optgroup>
-					<option value="strategyNormalStar">Star formation normal</option>
-					<option value="strategyLowStar">Star formation low</option>
-					<option value="strategyTouchDowmLeft">Play from touch down on the left</option>
-					<option value="strategyTouchDowmRight">Play from touch down on the right</option>
-					<option value="strategyTouchBoxLeft">Box for touch down on the left</option>
-				</select>
-				<select id="offensivePlaySize" class="custom-select mb-2 mr-sm-2 mb-sm-0">
-					<option disabled="disabled" selected="selected">Select a display size</option>
-					<option value="10">10</option>
-					<option value="20">20 - Best mobile view</option>
-					<option value="30">30</option>
-					<option value="40">40</option>
-					<option value="50">50</option>
-					<option value="60">60</option>
-					<option value="70">70</option>
-				</select>
-				<button id="runConfiguration" type="button" class="btn btn-primary">Run using configuration</button>
-				</form>
-			</div>`;
+  return `<div class="presentation">
+        <form class="form-inline">
+        <select id="offensivePlaySelector" class="custom-select mb-2 mr-sm-2 mb-sm-0">
+          <option disabled="disabled" selected="selected">Select an offensive play</option>
+          <optgroup label="ISS Kreuzberg - Flex">
+            <option value="issKreuzbergFlexOption1">Option 1</option>
+            <option value="issKreuzbergFlexOption2">Option 2</option>
+            <option value="issKreuzbergFlexOption3">Option 3</option>
+          </optgroup>
+          <optgroup label="ISS Kreuzberg - 1 2 2">
+            <option value="issKreuzberg122Option1">Option 1</option>
+          </optgroup>
+          <optgroup label="ISS Kreuzberg - 2 1 2">
+            <option value="issKreuzberg212Option1">Option 1</option>
+            <option value="issKreuzberg212Option2">Option 2</option>
+            <option value="issKreuzberg212Option3">Option 3</option>
+          </optgroup>
+          <optgroup label="ISS Kreuzberg - 2 3">
+            <option value="strategyStrongSideOffenseOption1">Option 1</option>
+            <option value="strategyStrongSideOffenseOption2">Option 2</option>
+            <option value="strategyStrongSideOffenseOption3">Option 3</option>
+          </optgroup>
+          <option value="strategyNormalStar">Star formation normal</option>
+          <option value="strategyLowStar">Star formation low</option>
+          <option value="strategyTouchDowmLeft">Play from touch down on the left</option>
+          <option value="strategyTouchDowmRight">Play from touch down on the right</option>
+          <option value="strategyTouchBoxLeft">Box for touch down on the left</option>
+        </select>
+        <select id="offensivePlaySize" class="custom-select mb-2 mr-sm-2 mb-sm-0">
+          <option disabled="disabled" selected="selected">Select a display size</option>
+          <option value="10">10</option>
+          <option value="20">20 - Best mobile view</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
+          <option value="60">60</option>
+          <option value="70">70</option>
+        </select>
+        <button id="runConfiguration" type="button" class="btn btn-primary">Run using configuration</button>
+        </form>
+      </div>`;
 }
 
 function renderStrategySelection(db, domElementToRenderTemplate) {
-	function changeStrategyToDisplay(event) {
-		const valueForSelectLens = R.lensPath(['target', 'value']);
-		const functionToLaunch = $('#offensivePlaySelector').val();
-		const sizeToDisplay = $('#offensivePlaySize').val();
+  function changeStrategyToDisplay() { // event
+    // const valueForSelectLens = R.lensPath(['target', 'value']);
+    const functionToLaunch = $('#offensivePlaySelector').val();
+    const sizeToDisplay = $('#offensivePlaySize').val();
 
-		if (
-			R.and(
-				R.equals(R.isNil(functionToLaunch), false),
-				R.equals(R.isNil(sizeToDisplay), false)
-			)
-		) {
-			// Clean the body
-			cleanSVG();
-			// Run the strategy
-			strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
-		}
-	}
+    if (
+      R.and(
+        R.equals(R.isNil(functionToLaunch), false),
+        R.equals(R.isNil(sizeToDisplay), false)
+      )
+    ) {
+      // Clean the body
+      cleanSVG();
+      // Run the strategy
+      strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
+    }
+  }
 
-	removeEventListener('click', '#runConfiguration');
-	clean(domElementToRenderTemplate);
+  removeEventListener('click', '#runConfiguration');
+  clean(domElementToRenderTemplate);
 
-	addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
-	render(domElementToRenderTemplate, templateStrategySelection, []);
-
+  addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
+  render(domElementToRenderTemplate, templateStrategySelection, []);
 }
-},{"../strategies.js":486,"../utils.js":488,"./utils.js":494,"ramda":161}],492:[function(require,module,exports){
-const clean = require('./utils.js').clean;
-const render = require('./utils.js').render;
 
+exports.renderStrategySelection = renderStrategySelection;
 
-exports.renderLayout = renderLayout;
+},{"../strategies.js":486,"../utils.js":488,"./utils.js":494,"jquery":159,"ramda":161}],492:[function(require,module,exports){
+const {
+  clean,
+  render
+} = require('./utils.js');
 
 function templateMenuTabs() {
-	return `<ul id="menu" class="nav nav-tabs" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" data-toggle="tab" href="#view-strategies" role="tab">View strategies</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#creation-lab" role="tab">Creation lab</a>
-						</li>
-					</ul>`;
+  return `<ul id="menu" class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#view-strategies" role="tab">View strategies</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#creation-lab" role="tab">Creation lab</a>
+            </li>
+          </ul>`;
 }
 
 function templatePanes() {
-	return `<div id="menu-panes" class="tab-content">
-						<div class="tab-pane active" id="view-strategies" role="tabpanel"></div>
-						<div class="tab-pane" id="creation-lab" role="tabpanel"></div>
-					</div>`;
+  return `<div id="menu-panes" class="tab-content">
+            <div class="tab-pane active" id="view-strategies" role="tabpanel"></div>
+            <div class="tab-pane" id="creation-lab" role="tabpanel"></div>
+          </div>`;
 }
 
 function renderLayout(db, domElementToRenderTemplate) {
-	clean('#menu-panes');
-	clean('#menu');
-	render(domElementToRenderTemplate, templateMenuTabs);
-	render(domElementToRenderTemplate, templatePanes);
+  clean('#menu-panes');
+  clean('#menu');
+  render(domElementToRenderTemplate, templateMenuTabs);
+  render(domElementToRenderTemplate, templatePanes);
 }
+
+exports.renderLayout = renderLayout;
+
 },{"./utils.js":494}],493:[function(require,module,exports){
 const R = require('ramda');
-const $ = require("jquery");
-const addEventListener = require('./utils.js').addEventListener;
-const removeEventListener = require('./utils.js').removeEventListener;
-const clean = require('./utils.js').clean;
-const render = require('./utils.js').render;
-const hide = require('./utils.js').hide;
-const show = require('./utils.js').show;
-
-exports.initLogging = initLogging;
-
+const $ = require('jquery');
+const {
+  addEventListener,
+  removeEventListener,
+  clean,
+  render,
+  hide,
+  show
+} = require('./utils.js');
 
 function templateLogging() {
-	return `<div id="logging-component">
-				<form>
-					<div class="form-group">
-						<label for="email-address">Email address</label>
-						<input id="email-address" class="form-control" type="email", placeholder="Enter email"/>
-					</div>
-					<div class="form-group">
-						<label for="password">Password</label>
-						<input id="password" class="form-control" type="password", placeholder="Password"/>
-					</div>
-					<button id="logging" type="button" class="btn btn-primary">Submit</button>
-				</form>
-			</div>`;
+  return `<div id="logging-component">
+        <form>
+          <div class="form-group">
+            <label for="email-address">Email address</label>
+            <input id="email-address" class="form-control" type="email", placeholder="Enter email"/>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" class="form-control" type="password", placeholder="Password"/>
+          </div>
+          <button id="logging" type="button" class="btn btn-primary">Submit</button>
+        </form>
+      </div>`;
 }
 
 
 function initLogging(db, domElementToRenderTemplate) {
-	function validateLogging(event) {
-		const email = $('#email-address').val();
-		const password = $('#password').val();
+  function createAccount(email, password) {
+    return db.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
 
-		const notDefined = R.equals('');
+        throw new Error(`${errorCode} ${errorMessage}`);
+      });
+  }
 
-		if (R.any(notDefined, [email, password])) {
-			console.log(email, password);
-		} else {
-			connectToAccount(db, email, password);
-		}
-	}
+  function connectToAccount(email, password) {
+    return db.auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => {
+        // Handle Errors here.
 
-	function createAccount(db, email, password) {
-		return db.auth()
-			.createUserWithEmailAndPassword(email, password)
-			.catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				console.log(errorCode, errorMessage);
-			});
-	}
+        if (error) {
+          return createAccount(email, password);
+        }
+        return true;
+      });
+  }
 
-	function connectToAccount(db, email, password) {
-		return db.auth()
-			.signInWithEmailAndPassword(email, password)
-			.catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				console.log(errorCode, errorMessage);
+  function validateLogging() { // event
+    const email = $('#email-address').val();
+    const password = $('#password').val();
 
-				if (error) {
-					return createAccount(db, email, password);
-				}
-			});
-	}
+    const notDefined = R.equals('');
 
-	function loggingState(db, loggingElement) {
-		const user = R.prop('currentUser', db.auth());
+    if (R.any(notDefined, [email, password])) {
+      throw new Error(`${email} ${password}`);
+    } else {
+      connectToAccount(email, password);
+    }
+  }
 
-		console.log(user);
+  function loggingState(loggingElement) {
+    const user = R.prop('currentUser', db.auth());
 
-		if (R.equals(R.isNil(user), false)) {
-			// User is signed in.
-			hide(loggingElement);
-			show('#create-strategy');
-			show('#strategy-creation-panes');
-		} else {
-			// No user is signed in.
-			show(loggingElement);
-			hide('#create-strategy');
-			hide('#strategy-creation-panes');
-		}
-	}
-	removeEventListener('click', '#logging');
-	clean('#logging-component');
+    // console.log(user);
 
-	addEventListener('click', '#logging', validateLogging);
-	render(domElementToRenderTemplate, templateLogging);
-	loggingState(db, '#logging-component');
+    if (R.equals(R.isNil(user), false)) {
+      // User is signed in.
+      hide(loggingElement);
+      show('#create-strategy');
+      show('#strategy-creation-panes');
+    } else {
+      // No user is signed in.
+      show(loggingElement);
+      hide('#create-strategy');
+      hide('#strategy-creation-panes');
+    }
+  }
+  removeEventListener('click', '#logging');
+  clean('#logging-component');
 
-	db.auth()
-		.onAuthStateChanged(function(user) {
-			loggingState(db, '#logging-component');
-		});
+  addEventListener('click', '#logging', validateLogging);
+  render(domElementToRenderTemplate, templateLogging);
+  loggingState('#logging-component');
+
+  db.auth()
+    .onAuthStateChanged(() => {
+      loggingState('#logging-component');
+    });
 }
 
+exports.initLogging = initLogging;
+
 },{"./utils.js":494,"jquery":159,"ramda":161}],494:[function(require,module,exports){
-const $ = require("jquery");
+const $ = require('jquery');
+
+function render(domElement, template, data = {}) {
+  return $(domElement).append(template(data));
+}
+
+function addEventListener(eventType, domElement, functionToApply) {
+  return $('body').on(eventType, domElement, functionToApply);
+}
+
+function removeEventListener(eventType, domElement) {
+  return $('body').off(eventType, domElement);
+}
+
+function clean(domElement) {
+  return $(domElement).html('');
+}
+
+function hide(domElement) {
+  return $(domElement).hide();
+}
+
+function show(domElement) {
+  return $(domElement).show();
+}
 
 exports.render = render;
 exports.addEventListener = addEventListener;
@@ -55579,30 +55601,5 @@ exports.removeEventListener = removeEventListener;
 exports.clean = clean;
 exports.hide = hide;
 exports.show = show;
-
-
-function render(domElement, template, data = {}) {
-	return $(domElement).append(template(data));
-}
-
-function addEventListener(eventType, domElement, functionToApply) {
-	return $("body").on(eventType, domElement, functionToApply);
-}
-
-function removeEventListener(eventType, domElement) {
-	return $("body").off(eventType, domElement);
-}
-
-function clean(domElement) {
-	return $(domElement).html('');
-}
-
-function hide(domElement) {
-	return $(domElement).hide();
-}
-
-function show(domElement) {
-	return $(domElement).show();
-}
 
 },{"jquery":159}]},{},[480]);

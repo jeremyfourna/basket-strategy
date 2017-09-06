@@ -1,12 +1,8 @@
-const R = require('ramda');
-const $ = require('jquery');
-const cleanSVG = require('./utils.js').cleanSVG;
-const strategySelector = require('./strategies.js').strategySelector;
-const startFirebase = require('./database/firebase.js').startFirebase;
-const initLogging = require('./views/logging.js').initLogging;
-const renderLayout = require('./views/layout.js').renderLayout;
-const renderCreateStrategy = require('./views/create-strategy.js').renderCreateStrategy;
-const renderStrategySelection = require('./views/display-strategy.js').renderStrategySelection;
+const { startFirebase } = require('./database/firebase.js');
+const { initLogging } = require('./views/logging.js');
+const { renderLayout } = require('./views/layout.js');
+const { renderCreateStrategy } = require('./views/create-strategy.js');
+const { renderStrategySelection } = require('./views/display-strategy.js');
 
 
 const db = startFirebase();

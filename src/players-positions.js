@@ -1,10 +1,8 @@
 const R = require('ramda');
-const mapIndexed = require('./utils.js').mapIndexed;
-const createCircle = require('./utils.js').createCircle;
-
-exports.playersPositions = playersPositions;
-exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
-exports.generatePlayersPositions = generatePlayersPositions;
+const {
+  mapIndexed,
+  createCircle
+} = require('./utils.js');
 
 // Picks in diagonal x = 0.71 and y = 0.7
 function pgPositions() {
@@ -808,17 +806,17 @@ function playersPositions() {
 }
 
 function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
-  function zoom(courtZoom, playersPosConfig) {
-    return R.map(cur => ({
+  function zoom(courtZoom) {
+    return R.map(() => ({
       x: R.multiply(courtZoom),
       y: R.multiply(courtZoom)
     }), playersPosConfig);
   }
 
-  return R.evolve(zoom(zoomSize, playersPosConfig), playersPosConfig);
+  return R.evolve(zoom(zoomSize), playersPosConfig);
 }
 
-function generatePlayersPositions(wishedZoom, playersPositions, context) {
+function generatePlayersPositions(wishedZoom, playersPositionsSelected, context) {
   const colorConditions = R.cond([
     [R.equals(0), R.always('lightskyblue')],
     [R.equals(1), R.always('yellow')],
@@ -839,5 +837,9 @@ function generatePlayersPositions(wishedZoom, playersPositions, context) {
       R.prop('className', cur),
       context
     );
-  }, playersPositions);
+  }, playersPositionsSelected);
 }
+
+exports.playersPositions = playersPositions;
+exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
+exports.generatePlayersPositions = generatePlayersPositions;

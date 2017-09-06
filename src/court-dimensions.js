@@ -1,12 +1,11 @@
 const R = require('ramda');
 const d3 = Object.assign({}, require('d3-selection'));
-const createRectangle = require('./utils.js').createRectangle;
-const createCircle = require('./utils.js').createCircle;
-const createLine = require('./utils.js').createLine;
-const createArc = require('./utils.js').createArc;
-
-exports.courtConfigZoomed = courtConfigZoomed;
-exports.generateCourt = generateCourt;
+const {
+  createRectangle,
+  createCircle,
+  createLine,
+  createArc
+} = require('./utils.js');
 
 // Basket-Ball court dimensions for FIBA
 const courtConfig = {
@@ -322,14 +321,14 @@ function courtConfigZoomed(zoomSize, courtConfiguration = courtConfig) {
   return R.evolve(zoom(zoomSize), courtConfiguration);
 }
 
-function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
+function generateCourt(domElementToRenderSVG, courtConfiguration, wishedZoom) {
   // wishedZoom is only passed to allow clickOnSVG to access it
   // Function to do something when user click on the SVG
   function clickOnSVG() {
     const x = R.head(d3.mouse(this));
     const y = R.last(d3.mouse(this));
     const svg = d3.select('svg');
-    console.log(x, y);
+    // console.log(x, y);
     // Impure because access wishedZoom outside the function
     createCircle(x, y, R.multiply(wishedZoom, 0.5), 'red', 'none', 'newPlayer', svg);
   }
@@ -338,29 +337,29 @@ function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
     .append('svg')
     .on('click', clickOnSVG);
   // Define width and height of the svg
-  svg.attr('width', R.prop('width', courtConfig));
-  svg.attr('height', R.prop('height', courtConfig));
+  svg.attr('width', R.prop('width', courtConfiguration));
+  svg.attr('height', R.prop('height', courtConfiguration));
   // Full court
   createRectangle(
-    R.prop('topX', courtConfig),
-    R.prop('topY', courtConfig),
-    R.prop('width', courtConfig),
-    R.prop('height', courtConfig),
+    R.prop('topX', courtConfiguration),
+    R.prop('topY', courtConfiguration),
+    R.prop('width', courtConfiguration),
+    R.prop('height', courtConfiguration),
     svg
   );
   // Half court
   createRectangle(
-    R.prop('topX', courtConfig),
-    R.prop('topY', courtConfig),
-    R.prop('width', courtConfig),
-    R.divide(R.prop('height', courtConfig), 2), // Divide height by 2 to have the half court
+    R.prop('topX', courtConfiguration),
+    R.prop('topY', courtConfiguration),
+    R.prop('width', courtConfiguration),
+    R.divide(R.prop('height', courtConfiguration), 2), // Divide height by 2 to have the half court
     svg
   );
   // Ring center
   createCircle(
-    R.path(['centerRing', 'centerX'], courtConfig),
-    R.path(['centerRing', 'centerY'], courtConfig),
-    R.path(['centerRing', 'radius'], courtConfig),
+    R.path(['centerRing', 'centerX'], courtConfiguration),
+    R.path(['centerRing', 'centerY'], courtConfiguration),
+    R.path(['centerRing', 'radius'], courtConfiguration),
     'black',
     'none',
     'ringCenter',
@@ -368,9 +367,9 @@ function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
   );
   // Ring top
   createCircle(
-    R.path(['topRing', 'centerX'], courtConfig),
-    R.path(['topRing', 'centerY'], courtConfig),
-    R.path(['topRing', 'radius'], courtConfig),
+    R.path(['topRing', 'centerX'], courtConfiguration),
+    R.path(['topRing', 'centerY'], courtConfiguration),
+    R.path(['topRing', 'radius'], courtConfiguration),
     'black',
     'none',
     'ringTop',
@@ -378,9 +377,9 @@ function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
   );
   // Ring bottom
   createCircle(
-    R.path(['bottomRing', 'centerX'], courtConfig),
-    R.path(['bottomRing', 'centerY'], courtConfig),
-    R.path(['bottomRing', 'radius'], courtConfig),
+    R.path(['bottomRing', 'centerX'], courtConfiguration),
+    R.path(['bottomRing', 'centerY'], courtConfiguration),
+    R.path(['bottomRing', 'radius'], courtConfiguration),
     'black',
     'none',
     'ringBottom',
@@ -388,59 +387,55 @@ function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
   );
   // Top paint
   createRectangle(
-    R.path(['topPaint', 'topX'], courtConfig),
-    R.path(['topPaint', 'topY'], courtConfig),
-    R.path(['topPaint', 'width'], courtConfig),
-    R.path(['topPaint', 'height'], courtConfig),
+    R.path(['topPaint', 'topX'], courtConfiguration),
+    R.path(['topPaint', 'topY'], courtConfiguration),
+    R.path(['topPaint', 'width'], courtConfiguration),
+    R.path(['topPaint', 'height'], courtConfiguration),
     svg
   );
   // Separation lines for Top paint
-  R.map((cur) => {
-    createRectangle(
-      R.prop('topX', cur),
-      R.prop('topY', cur),
-      R.prop('width', cur),
-      R.prop('height', cur),
-      svg
-    );
-  }, R.path(['topPaint', 'separationLines'], courtConfig));
+  R.map(cur => createRectangle(
+    R.prop('topX', cur),
+    R.prop('topY', cur),
+    R.prop('width', cur),
+    R.prop('height', cur),
+    svg
+  ), R.path(['topPaint', 'separationLines'], courtConfiguration));
   // Bottom paint
   createRectangle(
-    R.path(['bottomPaint', 'topX'], courtConfig),
-    R.path(['bottomPaint', 'topY'], courtConfig),
-    R.path(['bottomPaint', 'width'], courtConfig),
-    R.path(['bottomPaint', 'height'], courtConfig),
+    R.path(['bottomPaint', 'topX'], courtConfiguration),
+    R.path(['bottomPaint', 'topY'], courtConfiguration),
+    R.path(['bottomPaint', 'width'], courtConfiguration),
+    R.path(['bottomPaint', 'height'], courtConfiguration),
     svg
   );
   // Separation lines for Bottom paint
-  R.map((cur) => {
-    createRectangle(
-      R.prop('topX', cur),
-      R.prop('topY', cur),
-      R.prop('width', cur),
-      R.prop('height', cur),
-      svg
-    );
-  }, R.path(['bottomPaint', 'separationLines'], courtConfig));
+  R.map(cur => createRectangle(
+    R.prop('topX', cur),
+    R.prop('topY', cur),
+    R.prop('width', cur),
+    R.prop('height', cur),
+    svg
+  ), R.path(['bottomPaint', 'separationLines'], courtConfiguration));
   // Top basket
   createLine(
-    R.path(['topBasket', 'bigLine', 'x1'], courtConfig),
-    R.path(['topBasket', 'bigLine', 'y1'], courtConfig),
-    R.path(['topBasket', 'bigLine', 'x2'], courtConfig),
-    R.path(['topBasket', 'bigLine', 'y2'], courtConfig),
+    R.path(['topBasket', 'bigLine', 'x1'], courtConfiguration),
+    R.path(['topBasket', 'bigLine', 'y1'], courtConfiguration),
+    R.path(['topBasket', 'bigLine', 'x2'], courtConfiguration),
+    R.path(['topBasket', 'bigLine', 'y2'], courtConfiguration),
     svg
   );
   createLine(
-    R.path(['topBasket', 'smallLine', 'x1'], courtConfig),
-    R.path(['topBasket', 'smallLine', 'y1'], courtConfig),
-    R.path(['topBasket', 'smallLine', 'x2'], courtConfig),
-    R.path(['topBasket', 'smallLine', 'y2'], courtConfig),
+    R.path(['topBasket', 'smallLine', 'x1'], courtConfiguration),
+    R.path(['topBasket', 'smallLine', 'y1'], courtConfiguration),
+    R.path(['topBasket', 'smallLine', 'x2'], courtConfiguration),
+    R.path(['topBasket', 'smallLine', 'y2'], courtConfiguration),
     svg
   );
   createCircle(
-    R.path(['topBasket', 'ring', 'centerX'], courtConfig),
-    R.path(['topBasket', 'ring', 'centerY'], courtConfig),
-    R.path(['topBasket', 'ring', 'radius'], courtConfig),
+    R.path(['topBasket', 'ring', 'centerX'], courtConfiguration),
+    R.path(['topBasket', 'ring', 'centerY'], courtConfiguration),
+    R.path(['topBasket', 'ring', 'radius'], courtConfiguration),
     'black',
     'none',
     'topBasket',
@@ -448,23 +443,23 @@ function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
   );
   // Bottom basket
   createLine(
-    R.path(['bottomBasket', 'bigLine', 'x1'], courtConfig),
-    R.path(['bottomBasket', 'bigLine', 'y1'], courtConfig),
-    R.path(['bottomBasket', 'bigLine', 'x2'], courtConfig),
-    R.path(['bottomBasket', 'bigLine', 'y2'], courtConfig),
+    R.path(['bottomBasket', 'bigLine', 'x1'], courtConfiguration),
+    R.path(['bottomBasket', 'bigLine', 'y1'], courtConfiguration),
+    R.path(['bottomBasket', 'bigLine', 'x2'], courtConfiguration),
+    R.path(['bottomBasket', 'bigLine', 'y2'], courtConfiguration),
     svg
   );
   createLine(
-    R.path(['bottomBasket', 'smallLine', 'x1'], courtConfig),
-    R.path(['bottomBasket', 'smallLine', 'y1'], courtConfig),
-    R.path(['bottomBasket', 'smallLine', 'x2'], courtConfig),
-    R.path(['bottomBasket', 'smallLine', 'y2'], courtConfig),
+    R.path(['bottomBasket', 'smallLine', 'x1'], courtConfiguration),
+    R.path(['bottomBasket', 'smallLine', 'y1'], courtConfiguration),
+    R.path(['bottomBasket', 'smallLine', 'x2'], courtConfiguration),
+    R.path(['bottomBasket', 'smallLine', 'y2'], courtConfiguration),
     svg
   );
   createCircle(
-    R.path(['bottomBasket', 'ring', 'centerX'], courtConfig),
-    R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
-    R.path(['bottomBasket', 'ring', 'radius'], courtConfig),
+    R.path(['bottomBasket', 'ring', 'centerX'], courtConfiguration),
+    R.path(['bottomBasket', 'ring', 'centerY'], courtConfiguration),
+    R.path(['bottomBasket', 'ring', 'radius'], courtConfiguration),
     'black',
     'none',
     'bottomBasket',
@@ -472,54 +467,57 @@ function generateCourt(domElementToRenderSVG, courtConfig, wishedZoom) {
   );
   // Top 3 points lines and arc
   createLine(
-    R.path(['top3Points', 'leftLine', 'x1'], courtConfig),
-    R.path(['top3Points', 'leftLine', 'y1'], courtConfig),
-    R.path(['top3Points', 'leftLine', 'x2'], courtConfig),
-    R.path(['top3Points', 'leftLine', 'y2'], courtConfig),
+    R.path(['top3Points', 'leftLine', 'x1'], courtConfiguration),
+    R.path(['top3Points', 'leftLine', 'y1'], courtConfiguration),
+    R.path(['top3Points', 'leftLine', 'x2'], courtConfiguration),
+    R.path(['top3Points', 'leftLine', 'y2'], courtConfiguration),
     svg
   );
   createLine(
-    R.path(['top3Points', 'rightLine', 'x1'], courtConfig),
-    R.path(['top3Points', 'rightLine', 'y1'], courtConfig),
-    R.path(['top3Points', 'rightLine', 'x2'], courtConfig),
-    R.path(['top3Points', 'rightLine', 'y2'], courtConfig),
+    R.path(['top3Points', 'rightLine', 'x1'], courtConfiguration),
+    R.path(['top3Points', 'rightLine', 'y1'], courtConfiguration),
+    R.path(['top3Points', 'rightLine', 'x2'], courtConfiguration),
+    R.path(['top3Points', 'rightLine', 'y2'], courtConfiguration),
     svg
   );
   createArc(
-    R.path(['top3Points', 'arc', 'innerRadius'], courtConfig),
-    R.path(['top3Points', 'arc', 'outerRadius'], courtConfig),
-    R.path(['top3Points', 'arc', 'startAngle'], courtConfig),
-    R.path(['top3Points', 'arc', 'endAngle'], courtConfig),
-    R.divide(R.prop('width', courtConfig), 2),
-    R.path(['topBasket', 'ring', 'centerY'], courtConfig),
+    R.path(['top3Points', 'arc', 'innerRadius'], courtConfiguration),
+    R.path(['top3Points', 'arc', 'outerRadius'], courtConfiguration),
+    R.path(['top3Points', 'arc', 'startAngle'], courtConfiguration),
+    R.path(['top3Points', 'arc', 'endAngle'], courtConfiguration),
+    R.divide(R.prop('width', courtConfiguration), 2),
+    R.path(['topBasket', 'ring', 'centerY'], courtConfiguration),
     false,
     svg
   );
   // Bottom 3 points lines and arc
   createLine(
-    R.path(['bottom3Points', 'leftLine', 'x1'], courtConfig),
-    R.path(['bottom3Points', 'leftLine', 'y1'], courtConfig),
-    R.path(['bottom3Points', 'leftLine', 'x2'], courtConfig),
-    R.path(['bottom3Points', 'leftLine', 'y2'], courtConfig),
+    R.path(['bottom3Points', 'leftLine', 'x1'], courtConfiguration),
+    R.path(['bottom3Points', 'leftLine', 'y1'], courtConfiguration),
+    R.path(['bottom3Points', 'leftLine', 'x2'], courtConfiguration),
+    R.path(['bottom3Points', 'leftLine', 'y2'], courtConfiguration),
     svg
   );
   createLine(
-    R.path(['bottom3Points', 'rightLine', 'x1'], courtConfig),
-    R.path(['bottom3Points', 'rightLine', 'y1'], courtConfig),
-    R.path(['bottom3Points', 'rightLine', 'x2'], courtConfig),
-    R.path(['bottom3Points', 'rightLine', 'y2'], courtConfig),
+    R.path(['bottom3Points', 'rightLine', 'x1'], courtConfiguration),
+    R.path(['bottom3Points', 'rightLine', 'y1'], courtConfiguration),
+    R.path(['bottom3Points', 'rightLine', 'x2'], courtConfiguration),
+    R.path(['bottom3Points', 'rightLine', 'y2'], courtConfiguration),
     svg
   );
   createArc(
-    R.path(['bottom3Points', 'arc', 'innerRadius'], courtConfig),
-    R.path(['bottom3Points', 'arc', 'outerRadius'], courtConfig),
-    R.path(['bottom3Points', 'arc', 'startAngle'], courtConfig),
-    R.path(['bottom3Points', 'arc', 'endAngle'], courtConfig),
-    R.divide(R.prop('width', courtConfig), 2),
-    R.path(['bottomBasket', 'ring', 'centerY'], courtConfig),
+    R.path(['bottom3Points', 'arc', 'innerRadius'], courtConfiguration),
+    R.path(['bottom3Points', 'arc', 'outerRadius'], courtConfiguration),
+    R.path(['bottom3Points', 'arc', 'startAngle'], courtConfiguration),
+    R.path(['bottom3Points', 'arc', 'endAngle'], courtConfiguration),
+    R.divide(R.prop('width', courtConfiguration), 2),
+    R.path(['bottomBasket', 'ring', 'centerY'], courtConfiguration),
     true,
     svg
   );
 
   return svg;
 }
+
+exports.courtConfigZoomed = courtConfigZoomed;
+exports.generateCourt = generateCourt;

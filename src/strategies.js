@@ -1,7 +1,5 @@
 const R = require('ramda');
-const strategyCreator = require('./strategy-factory.js').strategyCreator;
-
-exports.strategySelector = strategySelector;
+const { strategyCreator } = require('./strategy-factory.js');
 
 function strategyNormalStar(domElement, wishedZoom) {
   // Players starting position
@@ -109,7 +107,7 @@ function strategyNormalStar(domElement, wishedZoom) {
       destination: 'underRing'
     }],
     [{
-      origin: 'sprint',
+      action: 'sprint',
       origin: 'pg',
       destination: 'cornerRight'
     }],
@@ -122,7 +120,7 @@ function strategyNormalStar(domElement, wishedZoom) {
       destination: 'underRing'
     }],
     [{
-      origin: 'sprint',
+      action: 'sprint',
       origin: 'pg',
       destination: 'sfRight'
     }, {
@@ -1356,3 +1354,5 @@ function strategySelector(domElement, wishedZoom, strategyName) {
 
   return condition(strategyName)(domElement, wishedZoom);
 }
+
+exports.strategySelector = strategySelector;

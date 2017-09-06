@@ -1,13 +1,5 @@
 const $ = require('jquery');
 
-exports.render = render;
-exports.addEventListener = addEventListener;
-exports.removeEventListener = removeEventListener;
-exports.clean = clean;
-exports.hide = hide;
-exports.show = show;
-
-
 function render(domElement, template, data = {}) {
   return $(domElement).append(template(data));
 }
@@ -31,3 +23,10 @@ function hide(domElement) {
 function show(domElement) {
   return $(domElement).show();
 }
+
+exports.render = render;
+exports.addEventListener = addEventListener;
+exports.removeEventListener = removeEventListener;
+exports.clean = clean;
+exports.hide = hide;
+exports.show = show;

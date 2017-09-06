@@ -1,10 +1,27 @@
 const R = require('ramda');
 const $ = require('jquery');
-const addEventListener = require('../utils.js').addEventListener;
-const removeEventListener = require('../utils.js').removeEventListener;
+const {
+  addEventListener,
+  removeEventListener
+} = require('../utils.js');
 
-exports.selectAndSeeSelection = selectAndSeeSelection;
-exports.regularSelect = regularSelect;
+function regularSelect(id, options) {
+  return `<select id="${id}" class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100">
+        ${options}
+      </select>`;
+}
+
+function initSelectForPlayers(playersList) {
+  const options = R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, playersList))
+  );
+
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+    options
+  );
+}
 
 function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   function appendSelectedOption(event) {
@@ -27,32 +44,16 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   addEventListener('click', `.remove-${idForSelect}-player`, removeSelectedPlayer);
 
   return `<form>
-				<div class="form-group">
-					<label for="#select-${idForSelect}-players">${labelText}</label>
-					${regularSelect(
+        <div class="form-group">
+          <label for="#select-${idForSelect}-players">${labelText}</label>
+          ${regularSelect(
     `select-${idForSelect}-players`,
     initSelectForPlayers(listForSelectOptions)
   )}
-				</div>
-			</form>
-			<ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
+        </div>
+      </form>
+      <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
 }
 
-
-function regularSelect(id, options) {
-  return `<select id="${id}" class="custom-select mb-2 mr-sm-2 mb-sm-0 w-100">
-				${options}
-			</select>`;
-}
-
-function initSelectForPlayers(playersList) {
-  const options = R.join(
-    '',
-    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, playersList))
-  );
-
-  return R.concat(
-    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
-    options
-  );
-}
+exports.selectAndSeeSelection = selectAndSeeSelection;
+exports.regularSelect = regularSelect;

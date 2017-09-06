@@ -1,21 +1,25 @@
 const R = require('ramda');
-const mapIndexed = require('./utils.js').mapIndexed;
-const courtConfigZoomed = require('./court-dimensions.js').courtConfigZoomed;
-const generateCourt = require('./court-dimensions.js').generateCourt;
-const playersPositions = require('./players-positions.js').playersPositions;
-const playersPositionsConfigZoomed = require('./players-positions.js').playersPositionsConfigZoomed;
-const generatePlayersPositions = require('./players-positions.js').generatePlayersPositions;
-const addBallToGame = require('./ball.js').addBallToGame;
-const generateBallPosition = require('./ball.js').generateBallPosition;
-const playMovements = require('./movement.js').playMovements;
-
-exports.strategyCreator = strategyCreator;
+const { mapIndexed } = require('./utils.js');
+const {
+  courtConfigZoomed,
+  generateCourt
+} = require('./court-dimensions.js');
+const {
+  playersPositions,
+  playersPositionsConfigZoomed,
+  generatePlayersPositions
+} = require('./players-positions.js');
+const {
+  addBallToGame,
+  generateBallPosition
+} = require('./ball.js');
+const { playMovements } = require('./movement.js');
 
 /*
 Move = {
-	action: regular || sprint
-	origin : Position
-	destination : Position
+  action: regular || sprint
+  origin : Position
+  destination : Position
 }
 The action property is only needed if you want to move a player with or without the ball
 */
@@ -79,7 +83,14 @@ function strategyCreator(domElement, wishedZoom, players, ballHolder, listOfMove
   const ballPosition = addBallToGame(ballHolder, playersPositionsZoomed);
   generateBallPosition(wishedZoom, ballPosition, courtSVG);
 
-  const generatedStrategy = generateStategy(allPlayersPositionsZoomed, playersPositionsZoomed, ballPosition, listOfMoves);
+  const generatedStrategy = generateStategy(
+    allPlayersPositionsZoomed,
+    playersPositionsZoomed,
+    ballPosition,
+    listOfMoves
+  );
 
   playMovements(generatedStrategy);
 }
+
+exports.strategyCreator = strategyCreator;
