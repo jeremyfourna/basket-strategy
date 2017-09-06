@@ -6,23 +6,26 @@ const {
   addEventListener,
   removeEventListener
 } = require('./utils.js');
-const { playersPositions } = require('../players-positions.js');
+const {
+  playersPositions,
+  playersPositionsGrouped
+} = require('../players-positions.js');
 const {
   selectAndSeeSelection,
-  regularSelect
+  regularSelect,
+  selectOptGrpAndSeeSelection
 } = require('./components/select.js');
 
 function templateSelectPlayers(listOfElements) {
   return R.concat(
     R.reduce((prev, cur) => {
       const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    ${selectAndSeeSelection(
-    R.prop('id', cur),
-    R.prop('label', cur),
-    playersPositions()
-  )}
-                  </div>`;
-
+                                ${selectOptGrpAndSeeSelection(
+                                  R.prop('id', cur),
+                                  R.prop('label', cur),
+                                  playersPositionsGrouped()
+                                )}
+                               </div>`;
       return R.concat(prev, selectTemplate);
     }, '<div class="row">', listOfElements),
     '</div>'
@@ -205,41 +208,40 @@ function templateMoves() {
   addEventListener('change', '#action-type', changeOnSelect);
 
   return `<form>
-        <div class="form-group">
-          <label for="#action-type">What action will be done ?</label>
-          ${regularSelect(
-    'action-type',
-    mapActionTypes('Select an action to perform', actionTypes)
-  )}
-        </div>
-      </form>
-      <form id="move-options">
-      </form>
-      <ul id="selected-moves" class="list-group"></ul>`;
+            <div class="form-group">
+              <label for="#action-type">What action will be done ?</label>
+              ${regularSelect(
+                'action-type',
+                mapActionTypes('Select an action to perform', actionTypes)
+              )}
+            </div>
+          </form>
+          <form id="move-options"></form>
+          <ul id="selected-moves" class="list-group"></ul>`;
 }
 
 function templatePanes(list) {
   return `<div id="strategy-creation-panes" class="tab-content">
-        <div class="tab-pane active" id="select-players" role="tabpanel">
-          ${templateSelectPlayers(list)}
-        </div>
-        <div class="tab-pane" id="select-ball-holder" role="tabpanel">
-          ${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
-        </div>
-        <div class="tab-pane" id="define-movements" role="tabpanel">
-          ${templateMoves()}
-        </div>
-        <div class="tab-pane" id="validate-play" role="tabpanel"></div>
-      </div>`;
+            <div class="tab-pane active" id="select-players" role="tabpanel">
+              ${templateSelectPlayers(list)}
+            </div>
+            <div class="tab-pane" id="select-ball-holder" role="tabpanel">
+              ${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
+            </div>
+            <div class="tab-pane" id="define-movements" role="tabpanel">
+              ${templateMoves()}
+            </div>
+            <div class="tab-pane" id="validate-play" role="tabpanel"></div>
+          </div>`;
 }
 
 function renderCreateStrategy(db, domElementToRenderTemplate) {
   const list = [{
     id: 'offense',
-    label: "Select the offense players' starting position for your play"
+    label: "Select the offense players' starting position"
   }, {
     id: 'defense',
-    label: "Select the defense players' starting position for your play"
+    label: "Select the defense players' starting position"
   }];
 
   clean('#create-strategy');

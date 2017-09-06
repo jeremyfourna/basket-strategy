@@ -805,6 +805,20 @@ function playersPositions() {
   ]);
 }
 
+function playersPositionsGrouped() {
+  return [
+    ['PG positions', pgPositions()],
+    ['SG positions', sgPositions()],
+    ['SF positions', sfPositions()],
+    ['Corner positions', cornerPositions()],
+    ['PF positions', pfPositions()],
+    ['C positions', cPositions()],
+    ['Under the ring positions', underRingPositions()],
+    ['Touch positions', touchPositions()],
+    ['Positions far away from the ring', farAwayPositions()]
+  ];
+}
+
 function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
   function zoom(courtZoom) {
     return R.map(() => ({
@@ -843,3 +857,4 @@ function generatePlayersPositions(wishedZoom, playersPositionsSelected, context)
 exports.playersPositions = playersPositions;
 exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
 exports.generatePlayersPositions = generatePlayersPositions;
+exports.playersPositionsGrouped = playersPositionsGrouped;

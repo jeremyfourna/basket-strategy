@@ -23,6 +23,22 @@ function initSelectForPlayers(playersList) {
   );
 }
 
+function initSelectOptGrpForPlayers(playersList) {
+  function group(element) {
+    return `<optgroup label="${R.head(element)}">
+              ${R.join(
+                '',
+                R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, R.last(element)))
+              )}
+            </optgroup>`;
+  }
+
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+    R.join('', R.map(group, playersList))
+  );
+}
+
 function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   function appendSelectedOption(event) {
     const selectValueLens = R.lensPath(['target', 'value']);
@@ -55,5 +71,38 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
       <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
 }
 
+function selectOptGrpAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
+  function appendSelectedOption(event) {
+    const selectValueLens = R.lensPath(['target', 'value']);
+    const value = R.view(selectValueLens, event);
+    const label = $(`#select-${idForSelect}-players option:selected`).text();
+
+    const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
+
+    $(`#selected-${idForSelect}-players`).append(listItem);
+  }
+
+  function removeSelectedPlayer(event) {
+    $(R.prop('currentTarget', event)).parent('li').remove();
+  }
+
+  removeEventListener('change', `#select-${idForSelect}-players`);
+  removeEventListener('click', `.remove-${idForSelect}-player`);
+  addEventListener('change', `#select-${idForSelect}-players`, appendSelectedOption);
+  addEventListener('click', `.remove-${idForSelect}-player`, removeSelectedPlayer);
+
+  return `<form>
+            <div class="form-group">
+              <label for="#select-${idForSelect}-players">${labelText}</label>
+              ${regularSelect(
+                `select-${idForSelect}-players`,
+                initSelectOptGrpForPlayers(listForSelectOptions)
+              )}
+            </div>
+          </form>
+          <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
+}
+
 exports.selectAndSeeSelection = selectAndSeeSelection;
 exports.regularSelect = regularSelect;
+exports.selectOptGrpAndSeeSelection = selectOptGrpAndSeeSelection;
