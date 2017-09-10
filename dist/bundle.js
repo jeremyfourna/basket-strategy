@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b9fcd6fc079df701a416"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "665e7435ecf2f58503f6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -33036,6 +33036,20 @@ function playersPositions() {
   ]);
 }
 
+function playersPositionsGrouped() {
+  return [
+    ['PG positions', pgPositions()],
+    ['SG positions', sgPositions()],
+    ['SF positions', sfPositions()],
+    ['Corner positions', cornerPositions()],
+    ['PF positions', pfPositions()],
+    ['C positions', cPositions()],
+    ['Under the ring positions', underRingPositions()],
+    ['Touch positions', touchPositions()],
+    ['Positions far away from the ring', farAwayPositions()]
+  ];
+}
+
 function playersPositionsConfigZoomed(zoomSize, playersPosConfig) {
   function zoom(courtZoom) {
     return R.map(() => ({
@@ -33074,6 +33088,7 @@ function generatePlayersPositions(wishedZoom, playersPositionsSelected, context)
 exports.playersPositions = playersPositions;
 exports.playersPositionsConfigZoomed = playersPositionsConfigZoomed;
 exports.generatePlayersPositions = generatePlayersPositions;
+exports.playersPositionsGrouped = playersPositionsGrouped;
 
 
 /***/ }),
@@ -53669,21 +53684,24 @@ const {
   addEventListener,
   removeEventListener
 } = __webpack_require__(57);
-const { playersPositions } = __webpack_require__(242);
 const {
-  selectAndSeeSelection,
-  regularSelect
+  playersPositions,
+  playersPositionsGrouped
+} = __webpack_require__(242);
+const {
+  regularSelect,
+  selectOptGrpAndSeeSelection
 } = __webpack_require__(572);
 
 function templateSelectPlayers(listOfElements) {
   return R.concat(
     R.reduce((prev, cur) => {
       const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                ${selectAndSeeSelection(
-                                  R.prop('id', cur),
-                                  R.prop('label', cur),
-                                  playersPositions()
-                                )}
+                                ${selectOptGrpAndSeeSelection(
+    R.prop('id', cur),
+    R.prop('label', cur),
+    playersPositionsGrouped()
+  )}
                                </div>`;
       return R.concat(prev, selectTemplate);
     }, '<div class="row">', listOfElements),
@@ -53870,9 +53888,9 @@ function templateMoves() {
             <div class="form-group">
               <label for="#action-type">What action will be done ?</label>
               ${regularSelect(
-                'action-type',
-                mapActionTypes('Select an action to perform', actionTypes)
-              )}
+    'action-type',
+    mapActionTypes('Select an action to perform', actionTypes)
+  )}
             </div>
           </form>
           <form id="move-options"></form>
@@ -55629,6 +55647,22 @@ function initSelectForPlayers(playersList) {
   );
 }
 
+function initSelectOptGrpForPlayers(playersList) {
+  function group(element) {
+    return `<optgroup label="${R.head(element)}">
+              ${R.join(
+    '',
+    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, R.last(element)))
+  )}
+            </optgroup>`;
+  }
+
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
+    R.join('', R.map(group, playersList))
+  );
+}
+
 function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   function appendSelectedOption(event) {
     const selectValueLens = R.lensPath(['target', 'value']);
@@ -55661,8 +55695,41 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
       <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
 }
 
+function selectOptGrpAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
+  function appendSelectedOption(event) {
+    const selectValueLens = R.lensPath(['target', 'value']);
+    const value = R.view(selectValueLens, event);
+    const label = $(`#select-${idForSelect}-players option:selected`).text();
+
+    const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
+
+    $(`#selected-${idForSelect}-players`).append(listItem);
+  }
+
+  function removeSelectedPlayer(event) {
+    $(R.prop('currentTarget', event)).parent('li').remove();
+  }
+
+  removeEventListener('change', `#select-${idForSelect}-players`);
+  removeEventListener('click', `.remove-${idForSelect}-player`);
+  addEventListener('change', `#select-${idForSelect}-players`, appendSelectedOption);
+  addEventListener('click', `.remove-${idForSelect}-player`, removeSelectedPlayer);
+
+  return `<form>
+            <div class="form-group">
+              <label for="#select-${idForSelect}-players">${labelText}</label>
+              ${regularSelect(
+    `select-${idForSelect}-players`,
+    initSelectOptGrpForPlayers(listForSelectOptions)
+  )}
+            </div>
+          </form>
+          <ul id="selected-${idForSelect}-players" class="list-group"></ul>`;
+}
+
 exports.selectAndSeeSelection = selectAndSeeSelection;
 exports.regularSelect = regularSelect;
+exports.selectOptGrpAndSeeSelection = selectOptGrpAndSeeSelection;
 
 
 /***/ }),

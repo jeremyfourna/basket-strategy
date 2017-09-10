@@ -1179,6 +1179,10 @@ function issKreuzberg212Option3(domElement, wishedZoom) {
       action: 'sprint',
       origin: 'sfRight',
       destination: 'sgRightAfterPickBottomLeft'
+    }, {
+      action: 'regular',
+      origin: 'sgRight',
+      destination: 'cLeftPickLeft'
     }],
     [{
       action: 'sprint',
@@ -1192,11 +1196,15 @@ function issKreuzberg212Option3(domElement, wishedZoom) {
       action: 'regular',
       origin: 'sfLeft',
       destination: 'pg'
+    }, {
+      action: 'regular',
+      origin: 'sgRight',
+      destination: 'cLeftPickTop'
     }],
     [{
       action: 'regular',
       origin: 'sfRight',
-      destination: 'cornerLeft'
+      destination: 'sfLeft'
     }, {
       action: 'sprint',
       origin: 'sgLeft',
@@ -1218,6 +1226,10 @@ function issKreuzberg212Option3(domElement, wishedZoom) {
       action: 'sprint',
       origin: 'ball',
       destination: 'underRingTop'
+    }, {
+      action: 'regular',
+      origin: 'sfRight',
+      destination: 'cornerLeft'
     }],
     [{
       origin: 'ball',

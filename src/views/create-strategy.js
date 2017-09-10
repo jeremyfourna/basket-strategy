@@ -20,10 +20,10 @@ function templateSelectPlayers(listOfElements) {
     R.reduce((prev, cur) => {
       const selectTemplate = `<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 ${selectOptGrpAndSeeSelection(
-    R.prop('id', cur),
-    R.prop('label', cur),
-    playersPositionsGrouped()
-  )}
+                                  R.prop('id', cur),
+                                  R.prop('label', cur),
+                                  playersPositionsGrouped()
+                                )}
                                </div>`;
       return R.concat(prev, selectTemplate);
     }, '<div class="row">', listOfElements),
@@ -62,14 +62,14 @@ function initSelectForPlayers(playersList) {
   );
 }
 
-function templateSelect(idForSelect, labelText) {
+function templateSelectBallHolder(idForSelect, labelText) {
   return `<form>
         <div class="form-group">
           <label for="${idForSelect}">${labelText}</label>
           ${regularSelect(
-    idForSelect,
-    initSelectForPlayers(playersPositions())
-  )}
+            idForSelect,
+            initSelectForPlayers(getListOfSelectedPlayers('offense'))
+          )}
         </div>
       </form>`;
 }
@@ -127,14 +127,15 @@ function templatePass() {
       </div>`;
 }
 
+function getListOfSelectedPlayers(domElement) {
+  return $(`#${domElement} li`).map((index, element) => ({
+    className: $(element).attr('data-player-position'),
+    // We remove the x at the end of the text
+    def: R.init($(element).text())
+  })).get();
+}
+
 function getSelectedPlayers(domIdForOffSelectedPlayersList, domIdForDefSelectedPlayersList) {
-  function getListOfSelectedPlayers(domElement) {
-    return $(`#${domElement} li`).map((index, element) => ({
-      className: $(element).attr('data-player-position'),
-      // We remove the x at the end of the text
-      def: R.init($(element).text())
-    })).get();
-  }
 
   const offenseList = getListOfSelectedPlayers(domIdForOffSelectedPlayersList);
   const defenseList = getListOfSelectedPlayers(domIdForDefSelectedPlayersList);
@@ -225,7 +226,7 @@ function templatePanes(list) {
               ${templateSelectPlayers(list)}
             </div>
             <div class="tab-pane" id="select-ball-holder" role="tabpanel">
-              ${templateSelect('ball-holder', 'Who will hold the ball at the play\'s beginning')}
+              ${templateSelectBallHolder('ball-holder', 'Who will hold the ball at the play\'s beginning')}
             </div>
             <div class="tab-pane" id="define-movements" role="tabpanel">
               ${templateMoves()}
