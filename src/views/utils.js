@@ -24,9 +24,14 @@ function show(domElement) {
   return $(domElement).show();
 }
 
+function cleanSVG() {
+  return $('svg').remove();
+}
+
 exports.render = render;
 exports.addEventListener = addEventListener;
 exports.removeEventListener = removeEventListener;
 exports.clean = clean;
 exports.hide = hide;
 exports.show = show;
+exports.cleanSVG = cleanSVG;

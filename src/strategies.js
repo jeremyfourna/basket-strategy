@@ -1,5 +1,5 @@
 const R = require('ramda');
-const { strategyCreator } = require('./strategy-factory.js');
+const { strategyCreator } = require('bs-strategy-factory');
 
 function strategyNormalStar(domElement, wishedZoom) {
   // Players starting position
