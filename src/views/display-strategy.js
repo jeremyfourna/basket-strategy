@@ -36,7 +36,7 @@ function templateStrategySelection(listOfStrategy) {
             <select id="offensivePlaySize">
               <option disabled="disabled" selected="selected">Select a display size</option>
               <option value="10">10</option>
-              <option value="20">20 - Best mobile view</option>
+              <option value="20" selected="true">20 - Best mobile view</option>
               <option value="30">30</option>
               <option value="40">40</option>
               <option value="50">50</option>
@@ -72,6 +72,8 @@ function strategySelection(domElementToRenderTemplate, strategyList) {
   clean(domElementToRenderTemplate);
 
   addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
+  addEventListener('change', '#offensivePlaySelect', changeStrategyToDisplay);
+  addEventListener('change', '#offensivePlaySize', changeStrategyToDisplay);
   render(domElementToRenderTemplate, templateStrategySelection, strategyList);
 }
 

@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "dd8704dc692ba5a6aec3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0d3afaf96fb8dbb1117e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -8396,7 +8396,7 @@ function templateStrategySelection(listOfStrategy) {
             <select id="offensivePlaySize">
               <option disabled="disabled" selected="selected">Select a display size</option>
               <option value="10">10</option>
-              <option value="20">20 - Best mobile view</option>
+              <option value="20" selected="true">20 - Best mobile view</option>
               <option value="30">30</option>
               <option value="40">40</option>
               <option value="50">50</option>
@@ -8432,6 +8432,8 @@ function strategySelection(domElementToRenderTemplate, strategyList) {
   clean(domElementToRenderTemplate);
 
   addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
+  addEventListener('change', '#offensivePlaySelect', changeStrategyToDisplay);
+  addEventListener('change', '#offensivePlaySize', changeStrategyToDisplay);
   render(domElementToRenderTemplate, templateStrategySelection, strategyList);
 }
 

@@ -2,13 +2,13 @@ const {
   clean,
   render
 } = require('./utils.js');
-const { renderStrategySelection } = require('./display-strategy.js');
+const { strategySelection } = require('./display-strategy.js');
 
 function templatePanes() {
   return `<div id="app">
             <h1>Basket-Ball Strategy</h1>
             <div id="view-strategies">
-              ${renderStrategySelection('#view-strategies')}
+              ${strategySelection('#view-strategies')}
             </div>
           </div>`;
 }
