@@ -1,4 +1,14 @@
-const R = require('ramda');
+const {
+  concat,
+  head,
+  join,
+  last,
+  lensPath,
+  map,
+  prop,
+  values,
+  view
+} = require('ramda');
 const $ = require('jquery');
 const {
   addEventListener,
@@ -12,12 +22,12 @@ function regularSelect(id, options) {
 }
 
 function initSelectForPlayers(playersList) {
-  const options = R.join(
+  const options = join(
     '',
-    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, playersList))
+    values(map(cur => `<option value="${prop('className', cur)}" data-def="${prop('def', cur)}">${prop('def', cur)}</option>`, playersList))
   );
 
-  return R.concat(
+  return concat(
     '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
     options
   );
@@ -25,24 +35,24 @@ function initSelectForPlayers(playersList) {
 
 function initSelectOptGrpForPlayers(playersList) {
   function group(element) {
-    return `<optgroup label="${R.head(element)}">
-              ${R.join(
-    '',
-    R.values(R.map(cur => `<option value="${R.prop('className', cur)}" data-def="${R.prop('def', cur)}">${R.prop('def', cur)}</option>`, R.last(element)))
-  )}
+    return `<optgroup label="${head(element)}">
+              ${join(
+                '',
+                values(map(cur => `<option value="${prop('className', cur)}" data-def="${prop('def', cur)}">${prop('def', cur)}</option>`, last(element)))
+              )}
             </optgroup>`;
   }
 
-  return R.concat(
+  return concat(
     '<option selected="selected" disabled="disabled">Select a player\'s position</option>',
-    R.join('', R.map(group, playersList))
+    join('', map(group, playersList))
   );
 }
 
 function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   function appendSelectedOption(event) {
-    const selectValueLens = R.lensPath(['target', 'value']);
-    const value = R.view(selectValueLens, event);
+    const selectValueLens = lensPath(['target', 'value']);
+    const value = view(selectValueLens, event);
     const label = $(`#select-${idForSelect}-players option:selected`).text();
 
     const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
@@ -51,7 +61,7 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   }
 
   function removeSelectedPlayer(event) {
-    $(R.prop('currentTarget', event)).parent('li').remove();
+    $(prop('currentTarget', event)).parent('li').remove();
   }
 
   removeEventListener('change', `#select-${idForSelect}-players`);
@@ -73,8 +83,8 @@ function selectAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
 
 function selectOptGrpAndSeeSelection(idForSelect, labelText, listForSelectOptions) {
   function appendSelectedOption(event) {
-    const selectValueLens = R.lensPath(['target', 'value']);
-    const value = R.view(selectValueLens, event);
+    const selectValueLens = lensPath(['target', 'value']);
+    const value = view(selectValueLens, event);
     const label = $(`#select-${idForSelect}-players option:selected`).text();
 
     const listItem = `<li class="list-group-item justify-content-between" data-player-position="${value}">${label}<button type="button" class="close remove-${idForSelect}-player float-right" aria-label="Close"><span aria-hidden="true">&times;</span></button></li>`;
@@ -83,7 +93,7 @@ function selectOptGrpAndSeeSelection(idForSelect, labelText, listForSelectOption
   }
 
   function removeSelectedPlayer(event) {
-    $(R.prop('currentTarget', event)).parent('li').remove();
+    $(prop('currentTarget', event)).parent('li').remove();
   }
 
   removeEventListener('change', `#select-${idForSelect}-players`);

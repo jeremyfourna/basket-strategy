@@ -1,4 +1,14 @@
-const R = require('ramda');
+const {
+  and,
+  concat,
+  equals,
+  isNil,
+  join,
+  lensPath,
+  map,
+  prop,
+  view
+} = require('ramda');
 const { strategySelector } = require('../strategies.js');
 const {
   addEventListener,
@@ -12,20 +22,20 @@ function templateStrategySelection(listOfStrategy) {
   function transformStrategyList(list) {
     function group(element) {
       function transformOption(opt) {
-        return `<option value="${R.prop('id', opt)}">${R.prop('name', opt)}</option>`;
+        return `<option value="${prop('id', opt)}">${prop('name', opt)}</option>`;
       }
 
-      return `<optgroup label="${R.prop('name', element)}">
-                ${R.join(
+      return `<optgroup label="${prop('name', element)}">
+                ${join(
     '',
-    R.map(transformOption, R.prop('options', element))
+    map(transformOption, prop('options', element))
   )}
               </optgroup>`;
     }
 
-    return R.concat(
+    return concat(
       '<option selected="selected" disabled="disabled">Select an offensive strategy</option>',
-      R.join('', R.map(group, list))
+      join('', map(group, list))
     );
   }
 
@@ -50,15 +60,15 @@ function templateStrategySelection(listOfStrategy) {
 function strategySelection(domElementToRenderTemplate, strategyList) {
   function changeStrategyToDisplay(event) {
     function lensForSelect(domId) {
-      return R.lensPath(['target', 'parentElement', 'children', domId, 'value']);
+      return lensPath(['target', 'parentElement', 'children', domId, 'value']);
     }
-    const functionToLaunch = R.view(lensForSelect('offensivePlaySelect'), event);
-    const sizeToDisplay = R.view(lensForSelect('offensivePlaySize'), event);
+    const functionToLaunch = view(lensForSelect('offensivePlaySelect'), event);
+    const sizeToDisplay = view(lensForSelect('offensivePlaySize'), event);
 
     if (
-      R.and(
-        R.equals(R.isNil(functionToLaunch), false),
-        R.equals(R.isNil(sizeToDisplay), false)
+      and(
+        equals(isNil(functionToLaunch), false),
+        equals(isNil(sizeToDisplay), false)
       )
     ) {
       // Clean the body

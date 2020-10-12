@@ -1,4 +1,8 @@
-const R = require('ramda');
+const {
+  always,
+  cond,
+  equals
+} = require('ramda');
 const { strategyCreator } = require('bs-strategy-factory');
 
 function strategyNormalStar(domElement, wishedZoom) {
@@ -1345,23 +1349,23 @@ function issKreuzberg122Option1(domElement, wishedZoom) {
 
 function strategySelector(domElement, wishedZoom, strategyName) {
   // Evaluate the strategyName to launch function
-  const condition = R.cond([
-    [R.equals('issKreuzbergFlexOption1'), R.always(issKreuzbergFlexOption1)],
-    [R.equals('issKreuzbergFlexOption2'), R.always(issKreuzbergFlexOption2)],
-    [R.equals('issKreuzbergFlexOption3'), R.always(issKreuzbergFlexOption3)],
-    [R.equals('issKreuzberg212Option1'), R.always(issKreuzberg212Option1)],
-    [R.equals('issKreuzberg212Option2'), R.always(issKreuzberg212Option2)],
-    [R.equals('issKreuzberg212Option3'), R.always(issKreuzberg212Option3)],
-    [R.equals('issKreuzberg122Option1'), R.always(issKreuzberg122Option1)],
-    [R.equals('strategyStrongSideOffenseOption1'), R.always(strategyStrongSideOffenseOption1)],
-    [R.equals('strategyStrongSideOffenseOption2'), R.always(strategyStrongSideOffenseOption2)],
-    [R.equals('strategyStrongSideOffenseOption3'), R.always(strategyStrongSideOffenseOption3)],
-    [R.equals('strategyStrongSideOffenseOption4'), R.always(strategyStrongSideOffenseOption4)],
-    [R.equals('strategyNormalStar'), R.always(strategyNormalStar)],
-    [R.equals('strategyLowStar'), R.always(strategyLowStar)],
-    [R.equals('strategyTouchDowmLeft'), R.always(strategyTouchDowmLeft)],
-    [R.equals('strategyTouchDowmRight'), R.always(strategyTouchDowmRight)],
-    [R.equals('strategyTouchBoxLeft'), R.always(strategyTouchBoxLeft)]
+  const condition = cond([
+    [equals('issKreuzbergFlexOption1'), always(issKreuzbergFlexOption1)],
+    [equals('issKreuzbergFlexOption2'), always(issKreuzbergFlexOption2)],
+    [equals('issKreuzbergFlexOption3'), always(issKreuzbergFlexOption3)],
+    [equals('issKreuzberg212Option1'), always(issKreuzberg212Option1)],
+    [equals('issKreuzberg212Option2'), always(issKreuzberg212Option2)],
+    [equals('issKreuzberg212Option3'), always(issKreuzberg212Option3)],
+    [equals('issKreuzberg122Option1'), always(issKreuzberg122Option1)],
+    [equals('strategyStrongSideOffenseOption1'), always(strategyStrongSideOffenseOption1)],
+    [equals('strategyStrongSideOffenseOption2'), always(strategyStrongSideOffenseOption2)],
+    [equals('strategyStrongSideOffenseOption3'), always(strategyStrongSideOffenseOption3)],
+    [equals('strategyStrongSideOffenseOption4'), always(strategyStrongSideOffenseOption4)],
+    [equals('strategyNormalStar'), always(strategyNormalStar)],
+    [equals('strategyLowStar'), always(strategyLowStar)],
+    [equals('strategyTouchDowmLeft'), always(strategyTouchDowmLeft)],
+    [equals('strategyTouchDowmRight'), always(strategyTouchDowmRight)],
+    [equals('strategyTouchBoxLeft'), always(strategyTouchBoxLeft)]
   ]);
 
   return condition(strategyName)(domElement, wishedZoom);
