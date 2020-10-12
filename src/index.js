@@ -2,7 +2,7 @@ const { strategySelection } = require('./views/display-strategy.js');
 
 const appRoot = '#app';
 const strategyList = [{
-  name: 'ISS Kreuzberg - Flex',
+  name: 'Squish',
   options: [{
     name: 'Option 1',
     id: 'issKreuzbergFlexOption1'
@@ -14,13 +14,13 @@ const strategyList = [{
     id: 'issKreuzbergFlexOption3'
   }]
 }, {
-  name: 'ISS Kreuzberg - 1 2 2',
+  name: 'Transversale',
   options: [{
     name: 'Option 1',
     id: 'issKreuzberg122Option1'
   }]
 }, {
-  name: 'ISS Kreuzberg - 2 3',
+  name: 'Ciseaux',
   options: [{
     name: 'Option 1',
     id: 'strategyStrongSideOffenseOption1'
@@ -32,7 +32,7 @@ const strategyList = [{
     id: 'strategyStrongSideOffenseOption3'
   }]
 }, {
-  name: 'ISS Kreuzberg - 2 1 2',
+  name: 'King Kong',
   options: [{
     name: 'Option 1',
     id: 'issKreuzberg212Option1'
@@ -49,14 +49,16 @@ const strategyList = [{
     name: 'Option 1',
     id: 'strategyNormalStar'
   }]
-}, {
-  name: 'Star formation low',
-  options: [{
-    name: 'Option 1',
-    id: 'strategyLowStar'
-  }]
-}, {
-  name: 'Strategies for touches',
+},
+// {
+//   name: 'Star formation low',
+//   options: [{
+//     name: 'Option 1',
+//     id: 'strategyLowStar'
+//   }]
+// },
+{
+  name: 'Stratégies pour touches',
   options: [{
     name: 'Triangle à gauche',
     id: 'strategyTouchDowmLeft'
