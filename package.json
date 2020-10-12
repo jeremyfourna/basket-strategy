@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc mocha --timeout=3000",
     "build": "webpack",
-    "dev-server": "node_modules/.bin/webpack-dev-server",
+    "start": "webpack && node_modules/.bin/webpack-dev-server",
     "clean": "eslint --fix src/"
   },
   "repository": {
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/jeremyfourna/basket-strategy#readme",
   "dependencies": {
     "bs-strategy-factory": "0.0.2",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.1",
     "ramda": "^0.24.1"
   },
   "devDependencies": {
@@ -32,6 +32,6 @@
     "mocha": "^3.5.3",
     "nyc": "^11.2.1",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.8.2"
+    "webpack-dev-server": "^2.11.5"
   }
 }
