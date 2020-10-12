@@ -27,14 +27,14 @@ function templateStrategySelection(listOfStrategy) {
 
       return `<optgroup label="${prop('name', element)}">
                 ${join(
-    '',
-    map(transformOption, prop('options', element))
-  )}
+                  '',
+                  map(transformOption, prop('options', element))
+                )}
               </optgroup>`;
     }
 
     return concat(
-      '<option selected="selected" disabled="disabled">Select an offensive strategy</option>',
+      '<option selected="selected" disabled="disabled">Choisis la combinaison à lancer</option>',
       join('', map(group, list))
     );
   }
@@ -44,16 +44,16 @@ function templateStrategySelection(listOfStrategy) {
               ${transformStrategyList(listOfStrategy)}
             </select>
             <select id="offensivePlaySize">
-              <option disabled="disabled" selected="selected">Select a display size</option>
+              <option disabled="disabled" selected="selected">Choisis la taille du terrain</option>
               <option value="10">10</option>
-              <option value="20" selected="true">20 - Best mobile view</option>
+              <option value="20" selected="true">20 - Adapté aux mobiles</option>
               <option value="30">30</option>
               <option value="40">40</option>
               <option value="50">50</option>
               <option value="60">60</option>
               <option value="70">70</option>
             </select>
-            <button id="runConfiguration" type="button">Run using configuration</button>
+            <button id="runConfiguration" type="button">Lance la combinaison</button>
           </form>`;
 }
 

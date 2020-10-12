@@ -1,3 +1,15 @@
 body {
 	font-family: Helvetica Now, Helvetica, Arial, sans-serif;
 }
+
+form {
+	margin-bottom: 1rem;
+}
+
+select, button {
+	height: 2rem;
+}
+
+button {
+	background-color: orange;
+}

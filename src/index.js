@@ -58,13 +58,13 @@ const strategyList = [{
 }, {
   name: 'Strategies for touches',
   options: [{
-    name: 'Down on the left',
+    name: 'Triangle à gauche',
     id: 'strategyTouchDowmLeft'
   }, {
-    name: 'Down on the right',
+    name: 'Triangle à droite',
     id: 'strategyTouchDowmRight'
   }, {
-    name: 'Box for touch down on the left',
+    name: 'Carré à gauche',
     id: 'strategyTouchBoxLeft'
   }]
 }];
