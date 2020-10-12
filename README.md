@@ -1,6 +1,8 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/390e818a-c50e-4a52-bfd5-d22bbf2ae7fd/deploy-status)](https://app.netlify.com/sites/basket-strategy/deploys)
+
 # basket-strategy
 
- Create your own plays for you basket-ball team
+Create your own plays for you basket-ball team
 
 ![alt text](public/example.png "Basic display of Basket-strategy")
 
