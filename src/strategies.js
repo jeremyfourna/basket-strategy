@@ -743,7 +743,6 @@ function issKreuzbergFlexOption1(domElement, wishedZoom) {
     }]
   ];
   // Display the stategy
-  log(domElement);
   strategyCreator(domElement, wishedZoom, defaultPlayersPositions, ballHolder, listOfMoves);
 }
 

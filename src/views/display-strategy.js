@@ -39,11 +39,6 @@ function transformOption(opt) {
 
 function strategySelection(domElementToRenderTemplate, strategyList) {
   function changeStrategyToDisplay(event) {
-    log(event)
-
-    function lensForSelect(domId) {
-      return R.lensPath(['target', 'parentElement', 'children', domId, 'value']);
-    }
     const functionToLaunch = R.view(lensForSelect('offensivePlaySelect'), event);
     const sizeToDisplay = R.view(lensForSelect('offensivePlaySize'), event);
 
@@ -68,4 +63,8 @@ function strategySelection(domElementToRenderTemplate, strategyList) {
   addEventListener('change', '#offensivePlaySize', changeStrategyToDisplay);
 
   return templateStrategySelection(strategyList);
+}
+
+function lensForSelect(domId) {
+  return R.lensPath(['target', 'parentElement', 'children', domId, 'value']);
 }

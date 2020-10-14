@@ -1,6 +1,6 @@
 function templatePanes(strategyList) {
   return `<div id="view-strategies">
-            ${strategySelection('view-strategies', strategyList)}
+            ${strategySelection('#view-strategies', strategyList)}
           </div>`;
 }
 
