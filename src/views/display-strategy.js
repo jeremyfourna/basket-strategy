@@ -1,44 +1,4 @@
-const {
-  and,
-  concat,
-  equals,
-  isNil,
-  join,
-  lensPath,
-  map,
-  prop,
-  view
-} = require('ramda');
-const { strategySelector } = require('../strategies.js');
-const {
-  addEventListener,
-  removeEventListener,
-  render,
-  clean,
-  cleanSVG
-} = require('./utils.js');
-
 function templateStrategySelection(listOfStrategy) {
-  function transformStrategyList(list) {
-    function group(element) {
-      function transformOption(opt) {
-        return `<option value="${prop('id', opt)}">${prop('name', opt)}</option>`;
-      }
-
-      return `<optgroup label="${prop('name', element)}">
-                ${join(
-                  '',
-                  map(transformOption, prop('options', element))
-                )}
-              </optgroup>`;
-    }
-
-    return concat(
-      '<option selected="selected" disabled="disabled">Choisis la combinaison à lancer</option>',
-      join('', map(group, list))
-    );
-  }
-
   return `<form>
             <select id="offensivePlaySelect">
               ${transformStrategyList(listOfStrategy)}
@@ -57,24 +17,46 @@ function templateStrategySelection(listOfStrategy) {
           </form>`;
 }
 
+function transformStrategyList(list) {
+  return R.concat(
+    '<option selected="selected" disabled="disabled">Choisis la combinaison à lancer</option>',
+    R.join('', R.map(group, list))
+  );
+}
+
+function group(element) {
+  return `<optgroup label="${R.prop('name', element)}">
+            ${R.join(
+              '',
+              R.map(transformOption, R.prop('options', element))
+            )}
+          </optgroup>`;
+}
+
+function transformOption(opt) {
+  return `<option value="${R.prop('id', opt)}">${R.prop('name', opt)}</option>`;
+}
+
 function strategySelection(domElementToRenderTemplate, strategyList) {
   function changeStrategyToDisplay(event) {
+    log(event)
+
     function lensForSelect(domId) {
-      return lensPath(['target', 'parentElement', 'children', domId, 'value']);
+      return R.lensPath(['target', 'parentElement', 'children', domId, 'value']);
     }
-    const functionToLaunch = view(lensForSelect('offensivePlaySelect'), event);
-    const sizeToDisplay = view(lensForSelect('offensivePlaySize'), event);
+    const functionToLaunch = R.view(lensForSelect('offensivePlaySelect'), event);
+    const sizeToDisplay = R.view(lensForSelect('offensivePlaySize'), event);
 
     if (
-      and(
-        equals(isNil(functionToLaunch), false),
-        equals(isNil(sizeToDisplay), false)
+      R.and(
+        R.equals(R.isNil(functionToLaunch), false),
+        R.equals(R.isNil(sizeToDisplay), false)
       )
     ) {
       // Clean the body
       cleanSVG();
       // Run the strategy
-      strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
+      return strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
     }
   }
 
@@ -84,7 +66,6 @@ function strategySelection(domElementToRenderTemplate, strategyList) {
   addEventListener('click', '#runConfiguration', changeStrategyToDisplay);
   addEventListener('change', '#offensivePlaySelect', changeStrategyToDisplay);
   addEventListener('change', '#offensivePlaySize', changeStrategyToDisplay);
-  render(domElementToRenderTemplate, templateStrategySelection, strategyList);
-}
 
-exports.strategySelection = strategySelection;
+  return templateStrategySelection(strategyList);
+}
