@@ -7,44 +7,49 @@ Move = {
 The action property is only needed if you want to move a player with or without the ball
 */
 
+function waitingTime(type, index) {
+  if (type === 'regular') {
+    return 2000 * index + 400;
+  } else {
+    return 2000 * index;
+  }
+}
+
 function generateStategy(allPositions, selectedPlayers, ballPosition, listOfMoves) {
   const listOfMovesTransformed = mapIndexed((cur, index) => {
-    const waitingTime = R.ifElse(
-      R.equals('regular'),
-      R.always(R.add(R.multiply(2000, index), 400)),
-      R.always(R.multiply(2000, index))
-    );
-    return R.map((cur1) => {
-      if (R.isNil(R.prop('action', cur1))) { // If action property is defined
-        if (R.equals(R.prop('origin', cur1), 'ball')) {
+    return R.map(cur1 => {
+      if (R.isNil(cur1.action)) { // If action property is defined
+        if (cur1.origin === 'ball') {
           return [
             'moveBallFromTo',
             ballPosition,
-            R.prop(R.prop('destination', cur1), allPositions),
-            R.multiply(2000, index),
+            R.prop(cur1.destination, allPositions),
+            2000 * index,
             '.ball'
           ];
+        } else {
+          return [
+            'movePlayerFromTo',
+            R.prop(cur1.origin, selectedPlayers),
+            R.prop(cur1.destination, allPositions),
+            waitingTime('regular', index),
+            `.${cur1.origin}`
+          ];
         }
+      } else {
+        const isADrive = R.ifElse(
+          R.equals('ball'),
+          R.always(ballPosition),
+          R.always(R.prop(R.prop('origin', cur1), selectedPlayers))
+        );
         return [
           'movePlayerFromTo',
-          R.prop(R.prop('origin', cur1), selectedPlayers),
-          R.prop(R.prop('destination', cur1), allPositions),
-          waitingTime('regular'),
-          `.${R.prop('origin', cur1)}`
+          isADrive(cur1.origin),
+          R.prop(cur1.destination, allPositions),
+          waitingTime(cur1.action, index),
+          `.${cur1.origin}`
         ];
       }
-      const isADrive = R.ifElse(
-        R.equals('ball'),
-        R.always(ballPosition),
-        R.always(R.prop(R.prop('origin', cur1), selectedPlayers))
-      );
-      return [
-        'movePlayerFromTo',
-        isADrive(R.prop('origin', cur1)),
-        R.prop(R.prop('destination', cur1), allPositions),
-        waitingTime(R.prop('action', cur1)),
-        `.${R.prop('origin', cur1)}`
-      ];
     }, cur);
   }, listOfMoves);
 

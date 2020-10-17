@@ -1,3 +1,7 @@
+// x-0.71/y-0.71 ||| x+0.00/y-1.00 ||| x+0.71/y-0.71
+// x-0.71/y+0.00 ||| x+0.00/y+0.00 ||| x+0.71/y+0.00
+// x-0.71/y+0.71 ||| x+0.00/y+1.00 ||| x+0.71/y+0.71
+
 // pgPositions :: a -> object
 function pgPositions() {
   // Positions regarding space around PG

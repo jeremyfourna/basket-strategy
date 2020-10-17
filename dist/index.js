@@ -1,5 +1,154 @@
 const appRoot = '#app';
 const strategyList = [{
+  name: 'Attaque de Princeton',
+  options: [{
+    name: 'Option 1',
+    id: 'princetonOffense1',
+    combination: {
+      defaultPlayersPositions: [
+        'sgLeft',
+        'sgRight',
+        'sfLeft',
+        'sfRight',
+        'cRight'
+      ],
+      ballHolder: 'sgRight',
+      listOfMoves: [
+        [{
+          origin: 'ball',
+          destination: 'sfRight'
+        }, {
+          action: 'sprint',
+          origin: 'sgRight',
+          destination: 'cLeftPickRight'
+        }],
+        [{
+          action: 'regular',
+          origin: 'sgRight',
+          destination: 'cornerLeft'
+        }, {
+          action: 'regular',
+          origin: 'sgLeft',
+          destination: 'pg'
+        }, {
+          action: 'regular',
+          origin: 'sfLeft',
+          destination: 'sfLeftPickTopRight'
+        }],
+        [{
+          origin: 'ball',
+          destination: 'cRight'
+        }, {
+          action: 'sprint',
+          origin: 'sfRight',
+          destination: 'sgRightPickBottomLeft'
+        }, {
+          action: 'regular',
+          origin: 'sgLeft',
+          destination: 'sgRightPickLeft'
+        }],
+        [{
+          action: 'sprint',
+          origin: 'sgLeft',
+          destination: 'underRingTop'
+        }, {
+          action: 'regular',
+          origin: 'sfRight',
+          destination: 'pfCenterPickTop'
+        }],
+        [{
+          origin: 'ball',
+          destination: 'underRingTop'
+        }],
+        [{
+          origin: 'ball',
+          destination: 'underRing'
+        }]
+      ]
+    }
+  }, {
+    name: 'Option 2',
+    id: 'princetonOffense2',
+    combination: {
+      defaultPlayersPositions: [
+        'sgLeft',
+        'sgRight',
+        'sfLeft',
+        'sfRight',
+        'cRight'
+      ],
+      ballHolder: 'sgRight',
+      listOfMoves: [
+        [{
+          origin: 'ball',
+          destination: 'sfRight'
+        }, {
+          action: 'sprint',
+          origin: 'sgRight',
+          destination: 'cLeftPickRight'
+        }],
+        [{
+          action: 'regular',
+          origin: 'sgRight',
+          destination: 'cornerLeft'
+        }, {
+          action: 'regular',
+          origin: 'sgLeft',
+          destination: 'pg'
+        }, {
+          action: 'regular',
+          origin: 'sfLeft',
+          destination: 'sfLeftPickTopRight'
+        }],
+        [{
+          origin: 'ball',
+          destination: 'cRight'
+        }, {
+          action: 'sprint',
+          origin: 'sfRight',
+          destination: 'sgRightPickBottomLeft'
+        }, {
+          action: 'regular',
+          origin: 'sgLeft',
+          destination: 'sgRightPickLeft'
+        }],
+        [{
+          action: 'sprint',
+          origin: 'sgLeft',
+          destination: 'sfRight'
+        }, {
+          action: 'regular',
+          origin: 'sfRight',
+          destination: 'underRingTop'
+        }, {
+          action: 'regular',
+          origin: 'sfLeft',
+          destination: 'sgRightPickLeft'
+        }, {
+          action: 'regular',
+          origin: 'sgRight',
+          destination: 'sgLeftPickLeft'
+        }],
+        [{
+          origin: 'ball',
+          destination: 'sfRight'
+        }, {
+          action: 'regular',
+          origin: 'sfLeft',
+          destination: 'sgRight'
+        }, {
+          action: 'regular',
+          origin: 'sgRight',
+          destination: 'sgLeft'
+        }, {
+          action: 'regular',
+          origin: 'sfRight',
+          destination: 'sfLeft'
+        }]
+      ]
+    }
+  }]
+}, {
   name: 'Squish',
   options: [{
     name: 'Option 1',

@@ -45,12 +45,10 @@ function strategySelection(domElementToRenderTemplate, strategyList) {
     const sizeToDisplay = R.view(lensForSelect('offensivePlaySize'), event);
     const parentStrategy = R.view(lensForSelectData('offensivePlaySelect', 'parent'), event);
 
-    if (
-      R.and(
-        R.equals(R.isNil(strategyToLaunch), false),
-        R.equals(R.isNil(sizeToDisplay), false)
-      )
-    ) {
+    if (R.and(
+        R.isNil(strategyToLaunch) === false,
+        R.isNil(sizeToDisplay) === false
+      )) {
       const strategyProperties = R.compose(
         R.prop('combination'),
         cur => R.find(R.propEq('id', strategyToLaunch), cur.options),
