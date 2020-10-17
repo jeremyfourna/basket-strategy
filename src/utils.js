@@ -1,4 +1,4 @@
-const $ = require('jquery');
+const mapIndexed = R.addIndex(R.map);
 
 function render(domElement, template, data = {}) {
   return $(domElement).append(template(data));
@@ -28,10 +28,8 @@ function cleanSVG() {
   return $('svg').remove();
 }
 
-exports.render = render;
-exports.addEventListener = addEventListener;
-exports.removeEventListener = removeEventListener;
-exports.clean = clean;
-exports.hide = hide;
-exports.show = show;
-exports.cleanSVG = cleanSVG;
+function log(content) {
+  console.log(...arguments);
+
+  return content;
+}
