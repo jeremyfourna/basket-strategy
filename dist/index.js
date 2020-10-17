@@ -52,13 +52,29 @@ const strategyList = [{
           origin: 'sgLeft',
           destination: 'underRingTop'
         }, {
-          action: 'regular',
+          action: 'sprint',
           origin: 'sfRight',
-          destination: 'pfCenterPickTop'
+          destination: 'sfRight'
+        }, {
+          action: 'regular',
+          origin: 'sfLeft',
+          destination: 'pg'
+        }, {
+          action: 'regular',
+          origin: 'sgRight',
+          destination: 'sfLeftPickRight'
         }],
         [{
           origin: 'ball',
           destination: 'underRingTop'
+        }, {
+          action: 'regular',
+          origin: 'sfLeft',
+          destination: 'sgRight'
+        }, {
+          action: 'regular',
+          origin: 'sgRight',
+          destination: 'sgLeft'
         }],
         [{
           origin: 'ball',
