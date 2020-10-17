@@ -25,33 +25,47 @@ function transformStrategyList(list) {
 }
 
 function group(element) {
-  return `<optgroup label="${R.prop('name', element)}">
+  function transformOption(opt) {
+    return `<option data-parent="${element.name}" value="${opt.id}">${opt.name}</option>`;
+  }
+
+  return `<optgroup label="${element.name}">
             ${R.join(
               '',
-              R.map(transformOption, R.prop('options', element))
+              R.map(transformOption, element.options)
             )}
           </optgroup>`;
 }
 
-function transformOption(opt) {
-  return `<option value="${R.prop('id', opt)}">${R.prop('name', opt)}</option>`;
-}
+
 
 function strategySelection(domElementToRenderTemplate, strategyList) {
   function changeStrategyToDisplay(event) {
-    const functionToLaunch = R.view(lensForSelect('offensivePlaySelect'), event);
+    const strategyToLaunch = R.view(lensForSelect('offensivePlaySelect'), event);
     const sizeToDisplay = R.view(lensForSelect('offensivePlaySize'), event);
+    const parentStrategy = R.view(lensForSelectData('offensivePlaySelect', 'parent'), event);
 
     if (
       R.and(
-        R.equals(R.isNil(functionToLaunch), false),
+        R.equals(R.isNil(strategyToLaunch), false),
         R.equals(R.isNil(sizeToDisplay), false)
       )
     ) {
+      const strategyProperties = R.compose(
+        R.prop('combination'),
+        cur => R.find(R.propEq('id', strategyToLaunch), cur.options),
+        R.find(R.propEq('name', parentStrategy))
+      )(strategyList);
       // Clean the body
       cleanSVG();
       // Run the strategy
-      return strategySelector(domElementToRenderTemplate, sizeToDisplay, functionToLaunch);
+      return strategyCreator(
+        domElementToRenderTemplate,
+        sizeToDisplay,
+        strategyProperties.defaultPlayersPositions,
+        strategyProperties.ballHolder,
+        strategyProperties.listOfMoves
+      );
     }
   }
 
@@ -67,4 +81,8 @@ function strategySelection(domElementToRenderTemplate, strategyList) {
 
 function lensForSelect(domId) {
   return R.lensPath(['target', 'parentElement', 'children', domId, 'value']);
+}
+
+function lensForSelectData(domId, data) {
+  return R.lensPath(['target', 'parentElement', 'children', domId, 'selectedOptions', 0, 'dataset', data]);
 }

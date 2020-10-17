@@ -1,17 +1,18 @@
 function moveFromTo(origin, destination, speed, waitingTime, elementClassName) {
   const element = d3.select(elementClassName);
-  const translateX = R.subtract(
-    R.prop('x', destination),
-    R.prop('x', origin)
-  );
-  const translateY = R.subtract(
-    R.prop('y', destination),
-    R.prop('y', origin)
-  );
+
   element.transition()
     .delay(waitingTime)
     .duration(speed)
-    .attr('transform', `translate(${translateX},${translateY})`);
+    .attr('transform', `translate(${translateX(origin, destination)},${translateY(origin, destination)})`);
+}
+
+function translateX(origin, destination) {
+  return destination.x - origin.x;
+}
+
+function translateY(origin, destination) {
+  return destination.y - origin.y;
 }
 
 function movePlayerFromTo(origin, destination, waitingTime, elementClassName) {
