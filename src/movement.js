@@ -24,11 +24,27 @@ function moveBallFromTo(origin, destination, waitingTime, elementClassName) {
 }
 
 function playMovements(movementsList) {
-  mapIndexed((cur) => {
-    if (R.equals(R.head(cur), 'moveBallFromTo')) {
+  R.map(cur => {
+    if (R.head(cur) === 'moveBallFromTo') {
       R.apply(moveBallFromTo, R.tail(cur));
     } else {
       R.apply(movePlayerFromTo, R.tail(cur));
     }
   }, movementsList);
+}
+
+function addBallToGame(player, allPlayers) {
+  return R.assoc('className', 'ball', allPlayers[player]);
+}
+
+function generateBallPosition(wishedZoom, ballPosition, context) {
+  return createCircle(
+    ballPosition.x,
+    ballPosition.y,
+    wishedZoom * 0.25,
+    'black',
+    'orange',
+    ballPosition.className,
+    context
+  );
 }
